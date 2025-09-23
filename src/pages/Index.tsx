@@ -23,7 +23,7 @@ function Index() {
   })
 
   const [currentEnemy, setCurrentEnemy] = useState<Enemy>({
-    name: 'Злой Пёс',
+    name: 'Киборг-Собака',
     health: 50,
     maxHealth: 50,
     reward: 5
