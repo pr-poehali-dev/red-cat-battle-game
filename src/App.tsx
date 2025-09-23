@@ -22,7 +22,7 @@ const AuthenticatedApp = () => {
     );
   }
 
-  return isAuthenticated ? <Index /> : <LandingPage onLogin={() => {}} />;
+  return isAuthenticated ? <Index /> : <LandingPage />;
 };
 
 const App = () => (

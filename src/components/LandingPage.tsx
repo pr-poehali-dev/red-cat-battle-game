@@ -6,11 +6,7 @@ import StarField from '@/components/StarField'
 import Icon from '@/components/ui/icon'
 import { useAuth } from '@/hooks/useAuth'
 
-interface LandingPageProps {
-  onLogin?: (username: string, token: string) => void
-}
-
-export default function LandingPage({ onLogin }: LandingPageProps) {
+export default function LandingPage() {
   const { login, register } = useAuth()
   const [isLogin, setIsLogin] = useState(true)
   const [username, setUsername] = useState('')
@@ -32,6 +28,8 @@ export default function LandingPage({ onLogin }: LandingPageProps) {
       if (!result.success) {
         setError(result.error || 'Произошла ошибка')
       }
+      // После успешной авторизации компонент автоматически перерендерится
+      // через useAuth хук и покажет игровую страницу
     } catch (err) {
       setError('Ошибка подключения к серверу')
     } finally {
