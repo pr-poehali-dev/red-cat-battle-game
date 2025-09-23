@@ -19,7 +19,7 @@ interface BattleCat {
 }
 
 const CatsSection: React.FC = () => {
-  const [cats] = useState<BattleCat[]>([
+  const [cats, setCats] = useState<BattleCat[]>([
     {
       id: 'default-cat',
       name: 'Космический Воин',
@@ -62,6 +62,144 @@ const CatsSection: React.FC = () => {
     }
   }
 
+  // Базы данных для генерации котов
+  const catNames = [
+    'Космический Страж', 'Звездный Охотник', 'Галактический Воин', 'Небесный Защитник',
+    'Лунный Рыцарь', 'Солнечный Боец', 'Кометный Ас', 'Астральный Хищник',
+    'Планетарный Герой', 'Межзвездный Капитан', 'Орбитальный Снайпер', 'Космический Ниндзя',
+    'Звездолетный Пилот', 'Галактический Командир', 'Туманный Призрак', 'Черная Дыра'
+  ]
+
+  const catAbilities = {
+    common: [
+      'Быстрый удар - наносит обычный урон',
+      'Прыжок - увеличивает уклонение',
+      'Царапины - базовая атака когтями'
+    ],
+    rare: [
+      'Энергетический залп - стреляет лучами',
+      'Щит защиты - блокирует урон',
+      'Ускорение - увеличивает скорость на 30%',
+      'Лечение - восстанавливает здоровье'
+    ],
+    epic: [
+      'Плазменная атака - наносит урон по области',
+      'Телепортация - мгновенно перемещается',
+      'Временное замедление - замедляет врагов',
+      'Энергетический барьер - отражает атаки'
+    ],
+    legendary: [
+      'Звездная буря - опустошительная атака',
+      'Квантовый прыжок - неуязвимость на 3 секунды',
+      'Галактическое господство - удваивает все характеристики',
+      'Черная дыра - засасывает всех врагов'
+    ]
+  }
+
+  const catDescriptions = [
+    'Ветеран многих космических войн, закаленный в боях',
+    'Молодой, но талантливый воин с большим потенциалом',
+    'Загадочный кот из далекой галактики с древними знаниями',
+    'Бывший космический пират, перешедший на сторону добра',
+    'Элитный боец специальных космических сил',
+    'Мудрый стратег, предпочитающий думать, а потом драться',
+    'Отважный исследователь неизвестных миров',
+    'Технический гений, создающий собственное оружие'
+  ]
+
+  const catEmojis = ['🐱‍🚀', '🐱‍👤', '🦁', '🐯', '🐆', '😸', '😼', '🙀']
+
+  const generateRandomCat = (): BattleCat => {
+    // Определяем редкость (чем реже, тем меньше шанс)
+    const rarityRoll = Math.random()
+    let rarity: 'common' | 'rare' | 'epic' | 'legendary'
+    
+    if (rarityRoll < 0.6) rarity = 'common'
+    else if (rarityRoll < 0.85) rarity = 'rare'
+    else if (rarityRoll < 0.97) rarity = 'epic'
+    else rarity = 'legendary'
+
+    // Базовые характеристики зависят от редкости
+    const baseStats = {
+      common: { health: 80, attack: 10, defense: 5, speed: 8 },
+      rare: { health: 120, attack: 18, defense: 12, speed: 15 },
+      epic: { health: 180, attack: 28, defense: 20, speed: 22 },
+      legendary: { health: 300, attack: 45, defense: 35, speed: 35 }
+    }
+
+    const stats = baseStats[rarity]
+    
+    // Добавляем случайные вариации (±20%)
+    const randomVariation = () => 0.8 + Math.random() * 0.4
+    
+    const health = Math.floor(stats.health * randomVariation())
+    const attack = Math.floor(stats.attack * randomVariation())
+    const defense = Math.floor(stats.defense * randomVariation())
+    const speed = Math.floor(stats.speed * randomVariation())
+
+    // Выбираем случайные способности для редкости
+    const availableAbilities = catAbilities[rarity]
+    const numAbilities = rarity === 'common' ? 2 : rarity === 'rare' ? 3 : rarity === 'epic' ? 4 : 5
+    const selectedAbilities = []
+    
+    for (let i = 0; i < numAbilities; i++) {
+      const randomAbility = availableAbilities[Math.floor(Math.random() * availableAbilities.length)]
+      if (!selectedAbilities.includes(randomAbility)) {
+        selectedAbilities.push(randomAbility)
+      }
+    }
+
+    return {
+      id: `cat-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
+      name: catNames[Math.floor(Math.random() * catNames.length)],
+      level: 1,
+      health,
+      maxHealth: health,
+      attack,
+      defense,
+      speed,
+      experience: 0,
+      maxExperience: 100,
+      abilities: selectedAbilities,
+      description: catDescriptions[Math.floor(Math.random() * catDescriptions.length)],
+      rarity,
+      image: catEmojis[Math.floor(Math.random() * catEmojis.length)]
+    }
+  }
+
+  const [isCreating, setIsCreating] = useState(false)
+
+  const handleCreateNewCat = () => {
+    setIsCreating(true)
+    
+    // Имитация поиска в космосе
+    setTimeout(() => {
+      const newCat = generateRandomCat()
+      setCats(prev => [...prev, newCat])
+      setIsCreating(false)
+    }, 1500)
+  }
+
+  const handleDeleteCat = (catId: string) => {
+    if (cats.length > 1) { // Не позволяем удалить последнего кота
+      setCats(prev => prev.filter(cat => cat.id !== catId))
+    }
+  }
+
+  // Статистика коллекции
+  const getCollectionStats = () => {
+    const rarityCount = cats.reduce((acc, cat) => {
+      acc[cat.rarity] = (acc[cat.rarity] || 0) + 1
+      return acc
+    }, {} as Record<string, number>)
+
+    const totalPower = cats.reduce((sum, cat) => sum + cat.attack + cat.defense + cat.speed, 0)
+    
+    return { rarityCount, totalPower }
+  }
+
+  const { rarityCount, totalPower } = getCollectionStats()
+
   return (
     <div className="p-4 space-y-6">
       <div className="text-center space-y-2">
@@ -70,6 +208,44 @@ const CatsSection: React.FC = () => {
           Боевые Коты
         </h1>
         <p className="text-white/70">Управляйте своей армией космических котов-воинов</p>
+      </div>
+
+      {/* Статистика коллекции */}
+      <div className="bg-space-dark/40 border border-cosmic-purple/40 rounded-lg p-4">
+        <h3 className="text-white font-semibold mb-3 flex items-center gap-2">
+          <Icon name="BarChart3" size={18} />
+          Статистика коллекции
+        </h3>
+        
+        <div className="grid grid-cols-2 gap-4 mb-3">
+          <div className="text-center">
+            <div className="text-2xl font-bold text-white">{cats.length}</div>
+            <div className="text-xs text-white/60">Всего котов</div>
+          </div>
+          <div className="text-center">
+            <div className="text-2xl font-bold text-cosmic-cyan">{totalPower}</div>
+            <div className="text-xs text-white/60">Общая мощь</div>
+          </div>
+        </div>
+
+        <div className="grid grid-cols-4 gap-2 text-xs">
+          <div className="text-center p-2 bg-gray-500/20 rounded">
+            <div className="font-semibold text-gray-400">{rarityCount.common || 0}</div>
+            <div className="text-gray-500">Обычных</div>
+          </div>
+          <div className="text-center p-2 bg-blue-500/20 rounded">
+            <div className="font-semibold text-blue-400">{rarityCount.rare || 0}</div>
+            <div className="text-blue-500">Редких</div>
+          </div>
+          <div className="text-center p-2 bg-purple-500/20 rounded">
+            <div className="font-semibold text-purple-400">{rarityCount.epic || 0}</div>
+            <div className="text-purple-500">Эпических</div>
+          </div>
+          <div className="text-center p-2 bg-yellow-500/20 rounded">
+            <div className="font-semibold text-yellow-400">{rarityCount.legendary || 0}</div>
+            <div className="text-yellow-500">Легендарных</div>
+          </div>
+        </div>
       </div>
 
       <div className="grid gap-4">
@@ -86,9 +262,20 @@ const CatsSection: React.FC = () => {
                       {getRarityName(cat.rarity)} • Уровень {cat.level}
                     </p>
                   </div>
-                  <div className="text-right">
-                    <div className="text-sm text-white/70">Опыт</div>
-                    <div className="text-white font-semibold">{cat.experience}/{cat.maxExperience}</div>
+                  <div className="flex items-center gap-3">
+                    <div className="text-right">
+                      <div className="text-sm text-white/70">Опыт</div>
+                      <div className="text-white font-semibold">{cat.experience}/{cat.maxExperience}</div>
+                    </div>
+                    {cats.length > 1 && cat.id !== 'default-cat' && (
+                      <button
+                        onClick={() => handleDeleteCat(cat.id)}
+                        className="text-red-400 hover:text-red-300 p-1 transition-colors"
+                        title="Удалить кота"
+                      >
+                        <Icon name="Trash2" size={16} />
+                      </button>
+                    )}
                   </div>
                 </div>
 
@@ -151,12 +338,25 @@ const CatsSection: React.FC = () => {
       </div>
 
       <div className="bg-space-dark/40 border border-cosmic-purple/40 rounded-lg p-4 text-center">
-        <Icon name="Plus" size={24} className="text-white/50 mx-auto mb-2" />
-        <h3 className="text-white font-semibold mb-1">Добавить нового кота</h3>
-        <p className="text-white/60 text-sm mb-3">Найдите новых котов-воинов в галактике</p>
-        <button className="bg-gradient-to-r from-cosmic-purple to-cosmic-cyan text-white py-2 px-4 rounded font-semibold hover:shadow-lg hover:shadow-cosmic-purple/50 transition-all">
-          Исследовать космос
-        </button>
+        {isCreating ? (
+          <>
+            <div className="animate-spin rounded-full h-6 w-6 border-2 border-cosmic-cyan border-t-transparent mx-auto mb-2"></div>
+            <h3 className="text-white font-semibold mb-1">Сканирование галактики...</h3>
+            <p className="text-white/60 text-sm">Поиск новых котов-воинов</p>
+          </>
+        ) : (
+          <>
+            <Icon name="Plus" size={24} className="text-white/50 mx-auto mb-2" />
+            <h3 className="text-white font-semibold mb-1">Добавить нового кота</h3>
+            <p className="text-white/60 text-sm mb-3">Найдите новых котов-воинов в галактике</p>
+            <button 
+              onClick={handleCreateNewCat}
+              className="bg-gradient-to-r from-cosmic-purple to-cosmic-cyan text-white py-2 px-4 rounded font-semibold hover:shadow-lg hover:shadow-cosmic-purple/50 transition-all hover:scale-105"
+            >
+              Исследовать космос
+            </button>
+          </>
+        )}
       </div>
     </div>
   )
