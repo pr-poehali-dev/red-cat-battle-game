@@ -40,13 +40,28 @@ export default function LandingPage({ onLogin }: LandingPageProps) {
   }
 
   return (
-    <div className="relative min-h-screen bg-gradient-to-br from-space-dark via-cosmic-purple/20 to-space-dark overflow-hidden">
+    <div className="relative min-h-screen bg-gradient-to-br from-slate-900 via-purple-900/30 to-slate-900 overflow-hidden">
       <StarField />
       
-      {/* Cosmic Background Effects */}
-      <div className="absolute inset-0 bg-gradient-to-r from-cosmic-cyan/10 via-transparent to-cosmic-pink/10 animate-pulse"></div>
-      <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-cosmic-cyan/20 rounded-full blur-3xl animate-float"></div>
-      <div className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-cosmic-pink/20 rounded-full blur-3xl animate-float"></div>
+      {/* Modern Cosmic Background Effects */}
+      <div className="absolute inset-0">
+        {/* Animated gradient mesh */}
+        <div className="absolute inset-0 bg-gradient-to-r from-cyan-500/5 via-purple-500/10 to-pink-500/5 animate-pulse"></div>
+        
+        {/* Floating orbs with modern glow */}
+        <div className="absolute top-1/3 left-1/5 w-64 h-64 bg-gradient-to-r from-cyan-400/30 to-blue-500/30 rounded-full blur-2xl animate-float opacity-70"></div>
+        <div className="absolute bottom-1/3 right-1/5 w-72 h-72 bg-gradient-to-r from-purple-400/25 to-pink-500/25 rounded-full blur-2xl animate-float opacity-60" style={{animationDelay: '2s'}}></div>
+        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-gradient-to-r from-indigo-500/15 to-purple-600/15 rounded-full blur-3xl animate-pulse opacity-50"></div>
+        
+        {/* Subtle grid overlay */}
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_0%,rgba(15,23,42,0.3)_70%)]"></div>
+        
+        {/* Edge lighting */}
+        <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-cyan-500/50 to-transparent"></div>
+        <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-purple-500/50 to-transparent"></div>
+        <div className="absolute top-0 bottom-0 left-0 w-px bg-gradient-to-b from-transparent via-cyan-500/30 to-transparent"></div>
+        <div className="absolute top-0 bottom-0 right-0 w-px bg-gradient-to-b from-transparent via-pink-500/30 to-transparent"></div>
+      </div>
       
       <div className="relative z-10 min-h-screen flex items-center justify-center p-4">
         <div className="max-w-md w-full space-y-8">
