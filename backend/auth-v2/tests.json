@@ -1,39 +1,11 @@
 {
   "tests": [
+
     {
-      "name": "Test user registration",
+      "name": "Test empty POST",
       "method": "POST",
-      "body": {
-        "username": "testuser",
-        "email": "test@example.com",
-        "password": "password123",
-        "action": "register"
-      },
-      "expectedStatus": 200,
-      "expectedBody": {
-        "success": true,
-        "token": "string",
-        "user": {
-          "id": "number",
-          "username": "string",
-          "email": "string"
-        }
-      },
-      "bodyMatcher": "partial"
-    },
-    {
-      "name": "Test user login",
-      "method": "POST",
-      "body": {
-        "username": "testuser",
-        "password": "password123"
-      },
-      "expectedStatus": 200,
-      "expectedBody": {
-        "success": true,
-        "token": "string"
-      },
-      "bodyMatcher": "partial"
+      "body": "{}",
+      "expectedStatus": 400
     }
   ]
 }

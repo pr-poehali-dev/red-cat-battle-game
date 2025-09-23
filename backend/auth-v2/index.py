@@ -90,7 +90,7 @@ def handler(event: Dict[str, Any], context: Any) -> Dict[str, Any]:
             req = RegisterRequest(**body_data)
             
             # Check if user exists
-            cursor.execute("SELECT id FROM users WHERE username = %s OR email = %s", (req.username, req.email))
+            cursor.execute("SELECT id FROM t_p93714410_red_cat_battle_game.users WHERE username = %s OR email = %s", (req.username, req.email))
             if cursor.fetchone():
                 return {
                     'statusCode': 400,
@@ -102,7 +102,7 @@ def handler(event: Dict[str, Any], context: Any) -> Dict[str, Any]:
             # Create user
             password_hash = hash_password(req.password)
             cursor.execute("""
-                INSERT INTO users (username, email, password_hash) 
+                INSERT INTO t_p93714410_red_cat_battle_game.users (username, email, password_hash) 
                 VALUES (%s, %s, %s) RETURNING id
             """, (req.username, req.email, password_hash))
             
@@ -110,7 +110,7 @@ def handler(event: Dict[str, Any], context: Any) -> Dict[str, Any]:
             
             # Create initial game stats
             cursor.execute("""
-                INSERT INTO game_stats (user_id, level, power, coins, experience, max_experience, click_damage)
+                INSERT INTO t_p93714410_red_cat_battle_game.game_stats (user_id, level, power, coins, experience, max_experience, click_damage)
                 VALUES (%s, 1, 100, 0, 0, 100, 10)
             """, (user_id,))
             
@@ -141,7 +141,7 @@ def handler(event: Dict[str, Any], context: Any) -> Dict[str, Any]:
             # Get user
             cursor.execute("""
                 SELECT id, username, email, password_hash, is_active 
-                FROM users WHERE username = %s
+                FROM t_p93714410_red_cat_battle_game.users WHERE username = %s
             """, (req.username,))
             
             user = cursor.fetchone()
@@ -165,7 +165,7 @@ def handler(event: Dict[str, Any], context: Any) -> Dict[str, Any]:
                 }
             
             # Update last login
-            cursor.execute("UPDATE users SET last_login = CURRENT_TIMESTAMP WHERE id = %s", (user_id,))
+            cursor.execute("UPDATE t_p93714410_red_cat_battle_game.users SET last_login = CURRENT_TIMESTAMP WHERE id = %s", (user_id,))
             conn.commit()
             
             # Create JWT token
