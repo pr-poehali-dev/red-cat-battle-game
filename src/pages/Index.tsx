@@ -97,7 +97,7 @@ function Index() {
       // Spawn new enemy
       setTimeout(() => {
         setCurrentEnemy({
-          name: 'Злой Пёс',
+          name: 'Киборг-Собака',
           health: 50 + Math.floor(Math.random() * 30),
           maxHealth: 50 + Math.floor(Math.random() * 30),
           reward: 5 + Math.floor(Math.random() * 5)

@@ -7,7 +7,7 @@ import Icon from '@/components/ui/icon'
 import { useAuth } from '@/hooks/useAuth'
 
 interface LandingPageProps {
-  onLogin: (username: string, token: string) => void
+  onLogin?: (username: string, token: string) => void
 }
 
 export default function LandingPage({ onLogin }: LandingPageProps) {

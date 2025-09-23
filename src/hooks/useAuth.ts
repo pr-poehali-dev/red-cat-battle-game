@@ -29,20 +29,30 @@ export function useAuth() {
         const storedUser = localStorage.getItem('catKombatUser')
         
         if (storedToken && storedUser) {
-          // Verify token is not expired (basic check)
-          const tokenPayload = JSON.parse(atob(storedToken.split('.')[1]))
-          const isExpired = tokenPayload.exp * 1000 < Date.now()
-          
-          if (!isExpired) {
-            setAuthState({
-              isAuthenticated: true,
-              user: JSON.parse(localStorage.getItem('catKombatUserData') || '{}'),
-              token: storedToken,
-              isLoading: false
-            })
-            return
-          } else {
-            // Clear expired token
+          try {
+            // Verify token is not expired (basic check)
+            const tokenParts = storedToken.split('.')
+            if (tokenParts.length === 3) {
+              const tokenPayload = JSON.parse(atob(tokenParts[1]))
+              const isExpired = tokenPayload.exp * 1000 < Date.now()
+              
+              if (!isExpired) {
+                const userData = localStorage.getItem('catKombatUserData')
+                setAuthState({
+                  isAuthenticated: true,
+                  user: userData ? JSON.parse(userData) : null,
+                  token: storedToken,
+                  isLoading: false
+                })
+                return
+              }
+            }
+            // Clear expired or invalid token
+            localStorage.removeItem('catKombatToken')
+            localStorage.removeItem('catKombatUser')
+            localStorage.removeItem('catKombatUserData')
+          } catch (tokenError) {
+            // Clear invalid token
             localStorage.removeItem('catKombatToken')
             localStorage.removeItem('catKombatUser')
             localStorage.removeItem('catKombatUserData')
