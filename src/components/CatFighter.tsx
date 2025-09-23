@@ -29,13 +29,13 @@ const CatFighter: React.FC<CatFighterProps> = ({
         <CardContent className="p-6 text-center">
           <div className="relative">
             <div 
-              className={`cursor-pointer transition-all duration-300 ${isAttacking ? 'scale-110 animate-glow' : 'hover:scale-105 animate-float'} relative`}
+              className={`cursor-pointer transition-all duration-300 ${isAttacking ? 'scale-110' : 'hover:scale-105'} relative`}
               onClick={onCatClick}
             >
               <img 
                 src="/img/cc37bd5b-b9d5-45d9-a2fe-922bb6ac23bb.jpg" 
                 alt="Cyber Cat Fighter" 
-                className="w-48 h-48 mx-auto rounded-xl border-4 border-cosmic-cyan shadow-2xl shadow-cosmic-cyan/70 animate-glow object-cover"
+                className="w-48 h-48 mx-auto rounded-xl border-4 border-cosmic-cyan shadow-2xl shadow-cosmic-cyan/70 object-cover"
               />
               {damageNumbers.map(damage => (
                 <div
