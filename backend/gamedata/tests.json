@@ -1,0 +1,46 @@
+{
+  "tests": [
+    {
+      "name": "Test save game progress",
+      "method": "POST",
+      "path": "/save",
+      "headers": {
+        "X-Auth-Token": "dummy_token_for_test"
+      },
+      "body": {
+        "game_stats": {
+          "level": 5,
+          "power": 200,
+          "coins": 150,
+          "experience": 80,
+          "max_experience": 200,
+          "click_damage": 25
+        }
+      },
+      "expectedStatus": 200,
+      "expectedBody": {
+        "success": true,
+        "message": "string"
+      },
+      "bodyMatcher": "partial"
+    },
+    {
+      "name": "Test load game progress",
+      "method": "GET",
+      "path": "/load",
+      "headers": {
+        "X-Auth-Token": "dummy_token_for_test"
+      },
+      "expectedStatus": 200,
+      "expectedBody": {
+        "success": true,
+        "gameStats": {
+          "level": "number",
+          "power": "number",
+          "coins": "number"
+        }
+      },
+      "bodyMatcher": "partial"
+    }
+  ]
+}

@@ -3,19 +3,31 @@ import { Button } from '@/components/ui/button'
 import Icon from '@/components/ui/icon'
 import { GameStats } from '@/types/game'
 import { useAuth } from '@/hooks/useAuth'
+import SaveIndicator from '@/components/SaveIndicator'
 
 interface GameHeaderProps {
   gameStats: GameStats
   isMusicPlaying: boolean
   onToggleMusic: () => void
+  lastSaved?: string | null
+  onManualSave?: () => void
+  isSaving?: boolean
 }
 
-const GameHeader: React.FC<GameHeaderProps> = ({ gameStats, isMusicPlaying, onToggleMusic }) => {
+const GameHeader: React.FC<GameHeaderProps> = ({ 
+  gameStats, 
+  isMusicPlaying, 
+  onToggleMusic, 
+  lastSaved, 
+  onManualSave, 
+  isSaving 
+}) => {
   const { user, logout } = useAuth()
   
   return (
     <div className="bg-space-darker/80 backdrop-blur-md border-b border-cosmic-purple/30 text-white p-4 shadow-2xl shadow-cosmic-purple/20">
-      <div className="max-w-md mx-auto flex items-center justify-between">
+      <div className="max-w-md mx-auto">
+        <div className="flex items-center justify-between mb-2">
         <div className="text-center">
           <h1 className="text-2xl font-black text-transparent bg-clip-text bg-gradient-to-r from-cosmic-cyan to-cosmic-pink font-cosmic animate-glow">
             CAT KOMBAT
@@ -57,6 +69,15 @@ const GameHeader: React.FC<GameHeaderProps> = ({ gameStats, isMusicPlaying, onTo
               className="text-red-400"
             />
           </Button>
+        </div>
+        
+        {/* Save Indicator */}
+        <div className="flex justify-center">
+          <SaveIndicator 
+            lastSaved={lastSaved} 
+            onManualSave={onManualSave}
+            isLoading={isSaving}
+          />
         </div>
       </div>
     </div>

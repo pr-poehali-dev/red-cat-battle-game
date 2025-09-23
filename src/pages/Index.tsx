@@ -7,25 +7,15 @@ import FightArena from '@/components/FightArena'
 import UpgradeShop from '@/components/UpgradeShop'
 import { useAudioSystem } from '@/hooks/useAudioSystem'
 import { useAuth } from '@/hooks/useAuth'
-import { GameStats, Enemy, DamageNumber, EnergyParticle, Upgrade } from '@/types/game'
+import { useGameData } from '@/hooks/useGameData'
+import { Enemy, DamageNumber, EnergyParticle, Upgrade } from '@/types/game'
 
 function Index() {
   const [activeTab, setActiveTab] = useState('home')
   const audioSystem = useAudioSystem()
   const { user, logout } = useAuth()
+  const { gameStats, setGameStats, saveProgress, lastSaved } = useGameData()
   const [isMusicPlaying, setIsMusicPlaying] = useState(false)
-  
-  const [gameStats, setGameStats] = useState<GameStats>(() => {
-    const saved = localStorage.getItem('catKombatGameStats')
-    return saved ? JSON.parse(saved) : {
-      level: 1,
-      power: 100,
-      coins: 0,
-      experience: 0,
-      maxExperience: 100,
-      clickDamage: 10
-    }
-  })
 
   const [currentEnemy, setCurrentEnemy] = useState<Enemy>({
     name: 'Киборг-Собака',
@@ -86,13 +76,11 @@ function Index() {
       audioSystem.playEnemyDeathSound()
       setTimeout(() => audioSystem.playCoinSound(), 200)
       
-      const newStats = {
-        ...gameStats,
-        coins: gameStats.coins + currentEnemy.reward,
-        experience: gameStats.experience + 10
-      }
-      setGameStats(newStats)
-      localStorage.setItem('catKombatGameStats', JSON.stringify(newStats))
+      setGameStats(prev => ({
+        ...prev,
+        coins: prev.coins + currentEnemy.reward,
+        experience: prev.experience + 10
+      }))
       
       // Spawn new enemy
       setTimeout(() => {
@@ -154,15 +142,12 @@ function Index() {
       // Играем звук покупки улучшения
       audioSystem.playUpgradeSound()
       
-      const newStats = {
-        ...gameStats,
-        coins: gameStats.coins - upgrade.cost,
-        power: gameStats.power + upgrade.powerIncrease,
-        clickDamage: gameStats.clickDamage + 5
-      }
-      
-      setGameStats(newStats)
-      localStorage.setItem('catKombatGameStats', JSON.stringify(newStats))
+      setGameStats(prev => ({
+        ...prev,
+        coins: prev.coins - upgrade.cost,
+        power: prev.power + upgrade.powerIncrease,
+        clickDamage: prev.clickDamage + 5
+      }))
     }
   }
 
@@ -190,6 +175,9 @@ function Index() {
           gameStats={gameStats}
           isMusicPlaying={isMusicPlaying}
           onToggleMusic={toggleMusic}
+          lastSaved={lastSaved}
+          onManualSave={saveProgress}
+          isSaving={false}
         />
 
         {/* Navigation */}
