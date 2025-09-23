@@ -224,9 +224,9 @@ function Index() {
                       onClick={handleCatClick}
                     >
                       <img 
-                        src="/img/4e527281-3b9b-44d7-be71-355a5f3de284.jpg" 
-                        alt="Cat Fighter" 
-                        className="w-48 h-48 mx-auto rounded-xl border-4 border-cosmic-purple shadow-2xl shadow-cosmic-purple/70 animate-glow"
+                        src="/img/cc37bd5b-b9d5-45d9-a2fe-922bb6ac23bb.jpg" 
+                        alt="Cyber Cat Fighter" 
+                        className="w-48 h-48 mx-auto rounded-xl border-4 border-cosmic-cyan shadow-2xl shadow-cosmic-cyan/70 animate-glow object-cover"
                       />
                       {damageNumbers.map(damage => (
                         <div
