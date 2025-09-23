@@ -74,7 +74,7 @@ export function useAuth() {
 
   const login = async (username: string, password: string): Promise<{ success: boolean; error?: string }> => {
     try {
-      const response = await fetch('https://functions.poehali.dev/154f9a14-edb0-4cfb-afa1-1eec25db4707', {
+      const response = await fetch('https://functions.poehali.dev/6d40689f-0327-4340-b4c9-05d99bfe2bed', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -108,7 +108,7 @@ export function useAuth() {
 
   const register = async (username: string, email: string, password: string): Promise<{ success: boolean; error?: string }> => {
     try {
-      const response = await fetch('https://functions.poehali.dev/154f9a14-edb0-4cfb-afa1-1eec25db4707', {
+      const response = await fetch('https://functions.poehali.dev/6d40689f-0327-4340-b4c9-05d99bfe2bed', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

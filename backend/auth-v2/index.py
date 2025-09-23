@@ -41,6 +41,8 @@ def create_jwt_token(user_id: int, username: str) -> str:
 def get_db_connection():
     """Get database connection"""
     database_url = os.environ.get('DATABASE_URL')
+    if not database_url:
+        raise Exception("DATABASE_URL not found in environment")
     return psycopg2.connect(database_url)
 
 def handler(event: Dict[str, Any], context: Any) -> Dict[str, Any]:
@@ -76,19 +78,19 @@ def handler(event: Dict[str, Any], context: Any) -> Dict[str, Any]:
             'body': json.dumps({'error': 'Method not allowed'})
         }
     
+    conn = None
     try:
         body_data = json.loads(event.get('body', '{}'))
-        path = event.get('requestContext', {}).get('path', '')
         
         conn = get_db_connection()
         cursor = conn.cursor()
         
         # Registration
-        if 'register' in path or body_data.get('action') == 'register':
+        if body_data.get('action') == 'register':
             req = RegisterRequest(**body_data)
             
             # Check if user exists
-            cursor.execute(f"SELECT id FROM users WHERE username = '{req.username}' OR email = '{req.email}'")
+            cursor.execute("SELECT id FROM users WHERE username = %s OR email = %s", (req.username, req.email))
             if cursor.fetchone():
                 return {
                     'statusCode': 400,
@@ -99,18 +101,18 @@ def handler(event: Dict[str, Any], context: Any) -> Dict[str, Any]:
             
             # Create user
             password_hash = hash_password(req.password)
-            cursor.execute(f"""
+            cursor.execute("""
                 INSERT INTO users (username, email, password_hash) 
-                VALUES ('{req.username}', '{req.email}', '{password_hash}') RETURNING id
-            """)
+                VALUES (%s, %s, %s) RETURNING id
+            """, (req.username, req.email, password_hash))
             
             user_id = cursor.fetchone()[0]
             
             # Create initial game stats
-            cursor.execute(f"""
+            cursor.execute("""
                 INSERT INTO game_stats (user_id, level, power, coins, experience, max_experience, click_damage)
-                VALUES ({user_id}, 1, 100, 0, 0, 100, 10)
-            """)
+                VALUES (%s, 1, 100, 0, 0, 100, 10)
+            """, (user_id,))
             
             conn.commit()
             
@@ -137,16 +139,17 @@ def handler(event: Dict[str, Any], context: Any) -> Dict[str, Any]:
             req = LoginRequest(**body_data)
             
             # Get user
-            cursor.execute(f"""
+            cursor.execute("""
                 SELECT id, username, email, password_hash, is_active 
-                FROM users WHERE username = '{req.username}'
-            """)
+                FROM users WHERE username = %s
+            """, (req.username,))
             
             user = cursor.fetchone()
             if not user or not user[4]:  # is_active check
                 return {
                     'statusCode': 401,
                     'headers': {**cors_headers, 'Content-Type': 'application/json'},
+                    'isBase64Encoded': False,
                     'body': json.dumps({'error': 'Неверные учетные данные'})
                 }
             
@@ -157,11 +160,12 @@ def handler(event: Dict[str, Any], context: Any) -> Dict[str, Any]:
                 return {
                     'statusCode': 401,
                     'headers': {**cors_headers, 'Content-Type': 'application/json'},
+                    'isBase64Encoded': False,
                     'body': json.dumps({'error': 'Неверные учетные данные'})
                 }
             
             # Update last login
-            cursor.execute(f"UPDATE users SET last_login = CURRENT_TIMESTAMP WHERE id = {user_id}")
+            cursor.execute("UPDATE users SET last_login = CURRENT_TIMESTAMP WHERE id = %s", (user_id,))
             conn.commit()
             
             # Create JWT token
@@ -197,5 +201,5 @@ def handler(event: Dict[str, Any], context: Any) -> Dict[str, Any]:
             'body': json.dumps({'error': f'Внутренняя ошибка сервера: {str(e)}'})
         }
     finally:
-        if 'conn' in locals():
+        if conn:
             conn.close()
