@@ -1,9 +1,67 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Progress } from '@/components/ui/progress'
 import Icon from '@/components/ui/icon'
+
+// Звуковые эффекты с Web Audio API
+const createAudioContext = () => {
+  const audioContext = new (window.AudioContext || (window as any).webkitAudioContext)()
+  
+  const createTone = (frequency: number, duration: number, type: OscillatorType = 'sine', volume: number = 0.1) => {
+    const oscillator = audioContext.createOscillator()
+    const gainNode = audioContext.createGain()
+    
+    oscillator.connect(gainNode)
+    gainNode.connect(audioContext.destination)
+    
+    oscillator.frequency.setValueAtTime(frequency, audioContext.currentTime)
+    oscillator.type = type
+    
+    gainNode.gain.setValueAtTime(0, audioContext.currentTime)
+    gainNode.gain.linearRampToValueAtTime(volume, audioContext.currentTime + 0.01)
+    gainNode.gain.exponentialRampToValueAtTime(0.001, audioContext.currentTime + duration)
+    
+    oscillator.start(audioContext.currentTime)
+    oscillator.stop(audioContext.currentTime + duration)
+  }
+  
+  return {
+    // Звук атаки/клика
+    playAttackSound: () => {
+      createTone(800, 0.1, 'square', 0.15)
+      setTimeout(() => createTone(600, 0.05, 'sawtooth', 0.1), 50)
+    },
+    
+    // Звук получения монет
+    playCoinSound: () => {
+      createTone(800, 0.1, 'sine', 0.2)
+      setTimeout(() => createTone(1000, 0.1, 'sine', 0.15), 100)
+      setTimeout(() => createTone(1200, 0.15, 'sine', 0.1), 200)
+    },
+    
+    // Звук левел-апа
+    playLevelUpSound: () => {
+      const notes = [523, 659, 784, 1047] // C, E, G, C (октава выше)
+      notes.forEach((note, index) => {
+        setTimeout(() => createTone(note, 0.3, 'triangle', 0.2), index * 150)
+      })
+    },
+    
+    // Звук смерти врага
+    playEnemyDeathSound: () => {
+      createTone(400, 0.2, 'sawtooth', 0.15)
+      setTimeout(() => createTone(200, 0.3, 'square', 0.1), 100)
+    },
+    
+    // Звук покупки улучшения
+    playUpgradeSound: () => {
+      createTone(1000, 0.15, 'triangle', 0.2)
+      setTimeout(() => createTone(1200, 0.15, 'sine', 0.15), 75)
+    }
+  }
+}
 
 // Космический фон с звездами
 const StarField = () => {
@@ -53,6 +111,7 @@ interface Enemy {
 
 function Index() {
   const [activeTab, setActiveTab] = useState('home')
+  const [audioSystem] = useState(() => createAudioContext())
   const [gameStats, setGameStats] = useState<GameStats>({
     level: 1,
     power: 100,
@@ -80,6 +139,9 @@ function Index() {
     
     setIsAttacking(true)
     setTimeout(() => setIsAttacking(false), 200)
+    
+    // Играем звук атаки
+    audioSystem.playAttackSound()
 
     // Add damage number animation
     const damageId = Date.now()
@@ -114,6 +176,10 @@ function Index() {
 
     // Check if enemy is defeated
     if (newHealth <= 0) {
+      // Играем звук смерти врага и получения монет
+      audioSystem.playEnemyDeathSound()
+      setTimeout(() => audioSystem.playCoinSound(), 200)
+      
       setGameStats(prev => ({
         ...prev,
         coins: prev.coins + currentEnemy.reward,
@@ -135,6 +201,9 @@ function Index() {
   // Level up system
   useEffect(() => {
     if (gameStats.experience >= gameStats.maxExperience) {
+      // Играем звук левел-апа
+      audioSystem.playLevelUpSound()
+      
       setGameStats(prev => ({
         ...prev,
         level: prev.level + 1,
@@ -144,7 +213,7 @@ function Index() {
         clickDamage: prev.clickDamage + 5
       }))
     }
-  }, [gameStats.experience, gameStats.maxExperience])
+  }, [gameStats.experience, gameStats.maxExperience, audioSystem])
 
   const upgrades = [
     { name: 'Острые Когти', cost: 50, powerIncrease: 25, description: 'Увеличивает урон на 5' },
@@ -154,6 +223,9 @@ function Index() {
 
   const handleUpgrade = (upgrade: typeof upgrades[0]) => {
     if (gameStats.coins >= upgrade.cost) {
+      // Играем звук покупки улучшения
+      audioSystem.playUpgradeSound()
+      
       setGameStats(prev => ({
         ...prev,
         coins: prev.coins - upgrade.cost,
@@ -344,7 +416,10 @@ function Index() {
                   <p className="text-gray-300 mb-6">
                     Сражайтесь с врагами и получайте награды!
                   </p>
-                  <Button className="w-full bg-gradient-to-r from-cosmic-purple to-cosmic-pink hover:from-cosmic-pink hover:to-cosmic-purple text-white font-bold py-3 border border-cosmic-cyan/50 shadow-lg shadow-cosmic-purple/50 transition-all duration-300">
+                  <Button 
+                    onClick={() => audioSystem.playUpgradeSound()}
+                    className="w-full bg-gradient-to-r from-cosmic-purple to-cosmic-pink hover:from-cosmic-pink hover:to-cosmic-purple text-white font-bold py-3 border border-cosmic-cyan/50 shadow-lg shadow-cosmic-purple/50 transition-all duration-300"
+                  >
                     Начать Турнир
                   </Button>
                 </CardContent>
