@@ -5,6 +5,7 @@ import GameNavigation from '@/components/GameNavigation'
 import CatFighter from '@/components/CatFighter'
 import FightArena from '@/components/FightArena'
 import UpgradeShop from '@/components/UpgradeShop'
+import CatsSection from '@/components/CatsSection'
 import { useAudioSystem } from '@/hooks/useAudioSystem'
 import { useAuth } from '@/hooks/useAuth'
 import { useGameData } from '@/hooks/useGameData'
@@ -201,6 +202,10 @@ function Index() {
 
           {activeTab === 'fight' && (
             <FightArena onStartTournament={handleStartTournament} />
+          )}
+
+          {activeTab === 'cats' && (
+            <CatsSection />
           )}
 
           {activeTab === 'upgrade' && (
