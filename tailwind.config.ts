@@ -61,7 +61,15 @@ export default {
 					'accent-foreground': 'hsl(var(--sidebar-accent-foreground))',
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
-				}
+				},
+				// Cat Kombat colors
+				'cat-orange': '#FF6B35',
+				'cat-yellow': '#FFD23F',
+				'cat-green': '#4ECDC4',
+				'cat-pink': '#FF006E',
+				'cat-navy': '#1A1F2C',
+				'cat-gradient-start': '#FF6B35',
+				'cat-gradient-end': '#4ECDC4'
 			},
 			borderRadius: {
 				lg: 'var(--radius)',
@@ -88,7 +96,13 @@ export default {
 			},
 			animation: {
 				'accordion-down': 'accordion-down 0.2s ease-out',
-				'accordion-up': 'accordion-up 0.2s ease-out'
+				'accordion-up': 'accordion-up 0.2s ease-out',
+				'pulse-orange': 'pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+				'bounce-damage': 'bounce 1s ease-out'
+			},
+			fontFamily: {
+				'comic': ['Fredoka One', 'cursive'],
+				'game': ['Nunito', 'sans-serif']
 			}
 		}
 	},
