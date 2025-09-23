@@ -101,3 +101,72 @@
     @apply bg-background text-foreground;
   }
 }
+
+/* Comet animations */
+@keyframes comet1 {
+  0% {
+    transform: translate(-10px, -10px) rotate(-45deg);
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  90% {
+    opacity: 1;
+  }
+  100% {
+    transform: translate(100vw, 100vh) rotate(-45deg);
+    opacity: 0;
+  }
+}
+
+@keyframes comet2 {
+  0% {
+    transform: translate(100vw, -10px) rotate(-135deg);
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  90% {
+    opacity: 1;
+  }
+  100% {
+    transform: translate(-10px, 100vh) rotate(-135deg);
+    opacity: 0;
+  }
+}
+
+@keyframes comet3 {
+  0% {
+    transform: translate(50vw, -10px) rotate(-90deg);
+    opacity: 0;
+  }
+  15% {
+    opacity: 1;
+  }
+  85% {
+    opacity: 1;
+  }
+  100% {
+    transform: translate(50vw, 100vh) rotate(-90deg);
+    opacity: 0;
+  }
+}
+
+@keyframes comet4 {
+  0% {
+    transform: translate(-10px, 50vh) rotate(0deg);
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  90% {
+    opacity: 1;
+  }
+  100% {
+    transform: translate(100vw, 50vh) rotate(0deg);
+    opacity: 0;
+  }
+}

@@ -61,6 +61,29 @@ export default function LandingPage({ onLogin }: LandingPageProps) {
         <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-purple-500/50 to-transparent"></div>
         <div className="absolute top-0 bottom-0 left-0 w-px bg-gradient-to-b from-transparent via-cyan-500/30 to-transparent"></div>
         <div className="absolute top-0 bottom-0 right-0 w-px bg-gradient-to-b from-transparent via-pink-500/30 to-transparent"></div>
+        
+        {/* Flying Comets */}
+        <div className="absolute inset-0 pointer-events-none">
+          {/* Comet 1 */}
+          <div className="absolute w-2 h-2 bg-cyan-400 rounded-full opacity-80 animate-[comet1_8s_linear_infinite]">
+            <div className="absolute -left-8 top-0 w-8 h-0.5 bg-gradient-to-l from-cyan-400 to-transparent opacity-60"></div>
+          </div>
+          
+          {/* Comet 2 */}
+          <div className="absolute w-1.5 h-1.5 bg-purple-300 rounded-full opacity-70 animate-[comet2_12s_linear_infinite]" style={{animationDelay: '3s'}}>
+            <div className="absolute -left-6 top-0 w-6 h-0.5 bg-gradient-to-l from-purple-300 to-transparent opacity-50"></div>
+          </div>
+          
+          {/* Comet 3 */}
+          <div className="absolute w-1 h-1 bg-pink-300 rounded-full opacity-60 animate-[comet3_15s_linear_infinite]" style={{animationDelay: '7s'}}>
+            <div className="absolute -left-4 top-0 w-4 h-0.5 bg-gradient-to-l from-pink-300 to-transparent opacity-40"></div>
+          </div>
+          
+          {/* Comet 4 */}
+          <div className="absolute w-1.5 h-1.5 bg-blue-200 rounded-full opacity-50 animate-[comet4_10s_linear_infinite]" style={{animationDelay: '5s'}}>
+            <div className="absolute -left-5 top-0 w-5 h-0.5 bg-gradient-to-l from-blue-200 to-transparent opacity-30"></div>
+          </div>
+        </div>
       </div>
       
       <div className="relative z-10 min-h-screen flex items-center justify-center p-4">
