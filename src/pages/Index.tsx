@@ -59,6 +59,111 @@ const createAudioContext = () => {
     playUpgradeSound: () => {
       createTone(1000, 0.15, 'triangle', 0.2)
       setTimeout(() => createTone(1200, 0.15, 'sine', 0.15), 75)
+    },
+
+    // Фоновая космическая музыка
+    backgroundMusic: {
+      oscillators: [] as OscillatorNode[],
+      gainNodes: [] as GainNode[],
+      isPlaying: false,
+
+      start: () => {
+        if (audioSystem.backgroundMusic.isPlaying) return
+
+        // Создаем гармонические слои для космического звучания
+        const baseFreq = 110 // Нота ля (низкая октава)
+        const harmonics = [1, 1.5, 2, 2.5, 3] // Гармоники
+
+        harmonics.forEach((harmonic, index) => {
+          const oscillator = audioContext.createOscillator()
+          const gainNode = audioContext.createGain()
+          const filterNode = audioContext.createBiquadFilter()
+
+          // Настройка фильтра для мягкого звучания
+          filterNode.type = 'lowpass'
+          filterNode.frequency.setValueAtTime(800, audioContext.currentTime)
+          filterNode.Q.setValueAtTime(0.5, audioContext.currentTime)
+
+          oscillator.connect(filterNode)
+          filterNode.connect(gainNode)
+          gainNode.connect(audioContext.destination)
+
+          oscillator.frequency.setValueAtTime(baseFreq * harmonic, audioContext.currentTime)
+          oscillator.type = index % 2 === 0 ? 'sine' : 'triangle'
+
+          // Очень тихий фон
+          gainNode.gain.setValueAtTime(0, audioContext.currentTime)
+          gainNode.gain.linearRampToValueAtTime(0.02 / (index + 1), audioContext.currentTime + 2 + index * 0.5)
+
+          // Медленная модуляция для космического эффекта
+          const lfo = audioContext.createOscillator()
+          const lfoGain = audioContext.createGain()
+          
+          lfo.frequency.setValueAtTime(0.1 + index * 0.02, audioContext.currentTime)
+          lfo.type = 'sine'
+          lfoGain.gain.setValueAtTime(baseFreq * harmonic * 0.005, audioContext.currentTime)
+          
+          lfo.connect(lfoGain)
+          lfoGain.connect(oscillator.frequency)
+
+          oscillator.start(audioContext.currentTime + index * 0.5)
+          lfo.start(audioContext.currentTime + index * 0.5)
+
+          audioSystem.backgroundMusic.oscillators.push(oscillator)
+          audioSystem.backgroundMusic.gainNodes.push(gainNode)
+        })
+
+        // Добавляем космический "ветер"
+        const noiseOsc = audioContext.createOscillator()
+        const noiseGain = audioContext.createGain()
+        const noiseFilter = audioContext.createBiquadFilter()
+
+        noiseFilter.type = 'highpass'
+        noiseFilter.frequency.setValueAtTime(2000, audioContext.currentTime)
+        
+        noiseOsc.connect(noiseFilter)
+        noiseFilter.connect(noiseGain)
+        noiseGain.connect(audioContext.destination)
+        
+        noiseOsc.frequency.setValueAtTime(50, audioContext.currentTime)
+        noiseOsc.type = 'sawtooth'
+        
+        noiseGain.gain.setValueAtTime(0, audioContext.currentTime)
+        noiseGain.gain.linearRampToValueAtTime(0.01, audioContext.currentTime + 3)
+
+        noiseOsc.start(audioContext.currentTime)
+        audioSystem.backgroundMusic.oscillators.push(noiseOsc)
+        audioSystem.backgroundMusic.gainNodes.push(noiseGain)
+
+        audioSystem.backgroundMusic.isPlaying = true
+      },
+
+      stop: () => {
+        if (!audioSystem.backgroundMusic.isPlaying) return
+
+        // Плавно затухаем
+        audioSystem.backgroundMusic.gainNodes.forEach(gainNode => {
+          gainNode.gain.linearRampToValueAtTime(0, audioContext.currentTime + 1)
+        })
+
+        // Останавливаем через секунду
+        setTimeout(() => {
+          audioSystem.backgroundMusic.oscillators.forEach(osc => {
+            try { osc.stop() } catch (e) { /* игнорируем ошибки */ }
+          })
+          audioSystem.backgroundMusic.oscillators = []
+          audioSystem.backgroundMusic.gainNodes = []
+          audioSystem.backgroundMusic.isPlaying = false
+        }, 1000)
+      },
+
+      toggle: () => {
+        if (audioSystem.backgroundMusic.isPlaying) {
+          audioSystem.backgroundMusic.stop()
+        } else {
+          audioSystem.backgroundMusic.start()
+        }
+      }
     }
   }
 }
@@ -112,6 +217,7 @@ interface Enemy {
 function Index() {
   const [activeTab, setActiveTab] = useState('home')
   const [audioSystem] = useState(() => createAudioContext())
+  const [isMusicPlaying, setIsMusicPlaying] = useState(false)
   const [gameStats, setGameStats] = useState<GameStats>({
     level: 1,
     power: 100,
@@ -215,6 +321,26 @@ function Index() {
     }
   }, [gameStats.experience, gameStats.maxExperience, audioSystem])
 
+  // Автозапуск фоновой музыки при первом взаимодействии
+  useEffect(() => {
+    const startMusic = () => {
+      audioSystem.backgroundMusic.start()
+      setIsMusicPlaying(true)
+      document.removeEventListener('click', startMusic)
+    }
+    
+    document.addEventListener('click', startMusic)
+    
+    return () => {
+      document.removeEventListener('click', startMusic)
+    }
+  }, [audioSystem])
+
+  const toggleMusic = () => {
+    audioSystem.backgroundMusic.toggle()
+    setIsMusicPlaying(!isMusicPlaying)
+  }
+
   const upgrades = [
     { name: 'Острые Когти', cost: 50, powerIncrease: 25, description: 'Увеличивает урон на 5' },
     { name: 'Быстрые Лапы', cost: 100, powerIncrease: 50, description: 'Увеличивает скорость атаки' },
@@ -258,7 +384,7 @@ function Index() {
                 CAT KOMBAT
               </h1>
             </div>
-            <div className="flex gap-4 text-sm">
+            <div className="flex gap-4 text-sm items-center">
               <div className="flex items-center gap-1">
                 <Icon name="Coins" size={16} className="text-star-glow animate-pulse" />
                 <span className="font-bold">{gameStats.coins}</span>
@@ -267,6 +393,18 @@ function Index() {
                 <Icon name="Zap" size={16} className="text-cosmic-cyan animate-pulse" />
                 <span className="font-bold">{gameStats.power}</span>
               </div>
+              <Button
+                onClick={toggleMusic}
+                variant="ghost"
+                size="sm"
+                className="p-1 h-6 w-6 hover:bg-cosmic-purple/30"
+              >
+                <Icon 
+                  name={isMusicPlaying ? "Volume2" : "VolumeX"} 
+                  size={14} 
+                  className="text-cosmic-cyan"
+                />
+              </Button>
             </div>
           </div>
         </div>
