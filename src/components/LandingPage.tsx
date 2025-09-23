@@ -53,9 +53,7 @@ export default function LandingPage({ onLogin }: LandingPageProps) {
           
           {/* Game Logo */}
           <div className="text-center space-y-4">
-            <div className="inline-flex items-center justify-center w-24 h-24 bg-gradient-to-br from-cosmic-cyan to-cosmic-pink rounded-full shadow-2xl shadow-cosmic-cyan/50 animate-glow">
-              <Icon name="Zap" size={40} className="text-white" />
-            </div>
+
             <h1 className="text-5xl font-cosmic font-bold bg-gradient-to-r from-cosmic-cyan via-white to-cosmic-pink bg-clip-text text-transparent drop-shadow-2xl">
               CAT KOMBAT
             </h1>
