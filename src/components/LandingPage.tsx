@@ -53,7 +53,6 @@ export default function LandingPage({ onLogin }: LandingPageProps) {
           
           {/* Game Logo */}
           <div className="text-center space-y-4">
-
             <h1 className="text-5xl font-cosmic font-bold bg-gradient-to-r from-cosmic-cyan via-white to-cosmic-pink bg-clip-text text-transparent drop-shadow-2xl">
               CAT KOMBAT
             </h1>
