@@ -199,9 +199,86 @@ const CatsSection: React.FC = () => {
   }
 
   const { rarityCount, totalPower } = getCollectionStats()
+  
+  const [isTraining, setIsTraining] = useState<string | null>(null)
+  const [levelUpMessage, setLevelUpMessage] = useState<string | null>(null)
+  const [expGainMessage, setExpGainMessage] = useState<string | null>(null)
+
+  const handleTrainCat = (catId: string) => {
+    setIsTraining(catId)
+    
+    // Имитация тренировки
+    setTimeout(() => {
+      setCats(prev => prev.map(cat => {
+        if (cat.id === catId) {
+          const expGain = 25 + Math.floor(Math.random() * 25) // 25-50 опыта
+          const newExperience = cat.experience + expGain
+          const isLevelUp = newExperience >= cat.maxExperience
+          
+          // Показываем сообщение о получении опыта
+          if (!isLevelUp) {
+            setExpGainMessage(`${cat.name} получил ${expGain} опыта! 📈`)
+            setTimeout(() => setExpGainMessage(null), 2000)
+          }
+          
+          if (isLevelUp) {
+            // Повышение уровня с улучшением характеристик
+            const healthBonus = Math.floor(cat.maxHealth * 0.15) // +15% к здоровью
+            const attackBonus = Math.floor(cat.attack * 0.12) // +12% к атаке
+            const defenseBonus = Math.floor(cat.defense * 0.1) // +10% к защите
+            const speedBonus = Math.floor(cat.speed * 0.08) // +8% к скорости
+            
+            const newMaxHealth = cat.maxHealth + healthBonus
+            
+            // Показываем сообщение о повышении уровня
+            setLevelUpMessage(`${cat.name} достиг ${cat.level + 1} уровня! ⭐`)
+            setTimeout(() => setLevelUpMessage(null), 3000)
+            
+            return {
+              ...cat,
+              level: cat.level + 1,
+              experience: newExperience - cat.maxExperience,
+              maxExperience: Math.floor(cat.maxExperience * 1.3), // +30% к требуемому опыту
+              health: newMaxHealth, // Полное восстановление при повышении уровня
+              maxHealth: newMaxHealth,
+              attack: cat.attack + attackBonus,
+              defense: cat.defense + defenseBonus,
+              speed: cat.speed + speedBonus
+            }
+          } else {
+            // Просто добавляем опыт
+            return {
+              ...cat,
+              experience: newExperience
+            }
+          }
+        }
+        return cat
+      }))
+      setIsTraining(null)
+    }, 2000)
+  }
 
   return (
     <div className="p-4 space-y-6">
+      {/* Уведомления */}
+      {levelUpMessage && (
+        <div className="fixed top-4 left-1/2 transform -translate-x-1/2 z-50 bg-gradient-to-r from-cosmic-purple to-cosmic-cyan text-white py-3 px-6 rounded-full shadow-lg animate-bounce">
+          <div className="flex items-center gap-2">
+            <Icon name="Star" size={20} />
+            {levelUpMessage}
+          </div>
+        </div>
+      )}
+      
+      {expGainMessage && (
+        <div className="fixed top-16 left-1/2 transform -translate-x-1/2 z-50 bg-green-600/90 text-white py-2 px-4 rounded-lg shadow-lg">
+          <div className="flex items-center gap-2">
+            <Icon name="TrendingUp" size={16} />
+            {expGainMessage}
+          </div>
+        </div>
+      )}
       <div className="text-center space-y-2">
         <h1 className="text-2xl font-bold text-white flex items-center justify-center gap-2">
           <Icon name="Cat" size={28} />
@@ -263,9 +340,15 @@ const CatsSection: React.FC = () => {
                     </p>
                   </div>
                   <div className="flex items-center gap-3">
-                    <div className="text-right">
+                    <div className="text-right min-w-[80px]">
                       <div className="text-sm text-white/70">Опыт</div>
                       <div className="text-white font-semibold">{cat.experience}/{cat.maxExperience}</div>
+                      <div className="w-full bg-gray-700 rounded-full h-1.5 mt-1">
+                        <div 
+                          className="bg-gradient-to-r from-cosmic-purple to-cosmic-cyan h-1.5 rounded-full transition-all duration-300"
+                          style={{ width: `${(cat.experience / cat.maxExperience) * 100}%` }}
+                        ></div>
+                      </div>
                     </div>
                     {cats.length > 1 && cat.id !== 'default-cat' && (
                       <button
@@ -324,8 +407,22 @@ const CatsSection: React.FC = () => {
                 <p className="text-xs text-white/60 italic">{cat.description}</p>
 
                 <div className="flex gap-2 pt-2">
-                  <button className="flex-1 bg-cosmic-purple/30 hover:bg-cosmic-purple/50 text-white py-2 px-3 rounded text-sm font-semibold transition-all">
-                    Тренировать
+                  <button 
+                    onClick={() => handleTrainCat(cat.id)}
+                    disabled={isTraining === cat.id}
+                    className="flex-1 bg-cosmic-purple/30 hover:bg-cosmic-purple/50 disabled:bg-cosmic-purple/20 disabled:cursor-not-allowed text-white py-2 px-3 rounded text-sm font-semibold transition-all flex items-center justify-center gap-1"
+                  >
+                    {isTraining === cat.id ? (
+                      <>
+                        <div className="animate-spin rounded-full h-3 w-3 border border-white border-t-transparent"></div>
+                        Тренируется...
+                      </>
+                    ) : (
+                      <>
+                        <Icon name="Dumbbell" size={14} />
+                        Тренировать
+                      </>
+                    )}
                   </button>
                   <button className="flex-1 bg-cosmic-cyan/30 hover:bg-cosmic-cyan/50 text-white py-2 px-3 rounded text-sm font-semibold transition-all">
                     Экипировать
