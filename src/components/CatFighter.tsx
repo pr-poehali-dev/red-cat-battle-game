@@ -33,7 +33,7 @@ const CatFighter: React.FC<CatFighterProps> = ({
               onClick={onCatClick}
             >
               <img 
-                src="/img/cc37bd5b-b9d5-45d9-a2fe-922bb6ac23bb.jpg" 
+                src="/img/33f4e16d-16ec-43d8-84f4-6fe73741ec6a.jpg" 
                 alt="Cyber Cat Fighter" 
                 className="w-48 h-48 mx-auto rounded-xl border-4 border-cosmic-cyan shadow-2xl shadow-cosmic-cyan/70 object-cover"
               />
