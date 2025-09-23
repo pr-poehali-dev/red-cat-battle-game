@@ -6,6 +6,7 @@ interface Equipment {
   name: string
   type: 'weapon' | 'armor' | 'accessory'
   rarity: 'common' | 'rare' | 'epic' | 'legendary'
+  level: number
   bonuses: {
     attack?: number
     defense?: number
@@ -14,6 +15,20 @@ interface Equipment {
   }
   description: string
   icon: string
+}
+
+interface CraftingMaterial {
+  id: string
+  name: string
+  icon: string
+  rarity: 'common' | 'rare' | 'epic' | 'legendary'
+  description: string
+}
+
+interface UpgradeRecipe {
+  materialsCost: { materialId: string; amount: number }[]
+  goldCost: number
+  successRate: number
 }
 
 interface BattleCat {
@@ -235,6 +250,7 @@ const CatsSection: React.FC = () => {
       name: 'Лазерный меч',
       type: 'weapon',
       rarity: 'rare',
+      level: 1,
       bonuses: { attack: 8 },
       description: 'Светящийся клинок из чистой энергии',
       icon: '⚔️'
@@ -244,6 +260,7 @@ const CatsSection: React.FC = () => {
       name: 'Космическая броня',
       type: 'armor',
       rarity: 'epic',
+      level: 1,
       bonuses: { defense: 12, health: 25 },
       description: 'Защитный костюм из звездного металла',
       icon: '🛡️'
@@ -253,11 +270,56 @@ const CatsSection: React.FC = () => {
       name: 'Ускорительные сапоги',
       type: 'accessory',
       rarity: 'rare',
+      level: 1,
       bonuses: { speed: 10 },
       description: 'Увеличивают скорость передвижения',
       icon: '👢'
     }
   ])
+
+  // Состояния для крафта
+  const [showCrafting, setShowCrafting] = useState(false)
+  const [materials, setMaterials] = useState<Record<string, number>>({
+    'star-fragment': 5,
+    'cosmic-ore': 3,
+    'energy-crystal': 2,
+    'dark-matter': 1
+  })
+  const [gold, setGold] = useState(1000)
+  const [isUpgrading, setIsUpgrading] = useState<string | null>(null)
+  const [upgradeResult, setUpgradeResult] = useState<{ success: boolean; message: string } | null>(null)
+
+  // База материалов для крафта
+  const craftingMaterials: Record<string, CraftingMaterial> = {
+    'star-fragment': {
+      id: 'star-fragment',
+      name: 'Звездный осколок',
+      icon: '⭐',
+      rarity: 'common',
+      description: 'Осколок упавшей звезды'
+    },
+    'cosmic-ore': {
+      id: 'cosmic-ore', 
+      name: 'Космическая руда',
+      icon: '🪨',
+      rarity: 'rare',
+      description: 'Редкий металл из глубин космоса'
+    },
+    'energy-crystal': {
+      id: 'energy-crystal',
+      name: 'Энергетический кристалл',
+      icon: '💎',
+      rarity: 'epic', 
+      description: 'Кристалл, пульсирующий энергией'
+    },
+    'dark-matter': {
+      id: 'dark-matter',
+      name: 'Темная материя',
+      icon: '🌑',
+      rarity: 'legendary',
+      description: 'Загадочная субстанция вселенной'
+    }
+  }
 
   // Базы данных экипировки
   const equipmentData = {
@@ -315,6 +377,7 @@ const CatsSection: React.FC = () => {
       name,
       type,
       rarity,
+      level: 1,
       bonuses,
       description: `${rarity === 'legendary' ? 'Легендарный' : rarity === 'epic' ? 'Эпический' : rarity === 'rare' ? 'Редкий' : 'Обычный'} предмет экипировки`,
       icon
@@ -436,6 +499,120 @@ const CatsSection: React.FC = () => {
     })
 
     return { totalAttack, totalDefense, totalSpeed, totalHealth }
+  }
+
+  // Функции системы крафта
+  const getUpgradeRecipe = (equipment: Equipment): UpgradeRecipe => {
+    const baseLevel = equipment.level || 1
+    const rarityMultiplier = {
+      common: 1,
+      rare: 1.5, 
+      epic: 2,
+      legendary: 3
+    }[equipment.rarity] || 1
+
+    return {
+      materialsCost: [
+        { materialId: 'star-fragment', amount: Math.ceil(baseLevel * 2 * rarityMultiplier) },
+        { materialId: 'cosmic-ore', amount: Math.ceil(baseLevel * 1 * rarityMultiplier) }
+      ],
+      goldCost: Math.ceil(baseLevel * 100 * rarityMultiplier),
+      successRate: Math.max(40, 95 - baseLevel * 5 - (rarityMultiplier - 1) * 10)
+    }
+  }
+
+  const handleUpgradeEquipment = async (equipmentId: string) => {
+    const equipment = inventory.find(item => item.id === equipmentId)
+    if (!equipment) return
+
+    const recipe = getUpgradeRecipe(equipment)
+    
+    // Проверяем наличие материалов
+    for (const cost of recipe.materialsCost) {
+      if ((materials[cost.materialId] || 0) < cost.amount) {
+        setUpgradeResult({ success: false, message: 'Недостаточно материалов!' })
+        setTimeout(() => setUpgradeResult(null), 3000)
+        return
+      }
+    }
+
+    if (gold < recipe.goldCost) {
+      setUpgradeResult({ success: false, message: 'Недостаточно золота!' })
+      setTimeout(() => setUpgradeResult(null), 3000)
+      return
+    }
+
+    setIsUpgrading(equipmentId)
+
+    // Имитация процесса улучшения
+    setTimeout(() => {
+      const success = Math.random() * 100 < recipe.successRate
+
+      if (success) {
+        // Снимаем материалы и золото
+        setMaterials(prev => {
+          const newMaterials = { ...prev }
+          recipe.materialsCost.forEach(cost => {
+            newMaterials[cost.materialId] = (newMaterials[cost.materialId] || 0) - cost.amount
+          })
+          return newMaterials
+        })
+        setGold(prev => prev - recipe.goldCost)
+
+        // Улучшаем предмет
+        setInventory(prev => prev.map(item => {
+          if (item.id === equipmentId) {
+            const newLevel = (item.level || 1) + 1
+            const bonusMultiplier = 1.2
+            
+            return {
+              ...item,
+              level: newLevel,
+              name: `${item.name} +${newLevel}`,
+              bonuses: Object.fromEntries(
+                Object.entries(item.bonuses).map(([key, value]) => [
+                  key, 
+                  Math.ceil((value || 0) * bonusMultiplier)
+                ])
+              )
+            }
+          }
+          return item
+        }))
+
+        setUpgradeResult({ success: true, message: 'Улучшение успешно!' })
+      } else {
+        // При неудаче теряем только половину материалов
+        setMaterials(prev => {
+          const newMaterials = { ...prev }
+          recipe.materialsCost.forEach(cost => {
+            newMaterials[cost.materialId] = (newMaterials[cost.materialId] || 0) - Math.ceil(cost.amount / 2)
+          })
+          return newMaterials
+        })
+        
+        setUpgradeResult({ success: false, message: 'Улучшение провалилось!' })
+      }
+
+      setIsUpgrading(null)
+      setTimeout(() => setUpgradeResult(null), 3000)
+    }, 2000)
+  }
+
+  const handleGatherMaterials = () => {
+    // Случайно находим материалы
+    const possibleMaterials = Object.keys(craftingMaterials)
+    const foundMaterial = possibleMaterials[Math.floor(Math.random() * possibleMaterials.length)]
+    const amount = Math.floor(Math.random() * 3) + 1
+
+    setMaterials(prev => ({
+      ...prev,
+      [foundMaterial]: (prev[foundMaterial] || 0) + amount
+    }))
+
+    // Также добавляем немного золота
+    const goldGain = Math.floor(Math.random() * 100) + 50
+    setGold(prev => prev + goldGain)
   }
 
   return (
@@ -710,6 +887,32 @@ const CatsSection: React.FC = () => {
         </button>
       </div>
 
+      {/* Кнопка мастерской */}
+      <div className="bg-space-dark/40 border border-yellow-500/40 rounded-lg p-4 text-center">
+        <Icon name="Hammer" size={24} className="text-white/50 mx-auto mb-2" />
+        <h3 className="text-white font-semibold mb-1">Мастерская</h3>
+        <p className="text-white/60 text-sm mb-3">Улучшайте экипировку</p>
+        <button 
+          onClick={() => setShowCrafting(true)}
+          className="bg-gradient-to-r from-yellow-500 to-orange-500 text-white py-2 px-4 rounded font-semibold hover:shadow-lg hover:shadow-yellow-500/50 transition-all hover:scale-105"
+        >
+          Открыть мастерскую
+        </button>
+      </div>
+
+      {/* Кнопка сбора материалов */}
+      <div className="bg-space-dark/40 border border-green-500/40 rounded-lg p-4 text-center">
+        <Icon name="Pickaxe" size={24} className="text-white/50 mx-auto mb-2" />
+        <h3 className="text-white font-semibold mb-1">Добыча ресурсов</h3>
+        <p className="text-white/60 text-sm mb-3">Найдите материалы и золото</p>
+        <button 
+          onClick={handleGatherMaterials}
+          className="bg-gradient-to-r from-green-500 to-emerald-500 text-white py-2 px-4 rounded font-semibold hover:shadow-lg hover:shadow-green-500/50 transition-all hover:scale-105"
+        >
+          Собрать ресурсы
+        </button>
+      </div>
+
       {/* Модальное окно инвентаря */}
       {showEquipment && selectedCat && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
@@ -744,7 +947,7 @@ const CatsSection: React.FC = () => {
                       <div className="flex-1">
                         <h4 className="text-white font-semibold">{equipment.name}</h4>
                         <p className={`text-sm ${getRarityColor(equipment.rarity).split(' ')[0]}`}>
-                          {getRarityName(equipment.rarity)} {equipment.type === 'weapon' ? 'Оружие' : equipment.type === 'armor' ? 'Броня' : 'Аксессуар'}
+                          {getRarityName(equipment.rarity)} {equipment.type === 'weapon' ? 'Оружие' : equipment.type === 'armor' ? 'Броня' : 'Аксессуар'} • Ур. {equipment.level || 1}
                         </p>
                         <div className="text-xs text-white/70 mt-1">
                           {Object.entries(equipment.bonuses).map(([key, value]) => (
@@ -761,6 +964,141 @@ const CatsSection: React.FC = () => {
                     </div>
                   </div>
                 ))
+              )}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Модальное окно мастерской */}
+      {showCrafting && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+          <div className="bg-space-dark/90 backdrop-blur-lg border border-yellow-500/50 rounded-lg max-w-2xl w-full max-h-[80vh] overflow-y-auto">
+            <div className="p-4 border-b border-yellow-500/30">
+              <div className="flex items-center justify-between">
+                <h3 className="text-lg font-bold text-white flex items-center gap-2">
+                  <Icon name="Hammer" size={20} />
+                  Мастерская улучшений
+                </h3>
+                <button
+                  onClick={() => setShowCrafting(false)}
+                  className="text-white/70 hover:text-white"
+                >
+                  <Icon name="X" size={20} />
+                </button>
+              </div>
+            </div>
+            
+            <div className="p-4">
+              {/* Ресурсы игрока */}
+              <div className="bg-space-dark/60 rounded-lg p-4 mb-4">
+                <h4 className="text-white font-semibold mb-3 flex items-center gap-2">
+                  <Icon name="Coins" size={16} />
+                  Ваши ресурсы
+                </h4>
+                <div className="grid grid-cols-2 gap-3">
+                  <div className="bg-yellow-500/20 border border-yellow-500/40 rounded p-2 text-center">
+                    <div className="text-yellow-400 font-bold">{gold}</div>
+                    <div className="text-white/70 text-sm">💰 Золото</div>
+                  </div>
+                  {Object.entries(materials).map(([materialId, amount]) => {
+                    const material = craftingMaterials[materialId]
+                    if (!material) return null
+                    return (
+                      <div key={materialId} className={`border rounded p-2 text-center ${getRarityColor(material.rarity)}`}>
+                        <div className="text-white font-bold">{amount}</div>
+                        <div className="text-white/70 text-sm">{material.icon} {material.name}</div>
+                      </div>
+                    )
+                  })}
+                </div>
+              </div>
+
+              {/* Список экипировки для улучшения */}
+              <h4 className="text-white font-semibold mb-3">Улучшить экипировку</h4>
+              <div className="space-y-3 max-h-60 overflow-y-auto">
+                {inventory.length === 0 ? (
+                  <div className="text-center py-8">
+                    <Icon name="Package" size={32} className="text-white/30 mx-auto mb-2" />
+                    <p className="text-white/60">Инвентарь пуст</p>
+                  </div>
+                ) : (
+                  inventory.map(equipment => {
+                    const recipe = getUpgradeRecipe(equipment)
+                    const canUpgrade = recipe.materialsCost.every(cost => (materials[cost.materialId] || 0) >= cost.amount) && gold >= recipe.goldCost
+                    
+                    return (
+                      <div key={equipment.id} className={`border-2 rounded-lg p-3 ${getRarityColor(equipment.rarity)}`}>
+                        <div className="flex items-center gap-3">
+                          <div className="text-2xl">{equipment.icon}</div>
+                          <div className="flex-1">
+                            <h5 className="text-white font-semibold">{equipment.name}</h5>
+                            <p className={`text-sm ${getRarityColor(equipment.rarity).split(' ')[0]}`}>
+                              {getRarityName(equipment.rarity)} • Уровень {equipment.level || 1}
+                            </p>
+                            <div className="text-xs text-white/70 mt-1">
+                              {Object.entries(equipment.bonuses).map(([key, value]) => (
+                                <span key={key} className="mr-2">+{value} {key}</span>
+                              ))}
+                            </div>
+                            
+                            {/* Стоимость улучшения */}
+                            <div className="mt-2 text-xs">
+                              <div className="text-white/60 mb-1">Стоимость улучшения:</div>
+                              <div className="flex flex-wrap gap-2">
+                                {recipe.materialsCost.map(cost => {
+                                  const material = craftingMaterials[cost.materialId]
+                                  const hasEnough = (materials[cost.materialId] || 0) >= cost.amount
+                                  return (
+                                    <span key={cost.materialId} className={hasEnough ? 'text-green-400' : 'text-red-400'}>
+                                      {material?.icon} {cost.amount}
+                                    </span>
+                                  )
+                                })}
+                                <span className={gold >= recipe.goldCost ? 'text-green-400' : 'text-red-400'}>
+                                  💰 {recipe.goldCost}
+                                </span>
+                              </div>
+                              <div className="text-white/50 text-xs mt-1">
+                                Шанс успеха: {recipe.successRate}%
+                              </div>
+                            </div>
+                          </div>
+                          
+                          <button
+                            onClick={() => handleUpgradeEquipment(equipment.id)}
+                            disabled={!canUpgrade || isUpgrading === equipment.id}
+                            className={`px-3 py-2 rounded text-sm font-semibold transition-all ${
+                              canUpgrade && isUpgrading !== equipment.id
+                                ? 'bg-yellow-500/30 hover:bg-yellow-500/50 text-white'
+                                : 'bg-gray-500/30 text-gray-400 cursor-not-allowed'
+                            }`}
+                          >
+                            {isUpgrading === equipment.id ? (
+                              <>
+                                <div className="animate-spin rounded-full h-3 w-3 border border-white border-t-transparent inline-block mr-1"></div>
+                                Улучшение...
+                              </>
+                            ) : (
+                              'Улучшить'
+                            )}
+                          </button>
+                        </div>
+                      </div>
+                    )
+                  })
+                )}
+              </div>
+
+              {/* Результат улучшения */}
+              {upgradeResult && (
+                <div className={`mt-4 p-3 rounded-lg text-center ${
+                  upgradeResult.success ? 'bg-green-500/20 border border-green-500/40' : 'bg-red-500/20 border border-red-500/40'
+                }`}>
+                  <p className={upgradeResult.success ? 'text-green-400' : 'text-red-400'}>
+                    {upgradeResult.message}
+                  </p>
+                </div>
               )}
             </div>
           </div>
