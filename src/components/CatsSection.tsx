@@ -1,6 +1,21 @@
 import React, { useState } from 'react'
 import Icon from '@/components/ui/icon'
 
+interface Equipment {
+  id: string
+  name: string
+  type: 'weapon' | 'armor' | 'accessory'
+  rarity: 'common' | 'rare' | 'epic' | 'legendary'
+  bonuses: {
+    attack?: number
+    defense?: number
+    speed?: number
+    health?: number
+  }
+  description: string
+  icon: string
+}
+
 interface BattleCat {
   id: string
   name: string
@@ -16,6 +31,11 @@ interface BattleCat {
   description: string
   rarity: 'common' | 'rare' | 'epic' | 'legendary'
   image: string
+  equipment: {
+    weapon?: Equipment
+    armor?: Equipment
+    accessory?: Equipment
+  }
 }
 
 const CatsSection: React.FC = () => {
@@ -38,7 +58,8 @@ const CatsSection: React.FC = () => {
       ],
       description: 'Храбрый космический кот, защитник галактики. Обладает невероятной ловкостью и способностью использовать космическую энергию в бою.',
       rarity: 'common',
-      image: '🐱‍🚀'
+      image: '🐱‍🚀',
+      equipment: {}
     }
   ])
 
@@ -163,7 +184,8 @@ const CatsSection: React.FC = () => {
       abilities: selectedAbilities,
       description: catDescriptions[Math.floor(Math.random() * catDescriptions.length)],
       rarity,
-      image: catEmojis[Math.floor(Math.random() * catEmojis.length)]
+      image: catEmojis[Math.floor(Math.random() * catEmojis.length)],
+      equipment: {}
     }
   }
 
@@ -203,6 +225,101 @@ const CatsSection: React.FC = () => {
   const [isTraining, setIsTraining] = useState<string | null>(null)
   const [levelUpMessage, setLevelUpMessage] = useState<string | null>(null)
   const [expGainMessage, setExpGainMessage] = useState<string | null>(null)
+  const [selectedCat, setSelectedCat] = useState<string | null>(null)
+  const [showEquipment, setShowEquipment] = useState(false)
+
+  // Инвентарь экипировки
+  const [inventory, setInventory] = useState<Equipment[]>([
+    {
+      id: 'laser-sword',
+      name: 'Лазерный меч',
+      type: 'weapon',
+      rarity: 'rare',
+      bonuses: { attack: 8 },
+      description: 'Светящийся клинок из чистой энергии',
+      icon: '⚔️'
+    },
+    {
+      id: 'cosmic-armor',
+      name: 'Космическая броня',
+      type: 'armor',
+      rarity: 'epic',
+      bonuses: { defense: 12, health: 25 },
+      description: 'Защитный костюм из звездного металла',
+      icon: '🛡️'
+    },
+    {
+      id: 'speed-boots',
+      name: 'Ускорительные сапоги',
+      type: 'accessory',
+      rarity: 'rare',
+      bonuses: { speed: 10 },
+      description: 'Увеличивают скорость передвижения',
+      icon: '👢'
+    }
+  ])
+
+  // Базы данных экипировки
+  const equipmentData = {
+    weapon: {
+      names: ['Плазменный бластер', 'Квантовая катана', 'Звездный посох', 'Космический молот', 'Нейтронная пушка'],
+      icons: ['🔫', '⚔️', '🪄', '🔨', '💥'],
+      bonuses: (rarity: string) => ({
+        common: { attack: 3 + Math.floor(Math.random() * 3) },
+        rare: { attack: 6 + Math.floor(Math.random() * 5) },
+        epic: { attack: 12 + Math.floor(Math.random() * 8) },
+        legendary: { attack: 20 + Math.floor(Math.random() * 15) }
+      }[rarity])
+    },
+    armor: {
+      names: ['Энергетический щит', 'Нанокостюм', 'Плазменная защита', 'Астральный панцирь', 'Квантовая оболочка'],
+      icons: ['🛡️', '🥋', '🦺', '⚔️', '🔮'],
+      bonuses: (rarity: string) => ({
+        common: { defense: 2 + Math.floor(Math.random() * 2), health: 10 + Math.floor(Math.random() * 10) },
+        rare: { defense: 5 + Math.floor(Math.random() * 4), health: 20 + Math.floor(Math.random() * 15) },
+        epic: { defense: 10 + Math.floor(Math.random() * 6), health: 35 + Math.floor(Math.random() * 25) },
+        legendary: { defense: 18 + Math.floor(Math.random() * 12), health: 60 + Math.floor(Math.random() * 40) }
+      }[rarity])
+    },
+    accessory: {
+      names: ['Космические очки', 'Гравитационные перчатки', 'Телепортер', 'Энергетическое кольцо', 'Временной браслет'],
+      icons: ['🕶️', '🧤', '⚡', '💍', '⌚'],
+      bonuses: (rarity: string) => ({
+        common: { speed: 2 + Math.floor(Math.random() * 3) },
+        rare: { speed: 5 + Math.floor(Math.random() * 5), attack: 2 },
+        epic: { speed: 10 + Math.floor(Math.random() * 8), attack: 5, defense: 3 },
+        legendary: { speed: 18 + Math.floor(Math.random() * 12), attack: 10, defense: 8, health: 20 }
+      }[rarity])
+    }
+  }
+
+  const generateRandomEquipment = (): Equipment => {
+    const types = ['weapon', 'armor', 'accessory'] as const
+    const type = types[Math.floor(Math.random() * types.length)]
+    
+    const rarityRoll = Math.random()
+    let rarity: 'common' | 'rare' | 'epic' | 'legendary'
+    
+    if (rarityRoll < 0.5) rarity = 'common'
+    else if (rarityRoll < 0.8) rarity = 'rare'
+    else if (rarityRoll < 0.95) rarity = 'epic'
+    else rarity = 'legendary'
+
+    const data = equipmentData[type]
+    const name = data.names[Math.floor(Math.random() * data.names.length)]
+    const icon = data.icons[Math.floor(Math.random() * data.icons.length)]
+    const bonuses = data.bonuses(rarity)
+
+    return {
+      id: `${type}-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
+      name,
+      type,
+      rarity,
+      bonuses,
+      description: `${rarity === 'legendary' ? 'Легендарный' : rarity === 'epic' ? 'Эпический' : rarity === 'rare' ? 'Редкий' : 'Обычный'} предмет экипировки`,
+      icon
+    }
+  }
 
   const handleTrainCat = (catId: string) => {
     setIsTraining(catId)
@@ -257,6 +374,68 @@ const CatsSection: React.FC = () => {
       }))
       setIsTraining(null)
     }, 2000)
+  }
+
+  const handleEquipItem = (catId: string, equipment: Equipment) => {
+    setCats(prev => prev.map(cat => {
+      if (cat.id === catId) {
+        const newEquipment = { ...cat.equipment }
+        newEquipment[equipment.type] = equipment
+        
+        return {
+          ...cat,
+          equipment: newEquipment
+        }
+      }
+      return cat
+    }))
+    
+    // Удаляем из инвентаря
+    setInventory(prev => prev.filter(item => item.id !== equipment.id))
+    setShowEquipment(false)
+  }
+
+  const handleUnequipItem = (catId: string, type: 'weapon' | 'armor' | 'accessory') => {
+    const cat = cats.find(c => c.id === catId)
+    const equipment = cat?.equipment[type]
+    
+    if (equipment) {
+      // Возвращаем в инвентарь
+      setInventory(prev => [...prev, equipment])
+      
+      // Убираем с кота
+      setCats(prev => prev.map(c => {
+        if (c.id === catId) {
+          const newEquipment = { ...c.equipment }
+          delete newEquipment[type]
+          return { ...c, equipment: newEquipment }
+        }
+        return c
+      }))
+    }
+  }
+
+  const handleFindEquipment = () => {
+    const newEquipment = generateRandomEquipment()
+    setInventory(prev => [...prev, newEquipment])
+  }
+
+  const calculateTotalStats = (cat: BattleCat) => {
+    let totalAttack = cat.attack
+    let totalDefense = cat.defense
+    let totalSpeed = cat.speed
+    let totalHealth = cat.maxHealth
+
+    Object.values(cat.equipment).forEach(equipment => {
+      if (equipment) {
+        totalAttack += equipment.bonuses.attack || 0
+        totalDefense += equipment.bonuses.defense || 0
+        totalSpeed += equipment.bonuses.speed || 0
+        totalHealth += equipment.bonuses.health || 0
+      }
+    })
+
+    return { totalAttack, totalDefense, totalSpeed, totalHealth }
   }
 
   return (
@@ -367,25 +546,80 @@ const CatsSection: React.FC = () => {
                     <div className="flex items-center gap-2">
                       <Icon name="Heart" size={14} className="text-red-400" />
                       <span className="text-white/70">Здоровье:</span>
-                      <span className="text-white font-semibold">{cat.health}/{cat.maxHealth}</span>
+                      <span className="text-white font-semibold">
+                        {cat.health}/{calculateTotalStats(cat).totalHealth}
+                        {calculateTotalStats(cat).totalHealth > cat.maxHealth && (
+                          <span className="text-green-400 text-xs"> (+{calculateTotalStats(cat).totalHealth - cat.maxHealth})</span>
+                        )}
+                      </span>
                     </div>
                     <div className="flex items-center gap-2">
                       <Icon name="Sword" size={14} className="text-orange-400" />
                       <span className="text-white/70">Атака:</span>
-                      <span className="text-white font-semibold">{cat.attack}</span>
+                      <span className="text-white font-semibold">
+                        {calculateTotalStats(cat).totalAttack}
+                        {calculateTotalStats(cat).totalAttack > cat.attack && (
+                          <span className="text-green-400 text-xs"> (+{calculateTotalStats(cat).totalAttack - cat.attack})</span>
+                        )}
+                      </span>
                     </div>
                   </div>
                   <div className="space-y-1">
                     <div className="flex items-center gap-2">
                       <Icon name="Shield" size={14} className="text-blue-400" />
                       <span className="text-white/70">Защита:</span>
-                      <span className="text-white font-semibold">{cat.defense}</span>
+                      <span className="text-white font-semibold">
+                        {calculateTotalStats(cat).totalDefense}
+                        {calculateTotalStats(cat).totalDefense > cat.defense && (
+                          <span className="text-green-400 text-xs"> (+{calculateTotalStats(cat).totalDefense - cat.defense})</span>
+                        )}
+                      </span>
                     </div>
                     <div className="flex items-center gap-2">
                       <Icon name="Zap" size={14} className="text-yellow-400" />
                       <span className="text-white/70">Скорость:</span>
-                      <span className="text-white font-semibold">{cat.speed}</span>
+                      <span className="text-white font-semibold">
+                        {calculateTotalStats(cat).totalSpeed}
+                        {calculateTotalStats(cat).totalSpeed > cat.speed && (
+                          <span className="text-green-400 text-xs"> (+{calculateTotalStats(cat).totalSpeed - cat.speed})</span>
+                        )}
+                      </span>
                     </div>
+                  </div>
+                </div>
+
+                {/* Экипировка */}
+                <div className="bg-space-dark/40 rounded p-3 space-y-2">
+                  <h4 className="text-white font-semibold text-sm flex items-center gap-1">
+                    <Icon name="Package" size={14} />
+                    Экипировка:
+                  </h4>
+                  <div className="grid grid-cols-3 gap-2">
+                    {(['weapon', 'armor', 'accessory'] as const).map(type => {
+                      const equipment = cat.equipment[type]
+                      const typeNames = { weapon: 'Оружие', armor: 'Броня', accessory: 'Аксессуар' }
+                      
+                      return (
+                        <div key={type} className="text-center">
+                          <div className="text-xs text-white/60 mb-1">{typeNames[type]}</div>
+                          {equipment ? (
+                            <button
+                              onClick={() => handleUnequipItem(cat.id, type)}
+                              className="w-full p-2 bg-cosmic-purple/30 rounded border border-cosmic-purple/50 hover:bg-cosmic-purple/50 transition-all"
+                              title={`${equipment.name}: ${Object.entries(equipment.bonuses).map(([key, value]) => `+${value} ${key}`).join(', ')}`}
+                            >
+                              <div className="text-lg">{equipment.icon}</div>
+                              <div className="text-xs text-white/80 truncate">{equipment.name}</div>
+                            </button>
+                          ) : (
+                            <div className="w-full p-2 bg-gray-600/30 rounded border border-gray-500/50">
+                              <div className="text-lg text-gray-500">⚪</div>
+                              <div className="text-xs text-gray-500">Пусто</div>
+                            </div>
+                          )}
+                        </div>
+                      )
+                    })}
                   </div>
                 </div>
 
@@ -424,7 +658,14 @@ const CatsSection: React.FC = () => {
                       </>
                     )}
                   </button>
-                  <button className="flex-1 bg-cosmic-cyan/30 hover:bg-cosmic-cyan/50 text-white py-2 px-3 rounded text-sm font-semibold transition-all">
+                  <button 
+                    onClick={() => {
+                      setSelectedCat(cat.id)
+                      setShowEquipment(true)
+                    }}
+                    className="flex-1 bg-cosmic-cyan/30 hover:bg-cosmic-cyan/50 text-white py-2 px-3 rounded text-sm font-semibold transition-all flex items-center justify-center gap-1"
+                  >
+                    <Icon name="Package" size={14} />
                     Экипировать
                   </button>
                 </div>
@@ -455,6 +696,76 @@ const CatsSection: React.FC = () => {
           </>
         )}
       </div>
+
+      {/* Кнопка поиска экипировки */}
+      <div className="bg-space-dark/40 border border-cosmic-cyan/40 rounded-lg p-4 text-center">
+        <Icon name="Search" size={24} className="text-white/50 mx-auto mb-2" />
+        <h3 className="text-white font-semibold mb-1">Найти экипировку</h3>
+        <p className="text-white/60 text-sm mb-3">Обыщите космические руины</p>
+        <button 
+          onClick={handleFindEquipment}
+          className="bg-gradient-to-r from-cosmic-cyan to-blue-500 text-white py-2 px-4 rounded font-semibold hover:shadow-lg hover:shadow-cosmic-cyan/50 transition-all hover:scale-105"
+        >
+          Искать предметы
+        </button>
+      </div>
+
+      {/* Модальное окно инвентаря */}
+      {showEquipment && selectedCat && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+          <div className="bg-space-dark/90 backdrop-blur-lg border border-cosmic-purple/50 rounded-lg max-w-md w-full max-h-[80vh] overflow-y-auto">
+            <div className="p-4 border-b border-cosmic-purple/30">
+              <div className="flex items-center justify-between">
+                <h3 className="text-lg font-bold text-white flex items-center gap-2">
+                  <Icon name="Package" size={20} />
+                  Инвентарь
+                </h3>
+                <button
+                  onClick={() => setShowEquipment(false)}
+                  className="text-white/70 hover:text-white"
+                >
+                  <Icon name="X" size={20} />
+                </button>
+              </div>
+            </div>
+            
+            <div className="p-4 space-y-3">
+              {inventory.length === 0 ? (
+                <div className="text-center py-8">
+                  <Icon name="Package" size={32} className="text-white/30 mx-auto mb-2" />
+                  <p className="text-white/60">Инвентарь пуст</p>
+                  <p className="text-white/40 text-sm">Найдите экипировку в космосе</p>
+                </div>
+              ) : (
+                inventory.map(equipment => (
+                  <div key={equipment.id} className={`border-2 rounded-lg p-3 ${getRarityColor(equipment.rarity)}`}>
+                    <div className="flex items-center gap-3">
+                      <div className="text-2xl">{equipment.icon}</div>
+                      <div className="flex-1">
+                        <h4 className="text-white font-semibold">{equipment.name}</h4>
+                        <p className={`text-sm ${getRarityColor(equipment.rarity).split(' ')[0]}`}>
+                          {getRarityName(equipment.rarity)} {equipment.type === 'weapon' ? 'Оружие' : equipment.type === 'armor' ? 'Броня' : 'Аксессуар'}
+                        </p>
+                        <div className="text-xs text-white/70 mt-1">
+                          {Object.entries(equipment.bonuses).map(([key, value]) => (
+                            <span key={key} className="mr-2">+{value} {key}</span>
+                          ))}
+                        </div>
+                      </div>
+                      <button
+                        onClick={() => handleEquipItem(selectedCat, equipment)}
+                        className="bg-cosmic-purple/30 hover:bg-cosmic-purple/50 text-white px-3 py-1 rounded text-sm font-semibold transition-all"
+                      >
+                        Надеть
+                      </button>
+                    </div>
+                  </div>
+                ))
+              )}
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   )
 }
