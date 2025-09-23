@@ -2,6 +2,7 @@ import React from 'react'
 import { Button } from '@/components/ui/button'
 import Icon from '@/components/ui/icon'
 import { GameStats } from '@/types/game'
+import { useAuth } from '@/hooks/useAuth'
 
 interface GameHeaderProps {
   gameStats: GameStats
@@ -10,6 +11,8 @@ interface GameHeaderProps {
 }
 
 const GameHeader: React.FC<GameHeaderProps> = ({ gameStats, isMusicPlaying, onToggleMusic }) => {
+  const { user, logout } = useAuth()
+  
   return (
     <div className="bg-space-darker/80 backdrop-blur-md border-b border-cosmic-purple/30 text-white p-4 shadow-2xl shadow-cosmic-purple/20">
       <div className="max-w-md mx-auto flex items-center justify-between">
@@ -18,14 +21,17 @@ const GameHeader: React.FC<GameHeaderProps> = ({ gameStats, isMusicPlaying, onTo
             CAT KOMBAT
           </h1>
         </div>
-        <div className="flex gap-4 text-sm items-center">
-          <div className="flex items-center gap-1">
-            <Icon name="Coins" size={16} className="text-star-glow animate-pulse" />
-            <span className="font-bold">{gameStats.coins}</span>
+        <div className="flex gap-2 text-sm items-center">
+          <div className="text-xs">
+            <div className="text-cosmic-cyan font-bold">{user?.username}</div>
           </div>
           <div className="flex items-center gap-1">
-            <Icon name="Zap" size={16} className="text-cosmic-cyan animate-pulse" />
-            <span className="font-bold">{gameStats.power}</span>
+            <Icon name="Coins" size={14} className="text-star-glow animate-pulse" />
+            <span className="font-bold text-xs">{gameStats.coins}</span>
+          </div>
+          <div className="flex items-center gap-1">
+            <Icon name="Zap" size={14} className="text-cosmic-cyan animate-pulse" />
+            <span className="font-bold text-xs">{gameStats.power}</span>
           </div>
           <Button
             onClick={onToggleMusic}
@@ -35,8 +41,20 @@ const GameHeader: React.FC<GameHeaderProps> = ({ gameStats, isMusicPlaying, onTo
           >
             <Icon 
               name={isMusicPlaying ? "Volume2" : "VolumeX"} 
-              size={14} 
+              size={12} 
               className="text-cosmic-cyan"
+            />
+          </Button>
+          <Button
+            onClick={logout}
+            variant="ghost"
+            size="sm"
+            className="p-1 h-6 w-6 hover:bg-red-500/30"
+          >
+            <Icon 
+              name="LogOut" 
+              size={12} 
+              className="text-red-400"
             />
           </Button>
         </div>
