@@ -153,11 +153,11 @@ const createAudioContext = () => {
         }, 1000)
       },
 
-      toggle: () => {
-        if (audioSystem.backgroundMusic.isPlaying) {
-          audioSystem.backgroundMusic.stop()
+      toggle: function() {
+        if (this.isPlaying) {
+          this.stop()
         } else {
-          audioSystem.backgroundMusic.start()
+          this.start()
         }
       }
     }
