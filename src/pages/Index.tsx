@@ -5,6 +5,36 @@ import { Badge } from '@/components/ui/badge'
 import { Progress } from '@/components/ui/progress'
 import Icon from '@/components/ui/icon'
 
+// Космический фон с звездами
+const StarField = () => {
+  const stars = Array.from({ length: 50 }, (_, i) => ({
+    id: i,
+    x: Math.random() * 100,
+    y: Math.random() * 100,
+    size: Math.random() * 2 + 1,
+    delay: Math.random() * 20
+  }))
+
+  return (
+    <div className="fixed inset-0 overflow-hidden pointer-events-none">
+      {stars.map(star => (
+        <div
+          key={star.id}
+          className="absolute bg-white rounded-full animate-pulse"
+          style={{
+            left: `${star.x}%`,
+            top: `${star.y}%`,
+            width: `${star.size}px`,
+            height: `${star.size}px`,
+            animationDelay: `${star.delay}s`,
+            boxShadow: '0 0 10px rgba(255,255,255,0.8)'
+          }}
+        />
+      ))}
+    </div>
+  )
+}
+
 interface GameStats {
   level: number
   power: number
@@ -120,215 +150,230 @@ function Index() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-cat-orange via-cat-yellow to-cat-green">
-      {/* Header */}
-      <div className="bg-cat-navy/90 backdrop-blur-sm text-white p-4 shadow-lg">
-        <div className="max-w-md mx-auto flex items-center justify-between">
-          <div className="text-center">
-            <h1 className="text-2xl font-black text-cat-yellow" style={{fontFamily: 'Fredoka One'}}>
-              CAT KOMBAT
-            </h1>
-          </div>
-          <div className="flex gap-4 text-sm">
-            <div className="flex items-center gap-1">
-              <Icon name="Coins" size={16} className="text-cat-yellow" />
-              <span className="font-bold">{gameStats.coins}</span>
-            </div>
-            <div className="flex items-center gap-1">
-              <Icon name="Zap" size={16} className="text-cat-green" />
-              <span className="font-bold">{gameStats.power}</span>
-            </div>
-          </div>
-        </div>
+    <div className="min-h-screen relative overflow-hidden">
+      {/* Космический фон */}
+      <div className="absolute inset-0 bg-gradient-to-br from-space-darker via-space-dark to-cosmic-purple">
+        <div 
+          className="absolute inset-0 opacity-60 animate-nebula"
+          style={{
+            background: 'linear-gradient(-45deg, #6366F1, #EC4899, #8B5CF6, #06B6D4)',
+            backgroundSize: '400% 400%'
+          }}
+        />
       </div>
-
-      {/* Navigation */}
-      <div className="bg-white/10 backdrop-blur-sm border-b border-white/20">
-        <div className="max-w-md mx-auto flex">
-          {[
-            { id: 'home', label: 'Главная', icon: 'Home' },
-            { id: 'fight', label: 'Бои', icon: 'Sword' },
-            { id: 'upgrade', label: 'Улучшения', icon: 'TrendingUp' }
-          ].map(tab => (
-            <button
-              key={tab.id}
-              onClick={() => setActiveTab(tab.id)}
-              className={`flex-1 p-3 text-sm font-semibold transition-all ${
-                activeTab === tab.id 
-                  ? 'bg-white/20 text-white border-b-2 border-cat-yellow' 
-                  : 'text-white/70 hover:text-white hover:bg-white/10'
-              }`}
-            >
-              <div className="flex flex-col items-center gap-1">
-                <Icon name={tab.icon as any} size={18} />
-                <span>{tab.label}</span>
+      <StarField />
+      
+      <div className="relative z-10">
+        {/* Header */}
+        <div className="bg-space-darker/80 backdrop-blur-md border-b border-cosmic-purple/30 text-white p-4 shadow-2xl shadow-cosmic-purple/20">
+          <div className="max-w-md mx-auto flex items-center justify-between">
+            <div className="text-center">
+              <h1 className="text-2xl font-black text-transparent bg-clip-text bg-gradient-to-r from-cosmic-cyan to-cosmic-pink font-cosmic animate-glow">
+                CAT KOMBAT
+              </h1>
+            </div>
+            <div className="flex gap-4 text-sm">
+              <div className="flex items-center gap-1">
+                <Icon name="Coins" size={16} className="text-star-glow animate-pulse" />
+                <span className="font-bold">{gameStats.coins}</span>
               </div>
-            </button>
-          ))}
+              <div className="flex items-center gap-1">
+                <Icon name="Zap" size={16} className="text-cosmic-cyan animate-pulse" />
+                <span className="font-bold">{gameStats.power}</span>
+              </div>
+            </div>
+          </div>
         </div>
-      </div>
 
-      {/* Content */}
-      <div className="max-w-md mx-auto p-4 pb-20">
-        {activeTab === 'home' && (
-          <div className="space-y-6">
-            {/* Cat Fighter */}
-            <Card className="bg-white/90 backdrop-blur-sm border-2 border-cat-orange shadow-xl">
-              <CardContent className="p-6 text-center">
-                <div className="relative">
-                  <div 
-                    className={`cursor-pointer transition-transform ${isAttacking ? 'scale-110' : 'hover:scale-105'} relative`}
-                    onClick={handleCatClick}
-                  >
-                    <img 
-                      src="/img/4e527281-3b9b-44d7-be71-355a5f3de284.jpg" 
-                      alt="Cat Fighter" 
-                      className="w-48 h-48 mx-auto rounded-xl border-4 border-cat-orange shadow-lg"
+        {/* Navigation */}
+        <div className="bg-space-dark/60 backdrop-blur-lg border-b border-cosmic-purple/40">
+          <div className="max-w-md mx-auto flex">
+            {[
+              { id: 'home', label: 'Главная', icon: 'Home' },
+              { id: 'fight', label: 'Бои', icon: 'Sword' },
+              { id: 'upgrade', label: 'Улучшения', icon: 'TrendingUp' }
+            ].map(tab => (
+              <button
+                key={tab.id}
+                onClick={() => setActiveTab(tab.id)}
+                className={`flex-1 p-3 text-sm font-semibold transition-all ${
+                  activeTab === tab.id 
+                    ? 'bg-cosmic-purple/30 text-white border-b-2 border-cosmic-cyan shadow-lg shadow-cosmic-purple/50' 
+                    : 'text-white/70 hover:text-white hover:bg-cosmic-purple/20'
+                }`}
+              >
+                <div className="flex flex-col items-center gap-1">
+                  <Icon name={tab.icon as any} size={18} />
+                  <span>{tab.label}</span>
+                </div>
+              </button>
+            ))}
+          </div>
+        </div>
+
+        {/* Content */}
+        <div className="max-w-md mx-auto p-4 pb-20">
+          {activeTab === 'home' && (
+            <div className="space-y-6">
+              {/* Cat Fighter */}
+              <Card className="bg-space-dark/80 backdrop-blur-xl border-2 border-cosmic-purple shadow-2xl shadow-cosmic-purple/50 animate-glow">
+                <CardContent className="p-6 text-center">
+                  <div className="relative">
+                    <div 
+                      className={`cursor-pointer transition-all duration-300 ${isAttacking ? 'scale-110 animate-glow' : 'hover:scale-105 animate-float'} relative`}
+                      onClick={handleCatClick}
+                    >
+                      <img 
+                        src="/img/4e527281-3b9b-44d7-be71-355a5f3de284.jpg" 
+                        alt="Cat Fighter" 
+                        className="w-48 h-48 mx-auto rounded-xl border-4 border-cosmic-purple shadow-2xl shadow-cosmic-purple/70 animate-glow"
+                      />
+                      {damageNumbers.map(damage => (
+                        <div
+                          key={damage.id}
+                          className="absolute text-2xl font-black text-cosmic-cyan animate-bounce pointer-events-none drop-shadow-lg"
+                          style={{
+                            left: damage.x,
+                            top: damage.y,
+                            fontFamily: 'Fredoka One',
+                            textShadow: '0 0 10px rgba(6, 182, 212, 0.8)'
+                          }}
+                        >
+                          -{damage.damage}
+                        </div>
+                      ))}
+                    </div>
+                    <Badge className="mt-4 bg-gradient-to-r from-cosmic-purple to-cosmic-pink text-white font-bold text-lg px-6 py-2 animate-glow border border-cosmic-cyan/50">
+                      Уровень {gameStats.level}
+                    </Badge>
+                  </div>
+                  
+                  {/* Experience Bar */}
+                  <div className="mt-4">
+                    <div className="flex justify-between text-sm font-semibold mb-2 text-white">
+                      <span>Опыт</span>
+                      <span>{gameStats.experience}/{gameStats.maxExperience}</span>
+                    </div>
+                    <Progress 
+                      value={(gameStats.experience / gameStats.maxExperience) * 100} 
+                      className="h-3"
                     />
-                    {damageNumbers.map(damage => (
-                      <div
-                        key={damage.id}
-                        className="absolute text-2xl font-black text-cat-orange animate-bounce pointer-events-none"
-                        style={{
-                          left: damage.x,
-                          top: damage.y,
-                          fontFamily: 'Fredoka One'
-                        }}
-                      >
-                        -{damage.damage}
-                      </div>
-                    ))}
                   </div>
-                  <Badge className="mt-4 bg-cat-orange text-white font-bold text-lg px-6 py-2">
-                    Уровень {gameStats.level}
-                  </Badge>
-                </div>
-                
-                {/* Experience Bar */}
-                <div className="mt-4">
-                  <div className="flex justify-between text-sm font-semibold mb-2">
-                    <span>Опыт</span>
-                    <span>{gameStats.experience}/{gameStats.maxExperience}</span>
-                  </div>
-                  <Progress 
-                    value={(gameStats.experience / gameStats.maxExperience) * 100} 
-                    className="h-3"
-                  />
-                </div>
-              </CardContent>
-            </Card>
-
-            {/* Enemy */}
-            <Card className="bg-white/90 backdrop-blur-sm border-2 border-red-500 shadow-xl">
-              <CardContent className="p-4">
-                <div className="text-center">
-                  <h3 className="text-xl font-bold text-red-600 mb-2" style={{fontFamily: 'Fredoka One'}}>
-                    {currentEnemy.name}
-                  </h3>
-                  <div className="text-sm font-semibold mb-2">
-                    HP: {currentEnemy.health}/{currentEnemy.maxHealth}
-                  </div>
-                  <Progress 
-                    value={(currentEnemy.health / currentEnemy.maxHealth) * 100} 
-                    className="h-4 mb-2"
-                  />
-                  <Badge className="bg-cat-yellow text-cat-navy font-bold">
-                    Награда: {currentEnemy.reward} 🪙
-                  </Badge>
-                </div>
-              </CardContent>
-            </Card>
-
-            {/* Quick Stats */}
-            <div className="grid grid-cols-2 gap-4">
-              <Card className="bg-white/90 backdrop-blur-sm">
-                <CardContent className="p-4 text-center">
-                  <Icon name="Sword" size={24} className="text-cat-orange mx-auto mb-2" />
-                  <div className="font-bold text-lg">{gameStats.clickDamage}</div>
-                  <div className="text-sm text-gray-600">Урон за клик</div>
                 </CardContent>
               </Card>
-              <Card className="bg-white/90 backdrop-blur-sm">
-                <CardContent className="p-4 text-center">
-                  <Icon name="Shield" size={24} className="text-cat-green mx-auto mb-2" />
-                  <div className="font-bold text-lg">{gameStats.power}</div>
-                  <div className="text-sm text-gray-600">Сила</div>
+
+              {/* Enemy */}
+              <Card className="bg-space-dark/80 backdrop-blur-xl border-2 border-cosmic-pink shadow-2xl shadow-cosmic-pink/50 animate-glow">
+                <CardContent className="p-4">
+                  <div className="text-center">
+                    <h3 className="text-xl font-bold text-cosmic-pink mb-2 font-cosmic drop-shadow-lg">
+                      {currentEnemy.name}
+                    </h3>
+                    <div className="text-sm font-semibold mb-2 text-white">
+                      HP: {currentEnemy.health}/{currentEnemy.maxHealth}
+                    </div>
+                    <Progress 
+                      value={(currentEnemy.health / currentEnemy.maxHealth) * 100} 
+                      className="h-4 mb-2"
+                    />
+                    <Badge className="bg-gradient-to-r from-star-glow to-cosmic-cyan text-space-dark font-bold border border-cosmic-cyan/50">
+                      Награда: {currentEnemy.reward} 🪙
+                    </Badge>
+                  </div>
+                </CardContent>
+              </Card>
+
+              {/* Quick Stats */}
+              <div className="grid grid-cols-2 gap-4">
+                <Card className="bg-space-dark/60 backdrop-blur-lg border border-cosmic-purple/50 shadow-lg shadow-cosmic-purple/30">
+                  <CardContent className="p-4 text-center">
+                    <Icon name="Sword" size={24} className="text-cosmic-cyan mx-auto mb-2 animate-pulse" />
+                    <div className="font-bold text-lg text-white">{gameStats.clickDamage}</div>
+                    <div className="text-sm text-gray-300">Урон за клик</div>
+                  </CardContent>
+                </Card>
+                <Card className="bg-space-dark/60 backdrop-blur-lg border border-cosmic-purple/50 shadow-lg shadow-cosmic-purple/30">
+                  <CardContent className="p-4 text-center">
+                    <Icon name="Shield" size={24} className="text-cosmic-purple mx-auto mb-2 animate-pulse" />
+                    <div className="font-bold text-lg text-white">{gameStats.power}</div>
+                    <div className="text-sm text-gray-300">Сила</div>
+                  </CardContent>
+                </Card>
+              </div>
+            </div>
+          )}
+
+          {activeTab === 'fight' && (
+            <div className="space-y-6">
+              <Card className="bg-space-dark/80 backdrop-blur-xl border border-cosmic-purple/50 shadow-xl shadow-cosmic-purple/30">
+                <CardContent className="p-6 text-center">
+                  <Icon name="Sword" size={48} className="text-cosmic-cyan mx-auto mb-4 animate-float" />
+                  <h2 className="text-2xl font-bold mb-4 text-white font-cosmic">
+                    Арена Боёв
+                  </h2>
+                  <p className="text-gray-300 mb-6">
+                    Сражайтесь с врагами и получайте награды!
+                  </p>
+                  <Button className="w-full bg-gradient-to-r from-cosmic-purple to-cosmic-pink hover:from-cosmic-pink hover:to-cosmic-purple text-white font-bold py-3 border border-cosmic-cyan/50 shadow-lg shadow-cosmic-purple/50 transition-all duration-300">
+                    Начать Турнир
+                  </Button>
+                </CardContent>
+              </Card>
+
+              <Card className="bg-space-dark/80 backdrop-blur-xl border border-cosmic-purple/50 shadow-xl shadow-cosmic-purple/30">
+                <CardContent className="p-4">
+                  <h3 className="font-bold mb-4 text-white">Статистика боёв</h3>
+                  <div className="space-y-2">
+                    <div className="flex justify-between">
+                      <span className="text-gray-300">Побед:</span>
+                      <span className="font-bold text-cosmic-cyan">0</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-gray-300">Поражений:</span>
+                      <span className="font-bold text-cosmic-pink">0</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-gray-300">Рейтинг:</span>
+                      <span className="font-bold text-star-glow">1000</span>
+                    </div>
+                  </div>
                 </CardContent>
               </Card>
             </div>
-          </div>
-        )}
+          )}
 
-        {activeTab === 'fight' && (
-          <div className="space-y-6">
-            <Card className="bg-white/90 backdrop-blur-sm">
-              <CardContent className="p-6 text-center">
-                <Icon name="Sword" size={48} className="text-cat-orange mx-auto mb-4" />
-                <h2 className="text-2xl font-bold mb-4" style={{fontFamily: 'Fredoka One'}}>
-                  Арена Боёв
-                </h2>
-                <p className="text-gray-600 mb-6">
-                  Сражайтесь с врагами и получайте награды!
-                </p>
-                <Button className="w-full bg-cat-orange hover:bg-cat-orange/90 text-white font-bold py-3">
-                  Начать Турнир
-                </Button>
-              </CardContent>
-            </Card>
-
-            <Card className="bg-white/90 backdrop-blur-sm">
-              <CardContent className="p-4">
-                <h3 className="font-bold mb-4">Статистика боёв</h3>
-                <div className="space-y-2">
-                  <div className="flex justify-between">
-                    <span>Побед:</span>
-                    <span className="font-bold">0</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span>Поражений:</span>
-                    <span className="font-bold">0</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span>Рейтинг:</span>
-                    <span className="font-bold">1000</span>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          </div>
-        )}
-
-        {activeTab === 'upgrade' && (
-          <div className="space-y-4">
-            <Card className="bg-white/90 backdrop-blur-sm">
-              <CardContent className="p-4">
-                <h2 className="text-xl font-bold mb-4" style={{fontFamily: 'Fredoka One'}}>
-                  Улучшения
-                </h2>
-                {upgrades.map((upgrade, index) => (
-                  <div key={index} className="border border-gray-200 rounded-lg p-4 mb-3">
-                    <div className="flex justify-between items-start mb-2">
-                      <div>
-                        <h3 className="font-bold">{upgrade.name}</h3>
-                        <p className="text-sm text-gray-600">{upgrade.description}</p>
+          {activeTab === 'upgrade' && (
+            <div className="space-y-4">
+              <Card className="bg-space-dark/80 backdrop-blur-xl border border-cosmic-purple/50 shadow-xl shadow-cosmic-purple/30">
+                <CardContent className="p-4">
+                  <h2 className="text-xl font-bold mb-4 text-white font-cosmic">
+                    Улучшения
+                  </h2>
+                  {upgrades.map((upgrade, index) => (
+                    <div key={index} className="border border-cosmic-purple/50 rounded-lg p-4 mb-3 bg-space-darker/50 backdrop-blur-sm">
+                      <div className="flex justify-between items-start mb-2">
+                        <div>
+                          <h3 className="font-bold text-white">{upgrade.name}</h3>
+                          <p className="text-sm text-gray-300">{upgrade.description}</p>
+                        </div>
+                        <Badge className="bg-gradient-to-r from-star-glow to-cosmic-cyan text-space-dark font-bold border border-cosmic-cyan/50">
+                          {upgrade.cost} 🪙
+                        </Badge>
                       </div>
-                      <Badge className="bg-cat-yellow text-cat-navy font-bold">
-                        {upgrade.cost} 🪙
-                      </Badge>
+                      <Button
+                        onClick={() => handleUpgrade(upgrade)}
+                        disabled={gameStats.coins < upgrade.cost}
+                        className="w-full bg-gradient-to-r from-cosmic-cyan to-cosmic-blue hover:from-cosmic-blue hover:to-cosmic-cyan text-white font-bold disabled:opacity-50 border border-cosmic-cyan/50 shadow-lg shadow-cosmic-cyan/30 transition-all duration-300"
+                      >
+                        Купить (+{upgrade.powerIncrease} силы)
+                      </Button>
                     </div>
-                    <Button
-                      onClick={() => handleUpgrade(upgrade)}
-                      disabled={gameStats.coins < upgrade.cost}
-                      className="w-full bg-cat-green hover:bg-cat-green/90 text-white font-bold disabled:opacity-50"
-                    >
-                      Купить (+{upgrade.powerIncrease} силы)
-                    </Button>
-                  </div>
-                ))}
-              </CardContent>
-            </Card>
-          </div>
-        )}
+                  ))}
+                </CardContent>
+              </Card>
+            </div>
+          )}
+        </div>
       </div>
     </div>
   )
