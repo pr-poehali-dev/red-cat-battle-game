@@ -62,8 +62,8 @@ const createAudioContext = () => {
       gainNodes: [] as GainNode[],
       isPlaying: false,
 
-      start: () => {
-        if (audioSystem.backgroundMusic.isPlaying) return
+      start: function() {
+        if (this.isPlaying) return
 
         // Создаем гармонические слои для космического звучания
         const baseFreq = 110 // Нота ля (низкая октава)
@@ -104,8 +104,8 @@ const createAudioContext = () => {
           oscillator.start(audioContext.currentTime + index * 0.5)
           lfo.start(audioContext.currentTime + index * 0.5)
 
-          audioSystem.backgroundMusic.oscillators.push(oscillator)
-          audioSystem.backgroundMusic.gainNodes.push(gainNode)
+          this.oscillators.push(oscillator)
+          this.gainNodes.push(gainNode)
         })
 
         // Добавляем космический "ветер"
@@ -127,28 +127,29 @@ const createAudioContext = () => {
         noiseGain.gain.linearRampToValueAtTime(0.01, audioContext.currentTime + 3)
 
         noiseOsc.start(audioContext.currentTime)
-        audioSystem.backgroundMusic.oscillators.push(noiseOsc)
-        audioSystem.backgroundMusic.gainNodes.push(noiseGain)
+        this.oscillators.push(noiseOsc)
+        this.gainNodes.push(noiseGain)
 
-        audioSystem.backgroundMusic.isPlaying = true
+        this.isPlaying = true
       },
 
-      stop: () => {
-        if (!audioSystem.backgroundMusic.isPlaying) return
+      stop: function() {
+        if (!this.isPlaying) return
 
         // Плавно затухаем
-        audioSystem.backgroundMusic.gainNodes.forEach(gainNode => {
+        this.gainNodes.forEach(gainNode => {
           gainNode.gain.linearRampToValueAtTime(0, audioContext.currentTime + 1)
         })
 
         // Останавливаем через секунду
+        const self = this
         setTimeout(() => {
-          audioSystem.backgroundMusic.oscillators.forEach(osc => {
+          self.oscillators.forEach(osc => {
             try { osc.stop() } catch (e) { /* игнорируем ошибки */ }
           })
-          audioSystem.backgroundMusic.oscillators = []
-          audioSystem.backgroundMusic.gainNodes = []
-          audioSystem.backgroundMusic.isPlaying = false
+          self.oscillators = []
+          self.gainNodes = []
+          self.isPlaying = false
         }, 1000)
       },
 
