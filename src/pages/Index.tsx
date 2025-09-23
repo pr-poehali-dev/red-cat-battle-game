@@ -71,6 +71,7 @@ function Index() {
 
   const [damageNumbers, setDamageNumbers] = useState<Array<{id: number, damage: number, x: number, y: number}>>([])
   const [isAttacking, setIsAttacking] = useState(false)
+  const [energyParticles, setEnergyParticles] = useState<Array<{id: number, x: number, y: number, angle: number, color: string}>>([])
 
   const handleCatClick = (event: React.MouseEvent) => {
     const rect = (event.target as HTMLElement).getBoundingClientRect()
@@ -89,9 +90,22 @@ function Index() {
       y
     }])
 
-    // Remove damage number after animation
+    // Create energy particles explosion
+    const particleColors = ['#06B6D4', '#8B5CF6', '#EC4899', '#FBBF24', '#6366F1']
+    const particles = Array.from({ length: 8 }, (_, i) => ({
+      id: Date.now() + i,
+      x: x,
+      y: y,
+      angle: (360 / 8) * i,
+      color: particleColors[Math.floor(Math.random() * particleColors.length)]
+    }))
+    
+    setEnergyParticles(prev => [...prev, ...particles])
+
+    // Remove animations after timeout
     setTimeout(() => {
       setDamageNumbers(prev => prev.filter(d => d.id !== damageId))
+      setEnergyParticles(prev => prev.filter(p => !particles.find(particle => particle.id === p.id)))
     }, 1000)
 
     // Deal damage to enemy
@@ -241,6 +255,22 @@ function Index() {
                         >
                           -{damage.damage}
                         </div>
+                      ))}
+                      
+                      {/* Energy Particles */}
+                      {energyParticles.map(particle => (
+                        <div
+                          key={particle.id}
+                          className="absolute w-3 h-3 rounded-full pointer-events-none animate-particle-burst"
+                          style={{
+                            left: particle.x,
+                            top: particle.y,
+                            backgroundColor: particle.color,
+                            boxShadow: `0 0 15px ${particle.color}, 0 0 25px ${particle.color}`,
+                            transform: `translate(-50%, -50%) rotate(${particle.angle}deg)`,
+                            zIndex: 10
+                          }}
+                        />
                       ))}
                     </div>
                     <Badge className="mt-4 bg-gradient-to-r from-cosmic-purple to-cosmic-pink text-white font-bold text-lg px-6 py-2 animate-glow border border-cosmic-cyan/50">

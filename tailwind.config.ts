@@ -109,6 +109,20 @@ export default {
 					'0%, 100%': { boxShadow: '0 0 20px rgba(139, 92, 246, 0.5)' },
 					'50%': { boxShadow: '0 0 30px rgba(139, 92, 246, 0.8)' }
 				},
+				'particle-burst': {
+					'0%': { 
+						transform: 'scale(0) translateX(0px)',
+						opacity: '1'
+					},
+					'50%': {
+						transform: 'scale(1) translateX(30px)',
+						opacity: '0.8'
+					},
+					'100%': { 
+						transform: 'scale(0.5) translateX(60px)',
+						opacity: '0'
+					}
+				},
 				'nebula': {
 					'0%': { backgroundPosition: '0% 50%' },
 					'50%': { backgroundPosition: '100% 50%' },
@@ -123,7 +137,8 @@ export default {
 				'stars': 'stars 20s linear infinite',
 				'float': 'float 6s ease-in-out infinite',
 				'glow': 'glow 2s ease-in-out infinite alternate',
-				'nebula': 'nebula 8s ease-in-out infinite'
+				'nebula': 'nebula 8s ease-in-out infinite',
+				'particle-burst': 'particle-burst 1s ease-out forwards'
 			},
 			fontFamily: {
 				'cosmic': ['Fredoka One', 'cursive'],
