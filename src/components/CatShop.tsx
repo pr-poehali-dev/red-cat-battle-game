@@ -114,10 +114,6 @@ const CatShop: React.FC<CatShopProps> = ({ gameStats, onPurchase }) => {
     return gameStats.ownedCats?.some(ownedCat => ownedCat.id === catId) || false
   }
 
-  const isOwned = (catId: string) => {
-    return gameStats.ownedCats?.some(ownedCat => ownedCat.id === catId) || false
-  }
-
   const renderCat = (cat: Cat) => (
     <Card key={cat.id} className={`bg-gradient-to-r from-slate-700/90 to-slate-800/90 backdrop-blur-sm border-2 border-${cat.borderColor} rounded-xl shadow-xl hover:shadow-2xl transition-all duration-300`}>
       <CardContent className="p-4 sm:p-6">
