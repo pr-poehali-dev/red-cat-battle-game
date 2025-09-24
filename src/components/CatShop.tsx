@@ -26,9 +26,11 @@ const CatShop: React.FC<CatShopProps> = ({ gameStats, onPurchase }) => {
             <div className="flex flex-col items-center gap-3">
               <div className="relative">
                 <div className="w-24 h-24 rounded-full bg-gradient-to-br from-emerald-400/20 to-green-500/20 p-1">
-                  <div className="w-full h-full rounded-full bg-gradient-to-br from-emerald-400 to-green-500 flex items-center justify-center text-3xl">
-                    🐱
-                  </div>
+                  <img 
+                    src="/img/33f4e16d-16ec-43d8-84f4-6fe73741ec6a.jpg"
+                    alt="Котёнок Мурка"
+                    className="w-full h-full rounded-full object-cover"
+                  />
                 </div>
                 <div className="absolute -bottom-1 -right-1 w-7 h-7 rounded-full border-2 border-slate-800 flex items-center justify-center text-sm font-bold border-emerald-500 bg-slate-800 text-emerald-400">
                   1
@@ -81,19 +83,19 @@ const CatShop: React.FC<CatShopProps> = ({ gameStats, onPurchase }) => {
 
             {/* Экипировка */}
             <div className="flex justify-center gap-3">
-              <div className="bg-gray-500/15 rounded-lg p-3 min-w-[60px] text-center border border-gray-500/20">
+              <div className="bg-gray-500/15 rounded-lg p-2 min-w-[50px] text-center border border-gray-500/20">
                 <Icon name="Sword" size={14} className="text-gray-400 mx-auto mb-1" />
-                <div className="text-xs text-white/40 font-medium">Нет оружия</div>
+                <div className="text-xs text-white/40 font-medium">—</div>
               </div>
               
-              <div className="bg-gray-500/15 rounded-lg p-3 min-w-[60px] text-center border border-gray-500/20">
+              <div className="bg-gray-500/15 rounded-lg p-2 min-w-[50px] text-center border border-gray-500/20">
                 <Icon name="Shield" size={14} className="text-gray-400 mx-auto mb-1" />
-                <div className="text-xs text-white/40 font-medium">Нет брони</div>
+                <div className="text-xs text-white/40 font-medium">—</div>
               </div>
               
-              <div className="bg-gray-500/15 rounded-lg p-3 min-w-[60px] text-center border border-gray-500/20">
+              <div className="bg-gray-500/15 rounded-lg p-2 min-w-[50px] text-center border border-gray-500/20">
                 <Icon name="Gem" size={14} className="text-gray-400 mx-auto mb-1" />
-                <div className="text-xs text-white/40 font-medium">Нет аксессуара</div>
+                <div className="text-xs text-white/40 font-medium">—</div>
               </div>
             </div>
 
@@ -102,9 +104,9 @@ const CatShop: React.FC<CatShopProps> = ({ gameStats, onPurchase }) => {
               <Badge className="bg-gradient-to-r from-emerald-400 to-green-500 text-white font-bold border border-emerald-500/50 text-sm px-4 py-2">
                 🎁 БЕСПЛАТНО
               </Badge>
-              <div className="text-center bg-emerald-500/10 rounded-lg p-3 border border-emerald-500/30 w-full">
+              <div className="text-center bg-emerald-500/10 rounded-lg p-2 border border-emerald-500/30 w-full">
                 <div className="text-emerald-400 font-semibold text-sm">✨ Подарок при регистрации!</div>
-                <div className="text-white/70 text-xs mt-1">Ваш первый верный спутник в космических приключениях</div>
+                <div className="text-white/70 text-xs mt-1">Ваш первый спутник</div>
               </div>
             </div>
           </div>
@@ -116,9 +118,11 @@ const CatShop: React.FC<CatShopProps> = ({ gameStats, onPurchase }) => {
             <div className="flex items-center gap-4 flex-shrink-0">
               <div className="relative">
                 <div className="w-20 h-20 lg:w-24 lg:h-24 rounded-full bg-gradient-to-br from-emerald-400/20 to-green-500/20 p-1">
-                  <div className="w-full h-full rounded-full bg-gradient-to-br from-emerald-400 to-green-500 flex items-center justify-center text-2xl lg:text-3xl">
-                    🐱
-                  </div>
+                  <img 
+                    src="/img/33f4e16d-16ec-43d8-84f4-6fe73741ec6a.jpg"
+                    alt="Котёнок Мурка"
+                    className="w-full h-full rounded-full object-cover"
+                  />
                 </div>
                 <div className="absolute -bottom-1 -right-1 w-6 h-6 lg:w-7 lg:h-7 rounded-full border-2 border-slate-800 flex items-center justify-center text-sm font-bold border-emerald-500 bg-slate-800 text-emerald-400">
                   1
@@ -189,9 +193,9 @@ const CatShop: React.FC<CatShopProps> = ({ gameStats, onPurchase }) => {
               <Badge className="bg-gradient-to-r from-emerald-400 to-green-500 text-white font-bold border border-emerald-500/50 text-sm px-3 py-1">
                 🎁 БЕСПЛАТНО
               </Badge>
-              <div className="text-center bg-emerald-500/10 rounded-lg p-2 border border-emerald-500/30 min-w-[180px]">
-                <div className="text-emerald-400 font-semibold text-xs">✨ Подарок при регистрации!</div>
-                <div className="text-white/70 text-xs mt-1">Ваш первый спутник</div>
+              <div className="text-center bg-emerald-500/10 rounded-lg p-2 border border-emerald-500/30 min-w-[160px]">
+                <div className="text-emerald-400 font-semibold text-xs">✨ Подарок</div>
+                <div className="text-white/70 text-xs mt-1">при регистрации!</div>
               </div>
             </div>
           </div>
