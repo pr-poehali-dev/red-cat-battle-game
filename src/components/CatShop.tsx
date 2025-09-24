@@ -147,26 +147,26 @@ const CatShop: React.FC<CatShopProps> = ({ gameStats, onPurchase }) => {
             </div>
 
             {/* Характеристики в компактном виде */}
-            <div className="flex gap-1 flex-shrink-0">
-              <div className="bg-red-500/15 rounded-lg p-2 min-w-[40px] text-center border border-red-500/20">
-                <Icon name="Heart" size={12} className="text-red-400 mx-auto mb-1" />
-                <div className="text-xs text-white font-semibold">100</div>
-                <div className="text-xs text-white font-semibold">/100</div>
+            <div className="flex gap-1 flex-shrink-0 overflow-visible">
+              <div className="bg-red-500/15 rounded-lg p-1.5 min-w-[38px] text-center border border-red-500/20">
+                <Icon name="Heart" size={10} className="text-red-400 mx-auto mb-0.5" />
+                <div className="text-xs text-white font-semibold leading-tight">100</div>
+                <div className="text-xs text-white font-semibold leading-tight">/100</div>
               </div>
               
-              <div className="bg-orange-500/15 rounded-lg p-2 min-w-[35px] text-center border border-orange-500/20">
-                <Icon name="Sword" size={12} className="text-orange-400 mx-auto mb-1" />
-                <div className="text-xs text-white font-semibold">15</div>
+              <div className="bg-orange-500/15 rounded-lg p-1.5 min-w-[32px] text-center border border-orange-500/20">
+                <Icon name="Sword" size={10} className="text-orange-400 mx-auto mb-0.5" />
+                <div className="text-xs text-white font-semibold leading-tight">15</div>
               </div>
               
-              <div className="bg-blue-500/15 rounded-lg p-2 min-w-[35px] text-center border border-blue-500/20">
-                <Icon name="Shield" size={12} className="text-blue-400 mx-auto mb-1" />
-                <div className="text-xs text-white font-semibold">8</div>
+              <div className="bg-blue-500/15 rounded-lg p-1.5 min-w-[32px] text-center border border-blue-500/20">
+                <Icon name="Shield" size={10} className="text-blue-400 mx-auto mb-0.5" />
+                <div className="text-xs text-white font-semibold leading-tight">8</div>
               </div>
               
-              <div className="bg-yellow-500/15 rounded-lg p-2 min-w-[35px] text-center border border-yellow-500/20">
-                <Icon name="Zap" size={12} className="text-yellow-400 mx-auto mb-1" />
-                <div className="text-xs text-white font-semibold">12</div>
+              <div className="bg-yellow-500/15 rounded-lg p-1.5 min-w-[32px] text-center border border-yellow-500/20">
+                <Icon name="Zap" size={10} className="text-yellow-400 mx-auto mb-0.5" />
+                <div className="text-xs text-white font-semibold leading-tight">12</div>
               </div>
             </div>
 
