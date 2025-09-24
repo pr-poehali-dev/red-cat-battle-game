@@ -112,7 +112,7 @@ const CatShop: React.FC<CatShopProps> = ({ gameStats, onPurchase }) => {
           </div>
 
           {/* Планшетная и десктопная горизонтальная планировка */}
-          <div className="hidden sm:flex items-center gap-6 min-h-[140px]">
+          <div className="hidden sm:flex items-center gap-3 min-h-[140px] overflow-hidden">
             
             {/* Аватар и базовая информация */}
             <div className="flex items-center gap-4 flex-shrink-0">
@@ -147,43 +147,43 @@ const CatShop: React.FC<CatShopProps> = ({ gameStats, onPurchase }) => {
             </div>
 
             {/* Характеристики в компактном виде */}
-            <div className="flex gap-2 lg:gap-3 flex-shrink-0">
-              <div className="bg-red-500/15 rounded-lg p-2 lg:p-3 min-w-[60px] lg:min-w-[70px] text-center border border-red-500/20">
-                <Icon name="Heart" size={14} className="text-red-400 mx-auto mb-1" />
-                <div className="text-sm text-white font-semibold">100</div>
+            <div className="flex gap-1 flex-shrink-0">
+              <div className="bg-red-500/15 rounded-lg p-2 min-w-[40px] text-center border border-red-500/20">
+                <Icon name="Heart" size={12} className="text-red-400 mx-auto mb-1" />
+                <div className="text-xs text-white font-semibold">100</div>
                 <div className="text-xs text-white font-semibold">/100</div>
               </div>
               
-              <div className="bg-orange-500/15 rounded-lg p-2 lg:p-3 min-w-[50px] lg:min-w-[60px] text-center border border-orange-500/20">
-                <Icon name="Sword" size={14} className="text-orange-400 mx-auto mb-1" />
-                <div className="text-sm text-white font-semibold">15</div>
+              <div className="bg-orange-500/15 rounded-lg p-2 min-w-[35px] text-center border border-orange-500/20">
+                <Icon name="Sword" size={12} className="text-orange-400 mx-auto mb-1" />
+                <div className="text-xs text-white font-semibold">15</div>
               </div>
               
-              <div className="bg-blue-500/15 rounded-lg p-2 lg:p-3 min-w-[50px] lg:min-w-[60px] text-center border border-blue-500/20">
-                <Icon name="Shield" size={14} className="text-blue-400 mx-auto mb-1" />
-                <div className="text-sm text-white font-semibold">8</div>
+              <div className="bg-blue-500/15 rounded-lg p-2 min-w-[35px] text-center border border-blue-500/20">
+                <Icon name="Shield" size={12} className="text-blue-400 mx-auto mb-1" />
+                <div className="text-xs text-white font-semibold">8</div>
               </div>
               
-              <div className="bg-yellow-500/15 rounded-lg p-2 lg:p-3 min-w-[50px] lg:min-w-[60px] text-center border border-yellow-500/20">
-                <Icon name="Zap" size={14} className="text-yellow-400 mx-auto mb-1" />
-                <div className="text-sm text-white font-semibold">12</div>
+              <div className="bg-yellow-500/15 rounded-lg p-2 min-w-[35px] text-center border border-yellow-500/20">
+                <Icon name="Zap" size={12} className="text-yellow-400 mx-auto mb-1" />
+                <div className="text-xs text-white font-semibold">12</div>
               </div>
             </div>
 
             {/* Экипировка */}
-            <div className="flex gap-2 flex-shrink-0">
-              <div className="bg-gray-500/15 rounded-lg p-2 lg:p-3 min-w-[45px] lg:min-w-[50px] text-center border border-gray-500/20">
-                <Icon name="Sword" size={12} className="text-gray-400 mx-auto mb-1" />
+            <div className="flex gap-1 flex-shrink-0">
+              <div className="bg-gray-500/15 rounded-lg p-2 min-w-[30px] text-center border border-gray-500/20">
+                <Icon name="Sword" size={10} className="text-gray-400 mx-auto mb-1" />
                 <div className="text-xs text-white/40 font-medium">—</div>
               </div>
               
-              <div className="bg-gray-500/15 rounded-lg p-2 lg:p-3 min-w-[45px] lg:min-w-[50px] text-center border border-gray-500/20">
-                <Icon name="Shield" size={12} className="text-gray-400 mx-auto mb-1" />
+              <div className="bg-gray-500/15 rounded-lg p-2 min-w-[30px] text-center border border-gray-500/20">
+                <Icon name="Shield" size={10} className="text-gray-400 mx-auto mb-1" />
                 <div className="text-xs text-white/40 font-medium">—</div>
               </div>
               
-              <div className="bg-gray-500/15 rounded-lg p-2 lg:p-3 min-w-[45px] lg:min-w-[50px] text-center border border-gray-500/20">
-                <Icon name="Gem" size={12} className="text-gray-400 mx-auto mb-1" />
+              <div className="bg-gray-500/15 rounded-lg p-2 min-w-[30px] text-center border border-gray-500/20">
+                <Icon name="Gem" size={10} className="text-gray-400 mx-auto mb-1" />
                 <div className="text-xs text-white/40 font-medium">—</div>
               </div>
             </div>
@@ -193,9 +193,9 @@ const CatShop: React.FC<CatShopProps> = ({ gameStats, onPurchase }) => {
               <Badge className="bg-gradient-to-r from-emerald-400 to-green-500 text-white font-bold border border-emerald-500/50 text-sm px-3 py-1">
                 🎁 БЕСПЛАТНО
               </Badge>
-              <div className="text-center bg-emerald-500/10 rounded-lg p-2 border border-emerald-500/30 min-w-[160px]">
+              <div className="text-center bg-emerald-500/10 rounded-lg p-1 border border-emerald-500/30 min-w-[120px]">
                 <div className="text-emerald-400 font-semibold text-xs">✨ Подарок</div>
-                <div className="text-white/70 text-xs mt-1">при регистрации!</div>
+                <div className="text-white/70 text-xs">при регистрации!</div>
               </div>
             </div>
           </div>
