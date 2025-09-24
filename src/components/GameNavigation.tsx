@@ -13,10 +13,11 @@ interface GameNavigationProps {
 }
 
 const navigationTabs: NavigationTab[] = [
-  { id: 'home', label: 'Главная', icon: 'Home' },
+  { id: 'home', label: 'Дом', icon: 'Home' },
   { id: 'fight', label: 'Бои', icon: 'Sword' },
   { id: 'shop', label: 'Магазин', icon: 'ShoppingBag' },
-  { id: 'upgrade', label: 'Улучшения', icon: 'TrendingUp' }
+  { id: 'cats', label: 'Коты', icon: 'Heart' },
+  { id: 'battle', label: 'Арена', icon: 'Zap' }
 ]
 
 const GameNavigation: React.FC<GameNavigationProps> = ({ activeTab, onTabChange }) => {

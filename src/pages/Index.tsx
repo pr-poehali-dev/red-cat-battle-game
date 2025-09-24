@@ -7,6 +7,7 @@ import FightArena from '@/components/FightArena'
 import UpgradeShop from '@/components/UpgradeShop'
 import CatShop from '@/components/CatShop'
 import CatUpgrade from '@/components/CatUpgrade'
+import CatBattle from '@/components/CatBattle'
 import CatsSection from '@/components/CatsSection'
 import { useAudioSystem } from '@/hooks/useAudioSystem'
 import { useAuth } from '@/hooks/useAuth'
@@ -312,6 +313,51 @@ function Index() {
     }
   }
 
+  const handleBattleWin = (reward: number, experience: number) => {
+    audioSystem.playLevelUpSound()
+    
+    setGameStats(prev => ({
+      ...prev,
+      coins: prev.coins + reward,
+      experience: prev.experience + experience
+    }))
+  }
+
+  const handleCatExperience = (catId: string, experience: number) => {
+    setGameStats(prev => ({
+      ...prev,
+      ownedCats: (prev.ownedCats || []).map(cat => {
+        if (cat.id === catId) {
+          const newExp = cat.experience + experience
+          let newLevel = cat.level
+          let newMaxExp = cat.maxExperience
+          let bonusStats = 0
+
+          // Проверяем, повышается ли уровень
+          if (newExp >= cat.maxExperience) {
+            newLevel = cat.level + 1
+            newMaxExp = Math.floor(cat.maxExperience * 1.2)
+            bonusStats = 3 // Бонус за левел-ап в бою
+          }
+
+          return {
+            ...cat,
+            level: newLevel,
+            experience: newExp >= cat.maxExperience ? newExp - cat.maxExperience : newExp,
+            maxExperience: newMaxExp,
+            currentAttack: cat.currentAttack + bonusStats,
+            currentDefense: cat.currentDefense + bonusStats,
+            currentHealth: cat.currentHealth + bonusStats,
+            maxHealth: cat.maxHealth + bonusStats,
+            currentSpeed: cat.currentSpeed + bonusStats,
+            upgradePoints: cat.upgradePoints + (bonusStats > 0 ? 1 : 0)
+          }
+        }
+        return cat
+      })
+    }))
+  }
+
   return (
     <div className="min-h-screen relative overflow-hidden">
       {/* Космический фон */}
@@ -373,6 +419,15 @@ function Index() {
               playerCoins={gameStats.coins}
               onUpgradestat={handleUpgradeStat}
               onLevelUp={handleLevelUpCat}
+            />
+          )}
+
+          {activeTab === 'battle' && (
+            <CatBattle 
+              ownedCats={gameStats.ownedCats || []}
+              playerCoins={gameStats.coins}
+              onBattleWin={handleBattleWin}
+              onCatExperience={handleCatExperience}
             />
           )}
 
