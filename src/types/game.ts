@@ -5,6 +5,29 @@ export interface GameStats {
   experience: number
   maxExperience: number
   clickDamage: number
+  ownedCats: OwnedCat[]
+}
+
+export interface OwnedCat {
+  id: string
+  name: string
+  level: number
+  experience: number
+  maxExperience: number
+  baseHealth: number
+  currentHealth: number
+  maxHealth: number
+  baseAttack: number
+  currentAttack: number
+  baseDefense: number
+  currentDefense: number
+  baseSpeed: number
+  currentSpeed: number
+  rarity: string
+  rarityColor: string
+  borderColor: string
+  image: string
+  upgradePoints: number
 }
 
 export interface Enemy {

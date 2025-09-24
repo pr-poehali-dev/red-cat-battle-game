@@ -110,6 +110,14 @@ const CatShop: React.FC<CatShopProps> = ({ gameStats, onPurchase }) => {
     return cat.isFree || gameStats.coins >= cat.cost
   }
 
+  const isOwned = (catId: string) => {
+    return gameStats.ownedCats?.some(ownedCat => ownedCat.id === catId) || false
+  }
+
+  const isOwned = (catId: string) => {
+    return gameStats.ownedCats?.some(ownedCat => ownedCat.id === catId) || false
+  }
+
   const renderCat = (cat: Cat) => (
     <Card key={cat.id} className={`bg-gradient-to-r from-slate-700/90 to-slate-800/90 backdrop-blur-sm border-2 border-${cat.borderColor} rounded-xl shadow-xl hover:shadow-2xl transition-all duration-300`}>
       <CardContent className="p-4 sm:p-6">
@@ -188,7 +196,16 @@ const CatShop: React.FC<CatShopProps> = ({ gameStats, onPurchase }) => {
           </div>
 
           <div className="flex flex-col gap-3 items-center">
-            {cat.isFree ? (
+            {isOwned(cat.id) ? (
+              <>
+                <Badge className="bg-gradient-to-r from-green-500 to-emerald-500 text-white font-bold border border-green-500/50 text-sm px-4 py-2">
+                  ✅ КУПЛЕН
+                </Badge>
+                <div className="text-center bg-green-500/10 rounded-lg p-2 border border-green-500/30 w-full">
+                  <div className="text-green-400 font-semibold text-sm">🐱 Доступен для прокачки!</div>
+                </div>
+              </>
+            ) : cat.isFree ? (
               <>
                 <Badge className={`bg-gradient-to-r from-${cat.rarityColor}-400 to-${cat.rarityColor}-500 text-white font-bold border border-${cat.rarityColor}-500/50 text-sm px-4 py-2`}>
                   🎁 БЕСПЛАТНО
@@ -290,7 +307,16 @@ const CatShop: React.FC<CatShopProps> = ({ gameStats, onPurchase }) => {
           </div>
 
           <div className="flex flex-col gap-3 ml-auto flex-shrink-0">
-            {cat.isFree ? (
+            {isOwned(cat.id) ? (
+              <>
+                <Badge className="bg-gradient-to-r from-green-500 to-emerald-500 text-white font-bold border border-green-500/50 text-sm px-3 py-1">
+                  ✅ КУПЛЕН
+                </Badge>
+                <div className="text-center bg-green-500/10 rounded-lg p-1 border border-green-500/30 min-w-[120px]">
+                  <div className="text-green-400 font-semibold text-xs">🐱 Прокачивайте!</div>
+                </div>
+              </>
+            ) : cat.isFree ? (
               <>
                 <Badge className={`bg-gradient-to-r from-${cat.rarityColor}-400 to-${cat.rarityColor}-500 text-white font-bold border border-${cat.rarityColor}-500/50 text-sm px-3 py-1`}>
                   🎁 БЕСПЛАТНО

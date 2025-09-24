@@ -26,7 +26,8 @@ export function useGameData(): UseGameDataReturn {
       coins: 0,
       experience: 0,
       maxExperience: 100,
-      clickDamage: 10
+      clickDamage: 10,
+      ownedCats: []
     }
   })
 
@@ -56,7 +57,8 @@ export function useGameData(): UseGameDataReturn {
             coins: gameStats.coins,
             experience: gameStats.experience,
             max_experience: gameStats.maxExperience,
-            click_damage: gameStats.clickDamage
+            click_damage: gameStats.clickDamage,
+            owned_cats: gameStats.ownedCats || []
           }
         })
       })
@@ -101,7 +103,8 @@ export function useGameData(): UseGameDataReturn {
           coins: data.gameStats.coins,
           experience: data.gameStats.experience,
           maxExperience: data.gameStats.maxExperience,
-          clickDamage: data.gameStats.clickDamage
+          clickDamage: data.gameStats.clickDamage,
+          ownedCats: data.gameStats.ownedCats || []
         }
         
         setGameStatsState(serverStats)
