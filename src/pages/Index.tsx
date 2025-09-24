@@ -14,6 +14,7 @@ import { useAudioSystem } from '@/hooks/useAudioSystem'
 import { useAuth } from '@/hooks/useAuth'
 import { useGameData } from '@/hooks/useGameData'
 import { Enemy, DamageNumber, EnergyParticle, Upgrade } from '@/types/game'
+import type { PlayerStats } from '@/components/tournament/RankingSystem'
 
 function Index() {
   const [activeTab, setActiveTab] = useState('home')
@@ -21,6 +22,18 @@ function Index() {
   const { user, logout } = useAuth()
   const { gameStats, setGameStats, saveProgress, lastSaved } = useGameData()
   const [isMusicPlaying, setIsMusicPlaying] = useState(false)
+
+  const [playerStats, setPlayerStats] = useState<PlayerStats>({
+    totalTournaments: 0,
+    tournamentsWon: 0,
+    totalFights: 0,
+    fightsWon: 0,
+    totalCoinsEarned: 0,
+    currentRankPoints: 0,
+    bestCat: '',
+    longestWinStreak: 0,
+    currentWinStreak: 0
+  })
 
   const [currentEnemy, setCurrentEnemy] = useState<Enemy>({
     name: 'Киборг-Собака',
@@ -436,8 +449,11 @@ function Index() {
             <CatTournament 
               ownedCats={gameStats.ownedCats || []}
               playerCoins={gameStats.coins}
+              playerStats={playerStats}
+              playerName={user?.email?.split('@')[0] || 'Игрок'}
               onTournamentWin={handleBattleWin}
               onCatExperience={handleCatExperience}
+              onUpdateStats={(updates) => setPlayerStats(prev => ({ ...prev, ...updates }))}
             />
           )}
 

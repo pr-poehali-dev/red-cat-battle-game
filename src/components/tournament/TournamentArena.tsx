@@ -11,10 +11,11 @@ interface TournamentArenaProps {
   selectedCat: Cat
   onTournamentWin: (reward: number, experience: number) => void
   onCatExperience: (catId: string, experience: number) => void
+  onRankPointsGain: (points: number) => void
   onReset: () => void
 }
 
-export default function TournamentArena({ tournament, selectedCat, onTournamentWin, onCatExperience, onReset }: TournamentArenaProps) {
+export default function TournamentArena({ tournament, selectedCat, onTournamentWin, onCatExperience, onRankPointsGain, onReset }: TournamentArenaProps) {
   const [currentFight, setCurrentFight] = useState(0)
   const [battleLog, setBattleLog] = useState<string[]>([])
   const [isAutoFighting, setIsAutoFighting] = useState(false)
@@ -71,9 +72,12 @@ export default function TournamentArena({ tournament, selectedCat, onTournamentW
         setCurrentFight(currentFight + 1)
         newLog.push(`⚡ Следующий противник...`)
       } else {
+        const rankPoints = tournament.enemies.length * 10 + tournament.requiredLevel * 5
         newLog.push(`👑 ТУРНИР ЗАВЕРШЁН! Финальная награда: +${tournament.finalReward} монет!`)
+        newLog.push(`⭐ Получено ${rankPoints} очков ранга!`)
         onTournamentWin(tournament.finalReward + tournament.enemies.reduce((sum, e) => sum + e.reward, 0), 
                         tournament.enemies.reduce((sum, e) => sum + e.experience, 0))
+        onRankPointsGain(rankPoints)
         setTournamentComplete(true)
       }
       setFightResult('win')
