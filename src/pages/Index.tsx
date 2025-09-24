@@ -5,6 +5,7 @@ import GameNavigation from '@/components/GameNavigation'
 import CatFighter from '@/components/CatFighter'
 import FightArena from '@/components/FightArena'
 import UpgradeShop from '@/components/UpgradeShop'
+import CatShop from '@/components/CatShop'
 import CatsSection from '@/components/CatsSection'
 import { useAudioSystem } from '@/hooks/useAudioSystem'
 import { useAuth } from '@/hooks/useAuth'
@@ -156,6 +157,20 @@ function Index() {
     audioSystem.playUpgradeSound()
   }
 
+  const handlePurchaseCat = (catId: string, cost: number) => {
+    if (gameStats.coins >= cost) {
+      audioSystem.playUpgradeSound()
+      
+      setGameStats(prev => ({
+        ...prev,
+        coins: prev.coins - cost
+      }))
+      
+      // Здесь можно добавить логику добавления кота в коллекцию
+      console.log(`Purchased cat ${catId} for ${cost} coins`)
+    }
+  }
+
   return (
     <div className="min-h-screen relative overflow-hidden">
       {/* Космический фон */}
@@ -202,6 +217,13 @@ function Index() {
 
           {activeTab === 'fight' && (
             <FightArena onStartTournament={handleStartTournament} />
+          )}
+
+          {activeTab === 'shop' && (
+            <CatShop
+              gameStats={gameStats}
+              onPurchase={handlePurchaseCat}
+            />
           )}
 
           {activeTab === 'cats' && (
