@@ -202,40 +202,7 @@ const CatShop: React.FC<CatShopProps> = ({ gameStats, onPurchase }) => {
         </CardContent>
       </Card>
 
-      {/* Описание стартового кота */}
-      <Card className="bg-space-dark/60 backdrop-blur-lg border border-emerald-500/50 shadow-lg">
-        <CardContent className="p-4">
-          <h3 className="text-lg font-bold text-emerald-400 mb-2 flex items-center gap-2">
-            <Icon name="Gift" size={20} className="text-emerald-400" />
-            О Котёнке Мурке
-          </h3>
-          <p className="text-gray-300 text-sm leading-relaxed mb-3">
-            Милый котёнок, который станет вашим первым компаньоном в космических приключениях! 
-            Мурка может быть и не самой сильной, но её преданность и желание учиться делают её 
-            идеальным стартовым питомцем. С правильной тренировкой и экипировкой она может стать 
-            настоящим воином!
-          </p>
-          
-          <div className="grid grid-cols-2 gap-3 text-xs">
-            <div className="bg-emerald-500/10 rounded-lg p-2 border border-emerald-500/30">
-              <div className="text-emerald-400 font-semibold">Специальность:</div>
-              <div className="text-white">Универсал</div>
-            </div>
-            <div className="bg-green-500/10 rounded-lg p-2 border border-green-500/30">
-              <div className="text-green-400 font-semibold">Родина:</div>
-              <div className="text-white">Космическая станция</div>
-            </div>
-            <div className="bg-emerald-400/10 rounded-lg p-2 border border-emerald-400/30">
-              <div className="text-emerald-300 font-semibold">Особенность:</div>
-              <div className="text-white">Быстро обучается</div>
-            </div>
-            <div className="bg-green-400/10 rounded-lg p-2 border border-green-400/30">
-              <div className="text-green-300 font-semibold">Любимое блюдо:</div>
-              <div className="text-white">Космическое молоко</div>
-            </div>
-          </div>
-        </CardContent>
-      </Card>
+
     </div>
   )
 }
