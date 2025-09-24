@@ -8,6 +8,7 @@ import UpgradeShop from '@/components/UpgradeShop'
 import CatShop from '@/components/CatShop'
 import CatUpgrade from '@/components/CatUpgrade'
 import CatBattle from '@/components/CatBattle'
+import CatTournament from '@/components/CatTournament'
 import CatsSection from '@/components/CatsSection'
 import { useAudioSystem } from '@/hooks/useAudioSystem'
 import { useAuth } from '@/hooks/useAuth'
@@ -427,6 +428,15 @@ function Index() {
               ownedCats={gameStats.ownedCats || []}
               playerCoins={gameStats.coins}
               onBattleWin={handleBattleWin}
+              onCatExperience={handleCatExperience}
+            />
+          )}
+
+          {activeTab === 'tournament' && (
+            <CatTournament 
+              ownedCats={gameStats.ownedCats || []}
+              playerCoins={gameStats.coins}
+              onTournamentWin={handleBattleWin}
               onCatExperience={handleCatExperience}
             />
           )}
