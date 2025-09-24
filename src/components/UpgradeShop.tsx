@@ -20,96 +20,191 @@ const UpgradeShop: React.FC<UpgradeShopProps> = ({ gameStats, upgrades, onUpgrad
       
       {/* Горизонтальная карточка кота */}
       <Card className="bg-gradient-to-r from-slate-800/90 to-slate-900/90 backdrop-blur-sm border-2 border-legendary-gold rounded-xl shadow-xl hover:shadow-2xl transition-all duration-300">
-        <CardContent className="p-4">
-          <div className="flex items-center gap-4 min-h-[120px] max-h-[120px] overflow-hidden">
-            
-            {/* Аватар и базовая информация */}
-            <div className="flex items-center gap-3 flex-shrink-0">
+        <CardContent className="p-4 sm:p-6">
+          {/* Мобильная вертикальная планировка */}
+          <div className="flex flex-col sm:hidden gap-4">
+            {/* Аватар и имя по центру */}
+            <div className="flex flex-col items-center gap-3">
               <div className="relative">
-                <div className="w-16 h-16 rounded-full bg-gradient-to-br from-cosmic-purple/20 to-cosmic-cyan/20 p-1">
+                <div className="w-24 h-24 rounded-full bg-gradient-to-br from-cosmic-purple/20 to-cosmic-cyan/20 p-1">
                   <img 
                     src="/img/33f4e16d-16ec-43d8-84f4-6fe73741ec6a.jpg"
                     alt="Космический Воин Мурзик"
                     className="w-full h-full rounded-full object-cover"
                   />
                 </div>
-                <div className="absolute -bottom-1 -right-1 w-5 h-5 rounded-full border-2 border-slate-800 flex items-center justify-center text-xs font-bold border-legendary-gold bg-slate-800 text-legendary-gold">
+                <div className="absolute -bottom-1 -right-1 w-7 h-7 rounded-full border-2 border-slate-800 flex items-center justify-center text-sm font-bold border-legendary-gold bg-slate-800 text-legendary-gold">
+                  50
+                </div>
+              </div>
+              
+              <div className="text-center">
+                <h3 className="text-lg font-bold text-white">Космический Воин Мурзик</h3>
+                <p className="text-sm font-semibold text-legendary-gold mb-2">
+                  Легендарный
+                </p>
+                <div className="w-32 bg-slate-700/50 rounded-full h-2 mx-auto">
+                  <div 
+                    className="bg-gradient-to-r from-cosmic-purple to-cosmic-cyan h-2 rounded-full transition-all duration-500"
+                    style={{ width: '85%' }}
+                  />
+                </div>
+                <div className="text-sm text-white/60 mt-1">
+                  8500/10000
+                </div>
+              </div>
+            </div>
+
+            {/* Характеристики в сетке */}
+            <div className="grid grid-cols-2 gap-3">
+              <div className="bg-red-500/15 rounded-lg p-3 text-center border border-red-500/20">
+                <Icon name="Heart" size={16} className="text-red-400 mx-auto mb-2" />
+                <div className="text-sm text-white font-semibold">2500/2500</div>
+                <div className="text-xs text-red-400">Здоровье</div>
+              </div>
+              
+              <div className="bg-orange-500/15 rounded-lg p-3 text-center border border-orange-500/20">
+                <Icon name="Sword" size={16} className="text-orange-400 mx-auto mb-2" />
+                <div className="text-sm text-white font-semibold">180</div>
+                <div className="text-xs text-green-400">+50 бонус</div>
+              </div>
+              
+              <div className="bg-blue-500/15 rounded-lg p-3 text-center border border-blue-500/20">
+                <Icon name="Shield" size={16} className="text-blue-400 mx-auto mb-2" />
+                <div className="text-sm text-white font-semibold">95</div>
+                <div className="text-xs text-green-400">+25 бонус</div>
+              </div>
+              
+              <div className="bg-yellow-500/15 rounded-lg p-3 text-center border border-yellow-500/20">
+                <Icon name="Zap" size={16} className="text-yellow-400 mx-auto mb-2" />
+                <div className="text-sm text-white font-semibold">120</div>
+                <div className="text-xs text-green-400">+30 бонус</div>
+              </div>
+            </div>
+
+            {/* Экипировка */}
+            <div className="flex justify-center gap-3">
+              <div className="bg-purple-500/15 rounded-lg p-3 min-w-[60px] text-center border border-purple-500/20">
+                <Icon name="Sword" size={14} className="text-purple-400 mx-auto mb-1" />
+                <div className="text-xs text-white font-medium">Оружие +7</div>
+              </div>
+              
+              <div className="bg-cyan-500/15 rounded-lg p-3 min-w-[60px] text-center border border-cyan-500/20">
+                <Icon name="Shield" size={14} className="text-cyan-400 mx-auto mb-1" />
+                <div className="text-xs text-white font-medium">Броня +5</div>
+              </div>
+              
+              <div className="bg-yellow-500/15 rounded-lg p-3 min-w-[60px] text-center border border-yellow-500/20">
+                <Icon name="Gem" size={14} className="text-yellow-400 mx-auto mb-1" />
+                <div className="text-xs text-white font-medium">Аксессуар +3</div>
+              </div>
+            </div>
+
+            {/* Цена и кнопка покупки */}
+            <div className="flex flex-col gap-3 items-center">
+              <Badge className="bg-gradient-to-r from-star-glow to-cosmic-cyan text-space-dark font-bold border border-cosmic-cyan/50 text-sm px-4 py-2">
+                12,500 🪙
+              </Badge>
+              <Button
+                disabled={gameStats.coins < 12500}
+                className="w-full bg-gradient-to-r from-legendary-gold/80 to-yellow-600/80 hover:from-legendary-gold hover:to-yellow-600 disabled:from-legendary-gold/40 disabled:to-yellow-600/40 text-space-dark py-3 px-6 rounded-lg text-sm font-bold transition-all"
+              >
+                <Icon name="ShoppingCart" size={16} className="mr-2" />
+                Купить Космического Воина
+              </Button>
+            </div>
+          </div>
+
+          {/* Планшетная и десктопная горизонтальная планировка */}
+          <div className="hidden sm:flex items-center gap-6 min-h-[140px]">
+            
+            {/* Аватар и базовая информация */}
+            <div className="flex items-center gap-4 flex-shrink-0">
+              <div className="relative">
+                <div className="w-20 h-20 lg:w-24 lg:h-24 rounded-full bg-gradient-to-br from-cosmic-purple/20 to-cosmic-cyan/20 p-1">
+                  <img 
+                    src="/img/33f4e16d-16ec-43d8-84f4-6fe73741ec6a.jpg"
+                    alt="Космический Воин Мурзик"
+                    className="w-full h-full rounded-full object-cover"
+                  />
+                </div>
+                <div className="absolute -bottom-1 -right-1 w-6 h-6 lg:w-7 lg:h-7 rounded-full border-2 border-slate-800 flex items-center justify-center text-sm font-bold border-legendary-gold bg-slate-800 text-legendary-gold">
                   50
                 </div>
               </div>
               
               <div className="min-w-0">
-                <h3 className="text-sm font-bold text-white truncate">Космический Воин Мурзик</h3>
-                <p className="text-xs font-semibold text-legendary-gold">
+                <h3 className="text-base lg:text-lg font-bold text-white">Космический Воин Мурзик</h3>
+                <p className="text-sm font-semibold text-legendary-gold mb-2">
                   Легендарный
                 </p>
-                <div className="w-20 bg-slate-700/50 rounded-full h-1.5 mt-1">
+                <div className="w-28 lg:w-32 bg-slate-700/50 rounded-full h-2">
                   <div 
-                    className="bg-gradient-to-r from-cosmic-purple to-cosmic-cyan h-1.5 rounded-full transition-all duration-500"
+                    className="bg-gradient-to-r from-cosmic-purple to-cosmic-cyan h-2 rounded-full transition-all duration-500"
                     style={{ width: '85%' }}
                   />
                 </div>
-                <div className="text-xs text-white/60 mt-0.5">
+                <div className="text-sm text-white/60 mt-1">
                   8500/10000
                 </div>
               </div>
             </div>
 
             {/* Характеристики в компактном виде */}
-            <div className="flex gap-2 flex-shrink-0">
-              <div className="bg-red-500/15 rounded-lg p-2 min-w-[50px] text-center">
-                <Icon name="Heart" size={12} className="text-red-400 mx-auto mb-1" />
-                <div className="text-xs text-white font-semibold">2500</div>
+            <div className="flex gap-2 lg:gap-3 flex-shrink-0">
+              <div className="bg-red-500/15 rounded-lg p-2 lg:p-3 min-w-[60px] lg:min-w-[70px] text-center border border-red-500/20">
+                <Icon name="Heart" size={14} className="text-red-400 mx-auto mb-1" />
+                <div className="text-sm text-white font-semibold">2500</div>
                 <div className="text-xs text-white font-semibold">/2500</div>
               </div>
               
-              <div className="bg-orange-500/15 rounded-lg p-2 min-w-[40px] text-center">
-                <Icon name="Sword" size={12} className="text-orange-400 mx-auto mb-1" />
-                <div className="text-xs text-white font-semibold">180</div>
+              <div className="bg-orange-500/15 rounded-lg p-2 lg:p-3 min-w-[50px] lg:min-w-[60px] text-center border border-orange-500/20">
+                <Icon name="Sword" size={14} className="text-orange-400 mx-auto mb-1" />
+                <div className="text-sm text-white font-semibold">180</div>
                 <div className="text-xs text-green-400">+50</div>
               </div>
               
-              <div className="bg-blue-500/15 rounded-lg p-2 min-w-[40px] text-center">
-                <Icon name="Shield" size={12} className="text-blue-400 mx-auto mb-1" />
-                <div className="text-xs text-white font-semibold">95</div>
+              <div className="bg-blue-500/15 rounded-lg p-2 lg:p-3 min-w-[50px] lg:min-w-[60px] text-center border border-blue-500/20">
+                <Icon name="Shield" size={14} className="text-blue-400 mx-auto mb-1" />
+                <div className="text-sm text-white font-semibold">95</div>
                 <div className="text-xs text-green-400">+25</div>
               </div>
               
-              <div className="bg-yellow-500/15 rounded-lg p-2 min-w-[40px] text-center">
-                <Icon name="Zap" size={12} className="text-yellow-400 mx-auto mb-1" />
-                <div className="text-xs text-white font-semibold">120</div>
+              <div className="bg-yellow-500/15 rounded-lg p-2 lg:p-3 min-w-[50px] lg:min-w-[60px] text-center border border-yellow-500/20">
+                <Icon name="Zap" size={14} className="text-yellow-400 mx-auto mb-1" />
+                <div className="text-sm text-white font-semibold">120</div>
                 <div className="text-xs text-green-400">+30</div>
               </div>
             </div>
 
             {/* Экипировка */}
-            <div className="flex gap-1 flex-shrink-0">
-              <div className="bg-purple-500/15 rounded-lg p-2 min-w-[35px] text-center">
-                <Icon name="Sword" size={10} className="text-purple-400 mx-auto mb-1" />
+            <div className="flex gap-2 flex-shrink-0">
+              <div className="bg-purple-500/15 rounded-lg p-2 lg:p-3 min-w-[45px] lg:min-w-[50px] text-center border border-purple-500/20">
+                <Icon name="Sword" size={12} className="text-purple-400 mx-auto mb-1" />
                 <div className="text-xs text-white font-medium">+7</div>
               </div>
               
-              <div className="bg-cyan-500/15 rounded-lg p-2 min-w-[35px] text-center">
-                <Icon name="Shield" size={10} className="text-cyan-400 mx-auto mb-1" />
+              <div className="bg-cyan-500/15 rounded-lg p-2 lg:p-3 min-w-[45px] lg:min-w-[50px] text-center border border-cyan-500/20">
+                <Icon name="Shield" size={12} className="text-cyan-400 mx-auto mb-1" />
                 <div className="text-xs text-white font-medium">+5</div>
               </div>
               
-              <div className="bg-yellow-500/15 rounded-lg p-2 min-w-[35px] text-center">
-                <Icon name="Gem" size={10} className="text-yellow-400 mx-auto mb-1" />
+              <div className="bg-yellow-500/15 rounded-lg p-2 lg:p-3 min-w-[45px] lg:min-w-[50px] text-center border border-yellow-500/20">
+                <Icon name="Gem" size={12} className="text-yellow-400 mx-auto mb-1" />
                 <div className="text-xs text-white font-medium">+3</div>
               </div>
             </div>
 
             {/* Цена и кнопка покупки */}
-            <div className="flex flex-col gap-2 ml-auto flex-shrink-0">
-              <Badge className="bg-gradient-to-r from-star-glow to-cosmic-cyan text-space-dark font-bold border border-cosmic-cyan/50 text-xs">
+            <div className="flex flex-col gap-3 ml-auto flex-shrink-0">
+              <Badge className="bg-gradient-to-r from-star-glow to-cosmic-cyan text-space-dark font-bold border border-cosmic-cyan/50 text-sm px-3 py-1">
                 12,500 🪙
               </Badge>
               <Button
                 disabled={gameStats.coins < 12500}
-                className="bg-gradient-to-r from-legendary-gold/80 to-yellow-600/80 hover:from-legendary-gold hover:to-yellow-600 disabled:from-legendary-gold/40 disabled:to-yellow-600/40 text-space-dark py-2 px-3 rounded-lg text-xs font-bold transition-all"
+                className="bg-gradient-to-r from-legendary-gold/80 to-yellow-600/80 hover:from-legendary-gold hover:to-yellow-600 disabled:from-legendary-gold/40 disabled:to-yellow-600/40 text-space-dark py-2 lg:py-3 px-4 lg:px-6 rounded-lg text-sm font-bold transition-all whitespace-nowrap"
               >
-                <Icon name="ShoppingCart" size={12} className="mr-1" />
+                <Icon name="ShoppingCart" size={14} className="mr-2" />
                 Купить
               </Button>
             </div>
