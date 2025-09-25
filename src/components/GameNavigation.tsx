@@ -19,7 +19,8 @@ const navigationTabs: NavigationTab[] = [
   { id: 'cats', label: 'Коты', icon: 'Heart' },
   { id: 'battle', label: 'Арена', icon: 'Zap' },
   { id: 'tournament', label: 'Турнир', icon: 'Trophy' },
-  { id: 'guild', label: 'Гильдии', icon: 'Shield' }
+  { id: 'guild', label: 'Гильдии', icon: 'Shield' },
+  { id: 'quests', label: 'Квесты', icon: 'Target' }
 ]
 
 const GameNavigation: React.FC<GameNavigationProps> = ({ activeTab, onTabChange }) => {

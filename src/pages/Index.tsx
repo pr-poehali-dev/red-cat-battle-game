@@ -16,6 +16,7 @@ import { useGameData } from '@/hooks/useGameData'
 import { Enemy, DamageNumber, EnergyParticle, Upgrade } from '@/types/game'
 import type { PlayerStats } from '@/components/tournament/RankingSystem'
 import GuildSystem from '@/components/guild/GuildSystem'
+import QuestSystem from '@/components/quests/QuestSystem'
 
 function Index() {
   const [activeTab, setActiveTab] = useState('home')
@@ -46,6 +47,9 @@ function Index() {
   const [damageNumbers, setDamageNumbers] = useState<DamageNumber[]>([])
   const [isAttacking, setIsAttacking] = useState(false)
   const [energyParticles, setEnergyParticles] = useState<EnergyParticle[]>([])
+  const [totalBattles, setTotalBattles] = useState(0)
+  const [totalWins, setTotalWins] = useState(0)
+  const [totalTournaments, setTotalTournaments] = useState(0)
 
   const handleCatClick = (event: React.MouseEvent) => {
     const rect = (event.target as HTMLElement).getBoundingClientRect()
@@ -336,6 +340,9 @@ function Index() {
       coins: prev.coins + reward,
       experience: prev.experience + experience
     }))
+    
+    setTotalBattles(prev => prev + 1)
+    setTotalWins(prev => prev + 1)
   }
 
   const handleCatExperience = (catId: string, experience: number) => {
@@ -474,6 +481,26 @@ function Index() {
               ownedCats={gameStats.ownedCats || []}
               onBack={() => setActiveTab('home')}
               onCoinsChange={(amount) => setGameStats(prev => ({ ...prev, coins: prev.coins + amount }))}
+            />
+          )}
+
+          {activeTab === 'quests' && (
+            <QuestSystem
+              playerLevel={gameStats.level}
+              playerCoins={gameStats.coins}
+              ownedCats={gameStats.ownedCats || []}
+              totalBattles={totalBattles}
+              totalWins={totalWins}
+              totalTournaments={totalTournaments}
+              guildLevel={5}
+              onRewardClaimed={(reward) => {
+                if (reward.type === 'coins') {
+                  setGameStats(prev => ({ ...prev, coins: prev.coins + reward.amount }))
+                } else if (reward.type === 'experience') {
+                  setGameStats(prev => ({ ...prev, experience: prev.experience + reward.amount }))
+                }
+              }}
+              onBack={() => setActiveTab('home')}
             />
           )}
         </div>
