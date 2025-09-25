@@ -15,6 +15,7 @@ import { useAuth } from '@/hooks/useAuth'
 import { useGameData } from '@/hooks/useGameData'
 import { Enemy, DamageNumber, EnergyParticle, Upgrade } from '@/types/game'
 import type { PlayerStats } from '@/components/tournament/RankingSystem'
+import GuildSystem from '@/components/guild/GuildSystem'
 
 function Index() {
   const [activeTab, setActiveTab] = useState('home')
@@ -462,6 +463,17 @@ function Index() {
               gameStats={gameStats}
               upgrades={upgrades}
               onUpgrade={handleUpgrade}
+            />
+          )}
+
+          {activeTab === 'guild' && (
+            <GuildSystem
+              playerName={user?.email?.split('@')[0] || 'Игрок'}
+              playerLevel={gameStats.level}
+              playerCoins={gameStats.coins}
+              ownedCats={gameStats.ownedCats || []}
+              onBack={() => setActiveTab('home')}
+              onCoinsChange={(amount) => setGameStats(prev => ({ ...prev, coins: prev.coins + amount }))}
             />
           )}
         </div>
