@@ -9,6 +9,7 @@ import TournamentSelector from './tournament/TournamentSelector'
 import TournamentPreview from './tournament/TournamentPreview'
 import TournamentArena from './tournament/TournamentArena'
 import RankingSystem from './tournament/RankingSystem'
+import SeasonalTournament from './tournament/SeasonalTournament'
 
 interface CatTournamentProps {
   ownedCats: Cat[]
@@ -25,6 +26,7 @@ export default function CatTournament({ ownedCats, playerCoins, playerStats, pla
   const [selectedTournament, setSelectedTournament] = useState<Tournament | null>(null)
   const [isInTournament, setIsInTournament] = useState(false)
   const [showRankings, setShowRankings] = useState(false)
+  const [showSeasonal, setShowSeasonal] = useState(false)
 
   const startTournament = () => {
     if (!selectedCat || !selectedTournament) return
@@ -56,6 +58,16 @@ export default function CatTournament({ ownedCats, playerCoins, playerStats, pla
     })
   }
 
+  const handleSeasonalReward = (reward: any) => {
+    if (reward.type === 'cat') {
+      // Добавляем нового кота (логика добавления должна быть в родительском компоненте)
+      console.log('Получен новый кот:', reward.value)
+    } else if (reward.type === 'coins') {
+      onTournamentWin(reward.value, 0)
+    }
+    // Другие типы наград можно обработать позже
+  }
+
   // Показываем систему рангов
   if (showRankings) {
     return (
@@ -64,6 +76,28 @@ export default function CatTournament({ ownedCats, playerCoins, playerStats, pla
         playerName={playerName}
         onBack={() => setShowRankings(false)}
       />
+    )
+  }
+
+  // Показываем сезонные турниры
+  if (showSeasonal) {
+    return (
+      <div>
+        <Button 
+          onClick={() => setShowSeasonal(false)}
+          className="mb-4"
+          variant="outline"
+        >
+          <Icon name="ArrowLeft" size={16} className="mr-2" />
+          Назад к турнирам
+        </Button>
+        <SeasonalTournament
+          ownedCats={ownedCats}
+          playerCoins={playerCoins}
+          onTournamentWin={onTournamentWin}
+          onRewardEarned={handleSeasonalReward}
+        />
+      </div>
     )
   }
 
@@ -90,14 +124,24 @@ export default function CatTournament({ ownedCats, playerCoins, playerStats, pla
             <h1 className="text-3xl font-bold mb-2">🏆 Космические Турниры</h1>
             <p className="text-gray-600">Проходи серию боёв и получай крутые награды!</p>
           </div>
-          <Button
-            onClick={() => setShowRankings(true)}
-            variant="outline"
-            className="flex items-center gap-2"
-          >
-            <Icon name="Award" size={16} />
-            Ранги
-          </Button>
+          <div className="flex gap-2">
+            <Button
+              onClick={() => setShowSeasonal(true)}
+              variant="outline"
+              className="flex items-center gap-2 bg-gradient-to-r from-purple-600/20 to-pink-600/20 border-purple-500"
+            >
+              <Icon name="Star" size={16} />
+              Сезонные
+            </Button>
+            <Button
+              onClick={() => setShowRankings(true)}
+              variant="outline"
+              className="flex items-center gap-2"
+            >
+              <Icon name="Award" size={16} />
+              Ранги
+            </Button>
+          </div>
         </div>
       </div>
 
