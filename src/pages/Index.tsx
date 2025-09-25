@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
+import GameBackground from '@/components/game/GameBackground'
 import GameHeader from '@/components/GameHeader'
 import GameNavigation from '@/components/GameNavigation'
-import GameBackground from '@/components/game/GameBackground'
 import TabRenderer from '@/components/game/TabRenderer'
 import { GameLogic, UPGRADES, useUpgradeActions } from '@/components/game/GameLogic'
 import { useGameActions } from '@/components/game/GameActions'
@@ -15,7 +15,7 @@ import type { PlayerStats } from '@/components/tournament/RankingSystem'
 function Index() {
   const [activeTab, setActiveTab] = useState('home')
   const audioSystem = useAudioSystem()
-  const { user, logout } = useAuth()
+  const { user } = useAuth()
   const { gameStats, setGameStats, saveProgress, lastSaved } = useGameData()
   const [isMusicPlaying, setIsMusicPlaying] = useState(false)
 

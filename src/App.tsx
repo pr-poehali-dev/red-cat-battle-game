@@ -12,17 +12,8 @@ import { useAuth } from "./hooks/useAuth";
 const queryClient = new QueryClient();
 
 const AuthenticatedApp = () => {
-  const { isAuthenticated, isLoading } = useAuth();
-
-  if (isLoading) {
-    return (
-      <div className="min-h-screen bg-space-dark flex items-center justify-center">
-        <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-cosmic-cyan"></div>
-      </div>
-    );
-  }
-
-  return isAuthenticated ? <Index /> : <LandingPage />;
+  // Временно отключаем аутентификацию, сразу показываем игру
+  return <Index />;
 };
 
 const App = () => (
