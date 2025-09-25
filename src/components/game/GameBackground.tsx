@@ -3,7 +3,7 @@ import StarField from '@/components/StarField'
 
 export default function GameBackground() {
   return (
-    <div className="min-h-screen relative overflow-hidden">
+    <div className="absolute inset-0 overflow-hidden">
       {/* Космический фон */}
       <div className="absolute inset-0 bg-gradient-to-br from-space-darker via-space-dark to-cosmic-purple">
         <div 

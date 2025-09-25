@@ -94,7 +94,7 @@ function Index() {
   }
 
   return (
-    <>
+    <div className="relative min-h-screen">
       <GameBackground />
       
       <div className="relative z-10">
@@ -150,7 +150,7 @@ function Index() {
           onRewardClaimed={onRewardClaimed}
         />
       </div>
-    </>
+    </div>
   )
 }
 
