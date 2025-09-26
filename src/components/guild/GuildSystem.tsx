@@ -212,73 +212,71 @@ export default function GuildSystem({ playerName, playerLevel, playerCoins, owne
         )}
       </div>
       
-      <div className="grid gap-4 md:grid-cols-2">
+      <div className="grid gap-3 md:grid-cols-2 lg:grid-cols-3">
         {MOCK_GUILDS.filter(g => !playerGuild || g.id !== playerGuild.id).map(guild => (
-          <Card key={guild.id} className={`bg-gradient-to-r ${guild.color} bg-opacity-10`}>
-            <CardHeader>
-              <div className="flex justify-between items-start">
-                <div>
-                  <CardTitle className="flex items-center gap-2">
-                    <span className="text-2xl">{guild.banner}</span>
-                    <div>
-                      <span>{guild.name}</span>
-                      <Badge className="ml-2 bg-gray-700">[{guild.tag}]</Badge>
-                    </div>
-                  </CardTitle>
-                  <p className="text-sm text-gray-300 mt-1">{guild.description}</p>
+          <Card key={guild.id} className={`bg-gradient-to-br ${guild.color} bg-opacity-5 border border-gray-700/30 rounded-xl hover:bg-opacity-10 transition-all`}>
+            <CardContent className="p-3 space-y-3">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <span className="text-lg">{guild.banner}</span>
+                  <div>
+                    <h3 className="font-medium text-sm leading-tight">{guild.name}</h3>
+                    <Badge variant="secondary" className="text-xs px-1.5 py-0 mt-0.5">[{guild.tag}]</Badge>
+                  </div>
                 </div>
-                <Badge className={guild.isPublic ? 'bg-green-600' : 'bg-orange-600'}>
-                  {guild.isPublic ? 'Открытая' : 'Закрытая'}
+                <Badge className={`text-xs px-2 py-0.5 ${guild.isPublic ? 'bg-green-600' : 'bg-orange-600'}`}>
+                  {guild.isPublic ? 'Open' : 'Closed'}
                 </Badge>
               </div>
-            </CardHeader>
-            
-            <CardContent className="space-y-4">
-              <div className="grid grid-cols-3 gap-4 text-sm">
-                <div>
-                  <p className="text-gray-400">Уровень</p>
-                  <p className="font-bold text-lg">{guild.level}</p>
+              
+              <p className="text-xs text-gray-400 line-clamp-2 leading-relaxed">{guild.description}</p>
+              
+              <div className="grid grid-cols-3 gap-1.5">
+                <div className="bg-gray-800/40 rounded-lg p-2 text-center">
+                  <div className="text-xs text-gray-400">Level</div>
+                  <div className="font-semibold text-sm">{guild.level}</div>
                 </div>
-                <div>
-                  <p className="text-gray-400">Участники</p>
-                  <p className="font-bold">{guild.members.length}/{guild.maxMembers}</p>
+                <div className="bg-gray-800/40 rounded-lg p-2 text-center">
+                  <div className="text-xs text-gray-400">Members</div>
+                  <div className="font-semibold text-sm">{guild.members.length}/{guild.maxMembers}</div>
                 </div>
-                <div>
-                  <p className="text-gray-400">Бонусы</p>
-                  <p className="font-bold text-yellow-400">+{guild.perks.coinBonus}% 💰</p>
+                <div className="bg-gray-800/40 rounded-lg p-2 text-center">
+                  <div className="text-xs text-gray-400">Bonus</div>
+                  <div className="font-semibold text-sm text-yellow-400">+{guild.perks.coinBonus}%</div>
                 </div>
               </div>
               
-              <div className="space-y-2">
-                <p className="text-xs font-semibold text-blue-300">Опыт гильдии:</p>
-                <Progress value={(guild.experience / guild.maxExperience) * 100} className="h-2" />
-                <p className="text-xs text-gray-400">{guild.experience.toLocaleString()}/{guild.maxExperience.toLocaleString()}</p>
+              <div className="space-y-1">
+                <div className="flex justify-between text-xs">
+                  <span className="text-gray-400">XP</span>
+                  <span className="text-gray-300">{Math.floor(guild.experience/1000)}K/{Math.floor(guild.maxExperience/1000)}K</span>
+                </div>
+                <Progress value={(guild.experience / guild.maxExperience) * 100} className="h-1.5" />
               </div>
               
-              <div className="bg-gray-800/50 p-3 rounded-lg">
-                <p className="text-xs font-semibold text-orange-300 mb-1">Требования:</p>
-                <p className="text-xs">• Уровень: {guild.requirements.minLevel}+</p>
-                <p className="text-xs">• Побед в турнирах: {guild.requirements.minTournamentWins}+</p>
+              <div className="text-xs text-gray-400 bg-gray-800/30 rounded p-2">
+                <span>Req: Lvl {guild.requirements.minLevel}+ • {guild.requirements.minTournamentWins} wins</span>
               </div>
               
-              <div className="flex flex-col gap-2">
+              <div className="flex gap-1.5">
                 <Button
                   onClick={() => setSelectedGuild(guild)}
                   variant="outline"
                   size="sm"
+                  className="flex-1 h-7 text-xs px-2"
                 >
-                  <Icon name="Eye" size={16} className="mr-2" />
-                  Подробнее
+                  <Icon name="Eye" size={12} className="mr-1" />
+                  Info
                 </Button>
                 {!playerGuild && (
                   <Button
                     onClick={() => handleJoinGuild(guild)}
                     disabled={playerLevel < guild.requirements.minLevel || playerCoins < 1000}
-                    className="bg-gradient-to-r from-blue-600 to-purple-600"
+                    className="flex-1 h-7 text-xs px-2 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700"
                     size="sm"
                   >
-                    <Icon name="UserPlus" size={16} className="mr-2" />
-                    Вступить (1000💰)
+                    <Icon name="UserPlus" size={12} className="mr-1" />
+                    Join
                   </Button>
                 )}
               </div>
