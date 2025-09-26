@@ -23,47 +23,43 @@ const getRarityColor = (rarity: string) => {
 
 export default function QuestCard({ quest, type, onClaimReward }: QuestCardProps) {
   return (
-    <Card className={`bg-gradient-to-r ${getRarityColor(quest.rarity)} bg-opacity-10`}>
-      <CardHeader>
-        <div className="flex justify-between items-start">
-          <div>
-            <CardTitle className="flex items-center gap-2 text-lg">
-              <span className="text-2xl">{quest.icon}</span>
-              {quest.title}
-            </CardTitle>
-            <p className="text-sm text-gray-300 mt-1">{quest.description}</p>
+    <Card className={`bg-gradient-to-br ${getRarityColor(quest.rarity)} bg-opacity-5 border border-gray-700/30 rounded-xl hover:bg-opacity-10 transition-all`}>
+      <CardContent className="p-3 space-y-2.5">
+        <div className="flex items-start justify-between">
+          <div className="flex items-center gap-2 flex-1 min-w-0">
+            <span className="text-lg flex-shrink-0">{quest.icon}</span>
+            <div className="min-w-0 flex-1">
+              <h3 className="font-medium text-sm leading-tight truncate">{quest.title}</h3>
+              <p className="text-xs text-gray-400 line-clamp-1 mt-0.5">{quest.description}</p>
+            </div>
           </div>
-          <div className="flex flex-col items-end gap-1">
-            <Badge className={`${getRarityColor(quest.rarity)} text-white`}>
-              {quest.rarity === 'legendary' ? 'Легендарный' :
-               quest.rarity === 'epic' ? 'Эпический' :
-               quest.rarity === 'rare' ? 'Редкий' : 'Обычный'}
+          <div className="flex flex-col items-end gap-1 flex-shrink-0 ml-2">
+            <Badge className={`bg-gradient-to-r ${getRarityColor(quest.rarity)} text-white text-xs px-1.5 py-0`}>
+              {quest.rarity === 'rare' ? 'Редкий' : 'Обычный'}
             </Badge>
             {quest.expiresAt && (
-              <p className="text-xs text-gray-400">
-                До: {quest.expiresAt.toLocaleTimeString('ru', { hour: '2-digit', minute: '2-digit' })}
-              </p>
+              <span className="text-xs text-gray-400 whitespace-nowrap">
+                {quest.expiresAt.toLocaleTimeString('ru', { hour: '2-digit', minute: '2-digit' })}
+              </span>
             )}
           </div>
         </div>
-      </CardHeader>
-      
-      <CardContent className="space-y-4">
-        <div>
-          <div className="flex justify-between text-sm mb-1">
-            <span>Прогресс</span>
-            <span>{quest.progress}/{quest.maxProgress}</span>
+        
+        <div className="space-y-1">
+          <div className="flex justify-between text-xs">
+            <span className="text-gray-400">Прогресс</span>
+            <span className="text-gray-300">{quest.progress}/{quest.maxProgress}</span>
           </div>
-          <Progress value={(quest.progress / quest.maxProgress) * 100} className="h-2" />
+          <Progress value={(quest.progress / quest.maxProgress) * 100} className="h-1.5" />
         </div>
         
-        <div className="space-y-2">
-          <p className="text-sm font-semibold text-yellow-300">🎁 Награды:</p>
-          <div className="flex flex-wrap gap-2">
+        <div className="bg-gray-800/30 rounded-lg p-2">
+          <p className="text-xs text-yellow-300 mb-1">🎁 Награды:</p>
+          <div className="flex flex-wrap gap-1">
             {quest.rewards.map((reward, index) => (
-              <Badge key={index} variant="outline" className="text-xs">
+              <span key={index} className="text-xs text-gray-300 bg-gray-700/50 px-1.5 py-0.5 rounded">
                 {reward.description}
-              </Badge>
+              </span>
             ))}
           </div>
         </div>
@@ -71,25 +67,26 @@ export default function QuestCard({ quest, type, onClaimReward }: QuestCardProps
         <Button
           onClick={() => onClaimReward(quest.id, type)}
           disabled={quest.progress < quest.maxProgress || quest.isCompleted}
-          className={`w-full ${
-            quest.isCompleted ? 'bg-green-600' :
-            quest.progress >= quest.maxProgress ? 'bg-gradient-to-r from-yellow-600 to-orange-600' :
-            'bg-gray-600'
+          className={`w-full h-7 text-xs ${
+            quest.isCompleted ? 'bg-green-600 hover:bg-green-700' :
+            quest.progress >= quest.maxProgress ? 'bg-gradient-to-r from-yellow-600 to-orange-600 hover:from-yellow-700 hover:to-orange-700' :
+            'bg-gray-600 hover:bg-gray-700'
           }`}
+          size="sm"
         >
           {quest.isCompleted ? (
             <>
-              <Icon name="Check" size={16} className="mr-2" />
+              <Icon name="Check" size={12} className="mr-1" />
               Выполнено
             </>
           ) : quest.progress >= quest.maxProgress ? (
             <>
-              <Icon name="Gift" size={16} className="mr-2" />
-              Забрать награду
+              <Icon name="Gift" size={12} className="mr-1" />
+              Забрать
             </>
           ) : (
             <>
-              <Icon name="Clock" size={16} className="mr-2" />
+              <Icon name="Clock" size={12} className="mr-1" />
               В процессе
             </>
           )}
