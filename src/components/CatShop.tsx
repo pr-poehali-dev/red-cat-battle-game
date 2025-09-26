@@ -240,7 +240,7 @@ const CatShop: React.FC<CatShopProps> = ({ gameStats, onPurchase }) => {
             <div className="relative">
               <div className={`w-20 h-20 lg:w-24 lg:h-24 rounded-full bg-gradient-to-br from-${cat.rarityColor}-400/20 to-${cat.rarityColor}-500/20 p-1`}>
                 <img 
-                  src={cat.image}
+                  src="/img/e413d9a9-72f7-49b8-9b1b-75e0d0582014.jpg"
                   alt={cat.name}
                   className="w-full h-full rounded-full object-cover"
                 />
