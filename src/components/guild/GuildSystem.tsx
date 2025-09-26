@@ -261,11 +261,11 @@ export default function GuildSystem({ playerName, playerLevel, playerCoins, owne
                 <p className="text-xs">• Побед в турнирах: {guild.requirements.minTournamentWins}+</p>
               </div>
               
-              <div className="flex gap-2">
+              <div className="flex flex-col gap-2">
                 <Button
                   onClick={() => setSelectedGuild(guild)}
                   variant="outline"
-                  className="flex-1"
+                  size="sm"
                 >
                   <Icon name="Eye" size={16} className="mr-2" />
                   Подробнее
@@ -274,7 +274,8 @@ export default function GuildSystem({ playerName, playerLevel, playerCoins, owne
                   <Button
                     onClick={() => handleJoinGuild(guild)}
                     disabled={playerLevel < guild.requirements.minLevel || playerCoins < 1000}
-                    className="flex-1 bg-gradient-to-r from-blue-600 to-purple-600"
+                    className="bg-gradient-to-r from-blue-600 to-purple-600"
+                    size="sm"
                   >
                     <Icon name="UserPlus" size={16} className="mr-2" />
                     Вступить (1000💰)
