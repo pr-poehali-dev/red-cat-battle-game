@@ -44,7 +44,7 @@ const CatShop: React.FC<CatShopProps> = ({ gameStats, onPurchase }) => {
       speed: 12,
       cost: 0,
       isFree: true,
-      image: '/img/33f4e16d-16ec-43d8-84f4-6fe73741ec6a.jpg',
+      image: '/img/f6eb0f9c-f9c5-4c33-bedf-2d7768ff2647.jpg',
       description: 'Ваш первый спутник'
     },
     {
@@ -61,7 +61,7 @@ const CatShop: React.FC<CatShopProps> = ({ gameStats, onPurchase }) => {
       speed: 25,
       cost: 500,
       isFree: false,
-      image: '/img/33f4e16d-16ec-43d8-84f4-6fe73741ec6a.jpg',
+      image: '/img/ce93b65e-0972-441d-a1d1-8f568244d230.jpg',
       description: 'Могучий космический охотник'
     },
     {
@@ -78,7 +78,7 @@ const CatShop: React.FC<CatShopProps> = ({ gameStats, onPurchase }) => {
       speed: 45,
       cost: 1500,
       isFree: false,
-      image: '/img/33f4e16d-16ec-43d8-84f4-6fe73741ec6a.jpg',
+      image: '/img/e810ce63-f19a-449d-902d-c68d68fcb196.jpg',
       description: 'Легендарный защитник галактики'
     },
     {
@@ -95,7 +95,7 @@ const CatShop: React.FC<CatShopProps> = ({ gameStats, onPurchase }) => {
       speed: 35,
       cost: 3000,
       isFree: false,
-      image: '/img/33f4e16d-16ec-43d8-84f4-6fe73741ec6a.jpg',
+      image: '/img/67ad7a6c-d8cc-4017-8617-b22aa919d8d1.jpg',
       description: 'Величественный повелитель звёзд'
     }
   ])
