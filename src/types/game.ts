@@ -5,6 +5,9 @@ export interface GameStats {
   experience: number
   maxExperience: number
   clickDamage: number
+  energy: number
+  maxEnergy: number
+  energyRechargeTime: number | null
   ownedCats: OwnedCat[]
 }
 

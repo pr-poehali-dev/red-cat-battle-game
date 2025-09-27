@@ -1,9 +1,47 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Card, CardContent } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Progress } from '@/components/ui/progress'
 import Icon from '@/components/ui/icon'
 import { GameStats, Enemy, DamageNumber, EnergyParticle } from '@/types/game'
+
+interface EnergyTimerProps {
+  rechargeTime: number
+}
+
+const EnergyTimer: React.FC<EnergyTimerProps> = ({ rechargeTime }) => {
+  const [timeLeft, setTimeLeft] = useState<string>('')
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      const now = Date.now()
+      const rechargeCompleteTime = rechargeTime + (3 * 60 * 60 * 1000) // 3 часа
+      const timeDiff = rechargeCompleteTime - now
+
+      if (timeDiff <= 0) {
+        setTimeLeft('00:00:00')
+        clearInterval(interval)
+        return
+      }
+
+      const hours = Math.floor(timeDiff / (60 * 60 * 1000))
+      const minutes = Math.floor((timeDiff % (60 * 60 * 1000)) / (60 * 1000))
+      const seconds = Math.floor((timeDiff % (60 * 1000)) / 1000)
+
+      setTimeLeft(`${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`)
+    }, 1000)
+
+    return () => clearInterval(interval)
+  }, [rechargeTime])
+
+  return (
+    <div className="text-center mt-2 p-2 bg-orange-500/10 rounded border border-orange-500/30">
+      <div className="text-orange-400 text-xs font-semibold">
+        ⏰ Восстановление через: {timeLeft}
+      </div>
+    </div>
+  )
+}
 
 interface CatFighterProps {
   gameStats: GameStats
@@ -83,6 +121,21 @@ const CatFighter: React.FC<CatFighterProps> = ({
               value={(gameStats.experience / gameStats.maxExperience) * 100} 
               className="h-3"
             />
+          </div>
+
+          {/* Energy Bar */}
+          <div className="mt-4">
+            <div className="flex justify-between text-sm font-semibold mb-2 text-white">
+              <span>Энергия</span>
+              <span>{gameStats.energy}/{gameStats.maxEnergy}</span>
+            </div>
+            <Progress 
+              value={(gameStats.energy / gameStats.maxEnergy) * 100} 
+              className="h-3"
+            />
+            {gameStats.energy === 0 && gameStats.energyRechargeTime && (
+              <EnergyTimer rechargeTime={gameStats.energyRechargeTime} />
+            )}
           </div>
         </CardContent>
       </Card>

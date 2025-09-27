@@ -20,15 +20,32 @@ export function useGameData(): UseGameDataReturn {
   
   const [gameStats, setGameStatsState] = useState<GameStats>(() => {
     const saved = localStorage.getItem('catKombatGameStats')
-    return saved ? JSON.parse(saved) : {
+    const defaultStats = {
       level: 1,
       power: 100,
       coins: 0,
       experience: 0,
       maxExperience: 100,
       clickDamage: 10,
+      energy: 100,
+      maxEnergy: 100,
+      energyRechargeTime: null,
       ownedCats: []
     }
+    
+    if (saved) {
+      const parsedStats = JSON.parse(saved)
+      // Добавляем новые поля если их нет в сохраненных данных
+      return {
+        ...defaultStats,
+        ...parsedStats,
+        energy: parsedStats.energy ?? 100,
+        maxEnergy: parsedStats.maxEnergy ?? 100,
+        energyRechargeTime: parsedStats.energyRechargeTime ?? null
+      }
+    }
+    
+    return defaultStats
   })
 
   const setGameStats = (stats: GameStats | ((prev: GameStats) => GameStats)) => {

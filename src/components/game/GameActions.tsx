@@ -24,12 +24,29 @@ export const useGameActions = ({
 }: GameActionsProps) => {
 
   const handleCatClick = (event: React.MouseEvent) => {
+    // Проверяем есть ли энергия
+    if (gameStats.energy <= 0) {
+      return // Не можем атаковать без энергии
+    }
+    
     const rect = (event.target as HTMLElement).getBoundingClientRect()
     const x = event.clientX - rect.left
     const y = event.clientY - rect.top
     
     setIsAttacking(true)
     setTimeout(() => setIsAttacking(false), 200)
+    
+    // Тратим энергию и запускаем таймер если энергия закончилась
+    setGameStats(prev => {
+      const newEnergy = prev.energy - 1
+      const energyRechargeTime = newEnergy === 0 ? Date.now() : prev.energyRechargeTime
+      
+      return {
+        ...prev,
+        energy: newEnergy,
+        energyRechargeTime
+      }
+    })
     
     // Играем звук атаки
     audioSystem.playAttackSound()

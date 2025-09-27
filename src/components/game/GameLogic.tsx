@@ -33,6 +33,37 @@ export function GameLogic({
     }
   }, [gameStats.experience, gameStats.maxExperience, audioSystem, setGameStats])
 
+  // Система восстановления энергии
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setGameStats(prev => {
+        const now = Date.now()
+        
+        // Если энергия на максимуме или нет времени зарядки, ничего не делаем
+        if (prev.energy >= prev.maxEnergy || !prev.energyRechargeTime) {
+          return prev
+        }
+        
+        // Время зарядки 3 часа = 3 * 60 * 60 * 1000 = 10800000 мс
+        const rechargeTime = 3 * 60 * 60 * 1000
+        const timeElapsed = now - prev.energyRechargeTime
+        
+        // Если прошло 3 часа, восстанавливаем энергию
+        if (timeElapsed >= rechargeTime) {
+          return {
+            ...prev,
+            energy: prev.maxEnergy,
+            energyRechargeTime: null
+          }
+        }
+        
+        return prev
+      })
+    }, 1000) // Проверяем каждую секунду
+    
+    return () => clearInterval(interval)
+  }, [setGameStats])
+
   // Автозапуск фоновой музыки при первом взаимодействии
   useEffect(() => {
     const startMusic = () => {
