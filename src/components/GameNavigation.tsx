@@ -40,7 +40,7 @@ const GameNavigation: React.FC<GameNavigationProps> = ({ activeTab, onTabChange 
           >
             <div className="flex flex-col items-center gap-1">
               <Icon name={tab.icon as any} size={18} />
-              <span>{tab.label}</span>
+              <span className="hidden md:block">{tab.label}</span>
             </div>
           </button>
         ))}
