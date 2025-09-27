@@ -48,6 +48,24 @@ const CatShop: React.FC<CatShopProps> = ({ gameStats, onPurchase }) => {
       image: '/img/33f4e16d-16ec-43d8-84f4-6fe73741ec6a.jpg',
       description: 'Ваш первый спутник',
       detailedDescription: 'Милый рыжий котёнок с зелёными глазами. Хоть он и не самый сильный, зато очень преданный и готов сражаться рядом с вами в любых космических приключениях!'
+    },
+    {
+      id: 'robot-cat',
+      name: 'Кот робот',
+      level: 1,
+      rarity: 'Редкий',
+      rarityColor: 'blue',
+      borderColor: 'blue-500',
+      health: 100,
+      maxHealth: 100,
+      attack: 15,
+      defense: 8,
+      speed: 12,
+      cost: 5500,
+      isFree: false,
+      image: '/img/ac3a3770-eeb2-4526-927b-ed3d86c0d072.jpg',
+      description: 'Киберспутник из будущего',
+      detailedDescription: 'Продвинутый кот-робот с металлической броней и светящимися глазами. Создан по новейшим технологиям для космических миссий. Обладает теми же базовыми характеристиками, что и обычные коты, но выглядит намного круче!'
     }
   ])
 
