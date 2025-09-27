@@ -27,8 +27,8 @@ export function useGameData(): UseGameDataReturn {
       experience: 0,
       maxExperience: 100,
       clickDamage: 10,
-      energy: 100,
-      maxEnergy: 100,
+      energy: 300,
+      maxEnergy: 300,
       energyRechargeTime: null,
       ownedCats: []
     }
@@ -39,8 +39,8 @@ export function useGameData(): UseGameDataReturn {
       return {
         ...defaultStats,
         ...parsedStats,
-        energy: parsedStats.energy ?? 100,
-        maxEnergy: parsedStats.maxEnergy ?? 100,
+        energy: parsedStats.energy ?? 300,
+        maxEnergy: parsedStats.maxEnergy ?? 300,
         energyRechargeTime: parsedStats.energyRechargeTime ?? null
       }
     }
