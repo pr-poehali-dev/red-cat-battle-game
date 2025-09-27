@@ -102,6 +102,31 @@ const CatShop: React.FC<CatShopProps> = ({ gameStats, onPurchase }) => {
       image: '/img/ddfb6b04-6eaa-40fb-bc99-d8c65369c188.jpg',
       description: 'Повелитель грозы и молний',
       detailedDescription: 'Мифический электрический кот, владеющий силой космических гроз. Его броня пронизана молниями, а скорость превосходит саму электрическую энергию. Абсолютный владыка бури - сильнейший из всех существующих котов!'
+    },
+    {
+      id: 'metal-cat',
+      name: 'Кот Металл',
+      level: 1,
+      experience: 0,
+      maxExperience: 100,
+      baseHealth: 2000,
+      currentHealth: 2000,
+      maxHealth: 2000,
+      baseAttack: 300,
+      currentAttack: 300,
+      baseDefense: 200,
+      currentDefense: 200,
+      baseSpeed: 240,
+      currentSpeed: 240,
+      rarity: 'Эпический',
+      rarityColor: 'slate',
+      borderColor: 'slate-500',
+      upgradePoints: 0,
+      cost: 970900,
+      isFree: false,
+      image: '/img/c886a730-c098-4c1d-976c-7115aa73bb6c.jpg',
+      description: 'Непробиваемый металлический воин',
+      detailedDescription: 'Эпический кибернетический кот, закованный в сверхпрочную металлическую броню. Его тело состоит из редких космических сплавов, а глаза светятся красным огнём. Неуязвимый защитник с мощнейшими стальными когтями - настоящая машина для разрушения врагов!'
     }
   ])
 

@@ -86,6 +86,27 @@ export const CAT_TEMPLATES = {
     borderColor: 'purple-500',
     image: '/img/ddfb6b04-6eaa-40fb-bc99-d8c65369c188.jpg',
     upgradePoints: 0
+  },
+  'metal-cat': {
+    id: 'metal-cat',
+    name: 'Кот Металл',
+    level: 1,
+    experience: 0,
+    maxExperience: 100,
+    baseHealth: 2000,
+    currentHealth: 2000,
+    maxHealth: 2000,
+    baseAttack: 300,
+    currentAttack: 300,
+    baseDefense: 200,
+    currentDefense: 200,
+    baseSpeed: 240,
+    currentSpeed: 240,
+    rarity: 'Эпический',
+    rarityColor: 'slate',
+    borderColor: 'slate-500',
+    image: '/img/c886a730-c098-4c1d-976c-7115aa73bb6c.jpg',
+    upgradePoints: 0
   }
 }
 
