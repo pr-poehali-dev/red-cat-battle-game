@@ -81,7 +81,7 @@ const CatShop: React.FC<CatShopProps> = ({ gameStats, onPurchase }) => {
       speed: 60,
       cost: 28400,
       isFree: false,
-      image: '/img/548ce9e4-3df4-4e2a-999e-579311a20b64.jpg',
+      image: '/img/13f48431-647c-4a9e-b873-9a11a4edc0f4.jpg',
       description: 'Повелитель огня и лавы',
       detailedDescription: 'Легендарный огненный кот, рождённый в недрах космических вулканов. Его шерсть пылает как лава, а глаза горят ярче звёзд. Самый мощный боец во всей галактике - его сила превосходит всех остальных котов!'
     }
