@@ -60,6 +60,11 @@ const CatFighter: React.FC<CatFighterProps> = ({
   energyParticles,
   onCatClick
 }) => {
+  // Получаем активного кота
+  const activeCat = gameStats.ownedCats?.find(cat => cat.id === gameStats.activeCatId) || gameStats.ownedCats?.[0]
+  const catImage = activeCat?.image || '/img/33f4e16d-16ec-43d8-84f4-6fe73741ec6a.jpg'
+  const catName = activeCat?.name || 'Cyber Cat Fighter'
+
   return (
     <div className="space-y-6">
       {/* Cat Fighter */}
@@ -71,8 +76,8 @@ const CatFighter: React.FC<CatFighterProps> = ({
               onClick={onCatClick}
             >
               <img 
-                src="/img/33f4e16d-16ec-43d8-84f4-6fe73741ec6a.jpg" 
-                alt="Cyber Cat Fighter" 
+                src={catImage} 
+                alt={catName} 
                 className="w-48 h-48 mx-auto rounded-xl border-4 border-cosmic-cyan shadow-2xl shadow-cosmic-cyan/70 object-cover"
               />
               {damageNumbers.map(damage => (

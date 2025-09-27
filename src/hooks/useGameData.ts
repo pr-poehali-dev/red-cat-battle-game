@@ -30,7 +30,8 @@ export function useGameData(): UseGameDataReturn {
       energy: 300,
       maxEnergy: 300,
       energyRechargeTime: null,
-      ownedCats: []
+      ownedCats: [],
+      activeCatId: undefined
     }
     
     if (saved) {
@@ -41,7 +42,8 @@ export function useGameData(): UseGameDataReturn {
         ...parsedStats,
         energy: parsedStats.energy ?? 300,
         maxEnergy: parsedStats.maxEnergy ?? 300,
-        energyRechargeTime: parsedStats.energyRechargeTime ?? null
+        energyRechargeTime: parsedStats.energyRechargeTime ?? null,
+        activeCatId: parsedStats.activeCatId
       }
     }
     
@@ -78,7 +80,8 @@ export function useGameData(): UseGameDataReturn {
             energy: gameStats.energy,
             max_energy: gameStats.maxEnergy,
             energy_recharge_time: gameStats.energyRechargeTime,
-            owned_cats: gameStats.ownedCats || []
+            owned_cats: gameStats.ownedCats || [],
+            active_cat_id: gameStats.activeCatId
           }
         })
       })
@@ -127,7 +130,8 @@ export function useGameData(): UseGameDataReturn {
           energy: data.gameStats.energy ?? 300,
           maxEnergy: data.gameStats.maxEnergy ?? 300,
           energyRechargeTime: data.gameStats.energyRechargeTime ?? null,
-          ownedCats: data.gameStats.ownedCats || []
+          ownedCats: data.gameStats.ownedCats || [],
+          activeCatId: data.gameStats.activeCatId
         }
         
         setGameStatsState(serverStats)

@@ -9,6 +9,7 @@ export interface GameStats {
   maxEnergy: number
   energyRechargeTime: number | null
   ownedCats: OwnedCat[]
+  activeCatId?: string
 }
 
 export interface OwnedCat {
