@@ -44,7 +44,7 @@ const CatShop: React.FC<CatShopProps> = ({ gameStats, onPurchase }) => {
       speed: 12,
       cost: 0,
       isFree: true,
-      image: '/img/f6eb0f9c-f9c5-4c33-bedf-2d7768ff2647.jpg',
+      image: '/img/1f17ce62-6511-484e-912c-c4294442ed5a.jpg',
       description: 'Ваш первый спутник'
     },
     {
