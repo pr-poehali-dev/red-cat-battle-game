@@ -50,24 +50,6 @@ const CatShop: React.FC<CatShopProps> = ({ gameStats, onPurchase }) => {
       detailedDescription: 'Милый рыжий котёнок с зелёными глазами. Хоть он и не самый сильный, зато очень преданный и готов сражаться рядом с вами в любых космических приключениях!'
     },
     {
-      id: 'tiger',
-      name: 'Космический Тигр',
-      level: 5,
-      rarity: 'Редкий',
-      rarityColor: 'blue',
-      borderColor: 'blue-500',
-      health: 250,
-      maxHealth: 250,
-      attack: 35,
-      defense: 20,
-      speed: 25,
-      cost: 500,
-      isFree: false,
-      image: '/img/5d4262b2-4440-4fc8-b5f6-95271ba37bc4.jpg',
-      description: 'Могучий космический охотник',
-      detailedDescription: 'Величественный тигр из далёких звёздных систем. Его космические полосы светятся в темноте, а его мощь способна пробить броню любого врага!'
-    },
-    {
       id: 'phoenix',
       name: 'Звёздный Феникс',
       level: 10,
