@@ -71,88 +71,71 @@ const CatCard: React.FC<CatCardProps> = ({
       </div>
 
       {/* Характеристики в компактном виде */}
-      <div className="flex gap-2 flex-shrink-0">
-        <div className="bg-red-500/15 rounded-lg p-2 min-w-[50px] text-center">
-          <Icon name="Heart" size={12} className="text-red-400 mx-auto mb-1" />
-          <div className="text-xs text-white font-semibold">{cat.health}</div>
-          <div className="text-xs text-white font-semibold">/{totalHealth}</div>
+      <div className="flex gap-1 flex-shrink-0">
+        <div className="bg-red-500/15 rounded p-1.5 w-10 text-center">
+          <Icon name="Heart" size={10} className="text-red-400 mx-auto mb-0.5" />
+          <div className="text-xs text-white font-semibold leading-tight">{cat.health}</div>
         </div>
         
-        <div className="bg-orange-500/15 rounded-lg p-2 min-w-[40px] text-center">
-          <Icon name="Sword" size={12} className="text-orange-400 mx-auto mb-1" />
-          <div className="text-xs text-white font-semibold">{totalAttack}</div>
-          {totalAttack !== cat.attack && (
-            <div className="text-xs text-green-400">+{totalAttack - cat.attack}</div>
-          )}
+        <div className="bg-orange-500/15 rounded p-1.5 w-10 text-center">
+          <Icon name="Sword" size={10} className="text-orange-400 mx-auto mb-0.5" />
+          <div className="text-xs text-white font-semibold leading-tight">{totalAttack}</div>
         </div>
         
-        <div className="bg-blue-500/15 rounded-lg p-2 min-w-[40px] text-center">
-          <Icon name="Shield" size={12} className="text-blue-400 mx-auto mb-1" />
-          <div className="text-xs text-white font-semibold">{totalDefense}</div>
-          {totalDefense !== cat.defense && (
-            <div className="text-xs text-green-400">+{totalDefense - cat.defense}</div>
-          )}
+        <div className="bg-blue-500/15 rounded p-1.5 w-10 text-center">
+          <Icon name="Shield" size={10} className="text-blue-400 mx-auto mb-0.5" />
+          <div className="text-xs text-white font-semibold leading-tight">{totalDefense}</div>
         </div>
         
-        <div className="bg-yellow-500/15 rounded-lg p-2 min-w-[40px] text-center">
-          <Icon name="Zap" size={12} className="text-yellow-400 mx-auto mb-1" />
-          <div className="text-xs text-white font-semibold">{totalSpeed}</div>
-          {totalSpeed !== cat.speed && (
-            <div className="text-xs text-green-400">+{totalSpeed - cat.speed}</div>
-          )}
+        <div className="bg-yellow-500/15 rounded p-1.5 w-10 text-center">
+          <Icon name="Zap" size={10} className="text-yellow-400 mx-auto mb-0.5" />
+          <div className="text-xs text-white font-semibold leading-tight">{totalSpeed}</div>
         </div>
       </div>
 
       {/* Экипировка */}
       <div className="flex gap-1 flex-shrink-0">
-        <div className="bg-purple-500/15 rounded-lg p-2 min-w-[35px] text-center">
-          <Icon name="Sword" size={10} className="text-purple-400 mx-auto mb-1" />
-          <div className="text-xs text-white font-medium">
+        <div className="bg-purple-500/15 rounded p-1 w-8 text-center">
+          <Icon name="Sword" size={8} className="text-purple-400 mx-auto mb-0.5" />
+          <div className="text-xs text-white font-medium leading-none">
             {cat.equipment.weapon ? `+${cat.equipment.weapon.level || 1}` : '—'}
           </div>
         </div>
         
-        <div className="bg-cyan-500/15 rounded-lg p-2 min-w-[35px] text-center">
-          <Icon name="Shield" size={10} className="text-cyan-400 mx-auto mb-1" />
-          <div className="text-xs text-white font-medium">
+        <div className="bg-cyan-500/15 rounded p-1 w-8 text-center">
+          <Icon name="Shield" size={8} className="text-cyan-400 mx-auto mb-0.5" />
+          <div className="text-xs text-white font-medium leading-none">
             {cat.equipment.armor ? `+${cat.equipment.armor.level || 1}` : '—'}
           </div>
         </div>
         
-        <div className="bg-yellow-500/15 rounded-lg p-2 min-w-[35px] text-center">
-          <Icon name="Gem" size={10} className="text-yellow-400 mx-auto mb-1" />
-          <div className="text-xs text-white font-medium">
+        <div className="bg-yellow-500/15 rounded p-1 w-8 text-center">
+          <Icon name="Gem" size={8} className="text-yellow-400 mx-auto mb-0.5" />
+          <div className="text-xs text-white font-medium leading-none">
             {cat.equipment.accessory ? `+${cat.equipment.accessory.level || 1}` : '—'}
           </div>
         </div>
       </div>
 
       {/* Кнопки действий */}
-      <div className="flex gap-2 ml-auto flex-shrink-0">
+      <div className="flex gap-1 ml-auto flex-shrink-0">
         <button 
           onClick={onTrain}
           disabled={isTraining}
-          className="bg-gradient-to-r from-purple-600/80 to-purple-500/80 hover:from-purple-600 hover:to-purple-500 disabled:from-purple-600/40 disabled:to-purple-500/40 disabled:cursor-not-allowed text-white py-2 px-3 rounded-lg text-xs font-medium transition-all flex items-center gap-1"
+          className="bg-gradient-to-r from-purple-600/80 to-purple-500/80 hover:from-purple-600 hover:to-purple-500 disabled:from-purple-600/40 disabled:to-purple-500/40 disabled:cursor-not-allowed text-white p-2 rounded text-xs font-medium transition-all flex items-center"
         >
           {isTraining ? (
-            <>
-              <div className="animate-spin rounded-full h-3 w-3 border border-white border-t-transparent"></div>
-              <span className="hidden sm:inline">Тренировка...</span>
-            </>
+            <div className="animate-spin rounded-full h-3 w-3 border border-white border-t-transparent"></div>
           ) : (
-            <>
-              <Icon name="Dumbbell" size={12} />
-              <span className="hidden sm:inline">Тренировать</span>
-            </>
+            <Icon name="Dumbbell" size={12} />
           )}
         </button>
         
         <button 
           onClick={onEquip}
-          className="bg-gradient-to-r from-cyan-600/80 to-cyan-500/80 hover:from-cyan-600 hover:to-cyan-500 text-white py-2 px-3 rounded-lg text-xs font-medium transition-all flex items-center gap-1"
+          className="bg-gradient-to-r from-cyan-600/80 to-cyan-500/80 hover:from-cyan-600 hover:to-cyan-500 text-white p-2 rounded text-xs font-medium transition-all flex items-center"
         >
           <Icon name="Package" size={12} />
-          <span className="hidden sm:inline">Экипировка</span>
         </button>
       </div>
 
