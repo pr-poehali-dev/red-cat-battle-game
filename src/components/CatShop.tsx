@@ -66,6 +66,24 @@ const CatShop: React.FC<CatShopProps> = ({ gameStats, onPurchase }) => {
       image: '/img/ac3a3770-eeb2-4526-927b-ed3d86c0d072.jpg',
       description: 'Киберспутник из будущего',
       detailedDescription: 'Продвинутый кот-робот с металлической броней и светящимися глазами. Создан по новейшим технологиям для космических миссий. Его мощные системы делают его в разы сильнее обычных котов!'
+    },
+    {
+      id: 'volcano-cat',
+      name: 'Кот Вулкан',
+      level: 1,
+      rarity: 'Легендарный',
+      rarityColor: 'red',
+      borderColor: 'red-500',
+      health: 500,
+      maxHealth: 500,
+      attack: 75,
+      defense: 50,
+      speed: 60,
+      cost: 28400,
+      isFree: false,
+      image: '/img/90386bd2-66b8-4376-b692-457e9410d4e6.jpg',
+      description: 'Повелитель огня и лавы',
+      detailedDescription: 'Легендарный огненный кот, рождённый в недрах космических вулканов. Его шерсть пылает как лава, а глаза горят ярче звёзд. Самый мощный боец во всей галактике - его сила превосходит всех остальных котов!'
     }
   ])
 
