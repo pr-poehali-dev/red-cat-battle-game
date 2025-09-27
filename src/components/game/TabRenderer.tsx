@@ -1,7 +1,7 @@
 import React from 'react'
 import CatFighter from '@/components/CatFighter'
 import FightArena from '@/components/FightArena'
-
+import CatShop from '@/components/CatShop'
 import CatUpgrade from '@/components/CatUpgrade'
 import CatBattle from '@/components/CatBattle'
 import CatTournament from '@/components/CatTournament'
@@ -81,6 +81,13 @@ export default function TabRenderer({
 
       {activeTab === 'fight' && (
         <FightArena onStartTournament={onStartTournament} />
+      )}
+
+      {activeTab === 'shop' && (
+        <CatShop
+          gameStats={gameStats}
+          onPurchase={onPurchaseCat}
+        />
       )}
 
       {activeTab === 'cats' && (
