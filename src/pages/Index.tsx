@@ -13,6 +13,12 @@ import { Enemy, DamageNumber, EnergyParticle } from '@/types/game'
 import type { PlayerStats } from '@/components/tournament/RankingSystem'
 
 function Index() {
+  // Принудительно устанавливаем темную тему
+  useEffect(() => {
+    document.documentElement.classList.add('dark')
+    document.body.style.backgroundColor = '#020617'
+  }, [])
+
   const [activeTab, setActiveTab] = useState('home')
   const audioSystem = useAudioSystem()
   const { user } = useAuth()
@@ -94,7 +100,7 @@ function Index() {
   }
 
   return (
-    <div className="relative min-h-screen">
+    <div className="relative min-h-screen dark">
       <GameBackground />
       
       <div className="relative z-10">

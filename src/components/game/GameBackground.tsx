@@ -3,9 +3,11 @@ import StarField from '@/components/StarField'
 
 export default function GameBackground() {
   return (
-    <div className="absolute inset-0 overflow-hidden">
+    <div className="absolute inset-0 overflow-hidden" style={{ backgroundColor: '#020617' }}>
       {/* Космический фон */}
-      <div className="absolute inset-0 bg-gradient-to-br from-space-darker via-space-dark to-cosmic-purple">
+      <div className="absolute inset-0" style={{ 
+        background: 'linear-gradient(135deg, #020617 0%, #0F172A 35%, #6366F1 100%)'
+      }}>
         <div 
           className="absolute inset-0 opacity-60 animate-nebula"
           style={{
