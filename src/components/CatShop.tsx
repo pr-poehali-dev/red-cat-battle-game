@@ -50,24 +50,6 @@ const CatShop: React.FC<CatShopProps> = ({ gameStats, onPurchase }) => {
       detailedDescription: 'Милый рыжий котёнок с зелёными глазами. Хоть он и не самый сильный, зато очень преданный и готов сражаться рядом с вами в любых космических приключениях!'
     },
     {
-      id: 'phoenix',
-      name: 'Звёздный Феникс',
-      level: 10,
-      rarity: 'Эпический',
-      rarityColor: 'purple',
-      borderColor: 'purple-500',
-      health: 400,
-      maxHealth: 400,
-      attack: 60,
-      defense: 35,
-      speed: 45,
-      cost: 1500,
-      isFree: false,
-      image: '/img/5dae8386-4f30-4ae8-af2b-94c7bb1f2cde.jpg',
-      description: 'Легендарный защитник галактики',
-      detailedDescription: 'Мистический кот-феникс с огненными крыльями. Способен восстанавливать здоровье в бою и наносить магический урон. Его пламя никогда не угасает!'
-    },
-    {
       id: 'dragon',
       name: 'Космический Дракон',
       level: 15,
