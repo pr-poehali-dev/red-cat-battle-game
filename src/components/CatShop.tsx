@@ -63,7 +63,7 @@ const CatShop: React.FC<CatShopProps> = ({ gameStats, onPurchase }) => {
       speed: 25,
       cost: 500,
       isFree: false,
-      image: '/img/cde029dd-ceec-4fdd-b8c1-5bc0b43758d4.jpg',
+      image: '/img/5d4262b2-4440-4fc8-b5f6-95271ba37bc4.jpg',
       description: 'Могучий космический охотник',
       detailedDescription: 'Величественный тигр из далёких звёздных систем. Его космические полосы светятся в темноте, а его мощь способна пробить броню любого врага!'
     },
