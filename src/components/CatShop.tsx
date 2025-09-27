@@ -84,6 +84,24 @@ const CatShop: React.FC<CatShopProps> = ({ gameStats, onPurchase }) => {
       image: '/img/13f48431-647c-4a9e-b873-9a11a4edc0f4.jpg',
       description: 'Повелитель огня и лавы',
       detailedDescription: 'Легендарный огненный кот, рождённый в недрах космических вулканов. Его шерсть пылает как лава, а глаза горят ярче звёзд. Самый мощный боец во всей галактике - его сила превосходит всех остальных котов!'
+    },
+    {
+      id: 'lightning-cat',
+      name: 'Кот молния',
+      level: 1,
+      rarity: 'Мифический',
+      rarityColor: 'purple',
+      borderColor: 'purple-500',
+      health: 1000,
+      maxHealth: 1000,
+      attack: 150,
+      defense: 100,
+      speed: 120,
+      cost: 289320,
+      isFree: false,
+      image: '/img/ddfb6b04-6eaa-40fb-bc99-d8c65369c188.jpg',
+      description: 'Повелитель грозы и молний',
+      detailedDescription: 'Мифический электрический кот, владеющий силой космических гроз. Его броня пронизана молниями, а скорость превосходит саму электрическую энергию. Абсолютный владыка бури - сильнейший из всех существующих котов!'
     }
   ])
 
