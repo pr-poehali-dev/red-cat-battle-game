@@ -56,16 +56,16 @@ const CatShop: React.FC<CatShopProps> = ({ gameStats, onPurchase }) => {
       rarity: 'Редкий',
       rarityColor: 'blue',
       borderColor: 'blue-500',
-      health: 100,
-      maxHealth: 100,
-      attack: 15,
-      defense: 8,
-      speed: 12,
+      health: 250,
+      maxHealth: 250,
+      attack: 35,
+      defense: 25,
+      speed: 30,
       cost: 5500,
       isFree: false,
       image: '/img/ac3a3770-eeb2-4526-927b-ed3d86c0d072.jpg',
       description: 'Киберспутник из будущего',
-      detailedDescription: 'Продвинутый кот-робот с металлической броней и светящимися глазами. Создан по новейшим технологиям для космических миссий. Обладает теми же базовыми характеристиками, что и обычные коты, но выглядит намного круче!'
+      detailedDescription: 'Продвинутый кот-робот с металлической броней и светящимися глазами. Создан по новейшим технологиям для космических миссий. Его мощные системы делают его в разы сильнее обычных котов!'
     }
   ])
 
