@@ -163,9 +163,17 @@ export const useCatActions = (
     }
   }
 
+  const handleSelectCat = (catId: string) => {
+    setGameStats(prev => ({
+      ...prev,
+      activeCatId: catId
+    }))
+  }
+
   return {
     handlePurchaseCat,
     handleUpgradeStat,
-    handleLevelUpCat
+    handleLevelUpCat,
+    handleSelectCat
   }
 }

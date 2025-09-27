@@ -65,7 +65,7 @@ function Index() {
   )
 
   // Действия с котами
-  const { handlePurchaseCat, handleUpgradeStat, handleLevelUpCat } = useCatActions(
+  const { handlePurchaseCat, handleSelectCat, handleUpgradeStat, handleLevelUpCat } = useCatActions(
     gameStats,
     audioSystem,
     setGameStats
@@ -139,6 +139,7 @@ function Index() {
           onCatClick={handleCatClick}
           onStartTournament={handleStartTournament}
           onPurchaseCat={handlePurchaseCat}
+          onSelectCat={handleSelectCat}
           onUpgradeStat={handleUpgradeStat}
           onLevelUpCat={handleLevelUpCat}
           onBattleWin={handleBattleWinWithStats}

@@ -2,6 +2,7 @@ import React from 'react'
 import CatFighter from '@/components/CatFighter'
 import FightArena from '@/components/FightArena'
 import CatShop from '@/components/CatShop'
+import CatManager from '@/components/CatManager'
 import CatUpgrade from '@/components/CatUpgrade'
 import CatBattle from '@/components/CatBattle'
 import CatTournament from '@/components/CatTournament'
@@ -28,6 +29,7 @@ interface TabRendererProps {
   onCatClick: (event: React.MouseEvent) => void
   onStartTournament: () => void
   onPurchaseCat: (catId: string, cost: number) => void
+  onSelectCat: (catId: string) => void
   onUpgradeStat: (catId: string, stat: 'attack' | 'defense' | 'health' | 'speed', cost: number) => void
   onLevelUpCat: (catId: string, cost: number) => void
   onBattleWin: (reward: number, experience: number) => void
@@ -55,6 +57,7 @@ export default function TabRenderer({
   onCatClick,
   onStartTournament,
   onPurchaseCat,
+  onSelectCat,
   onUpgradeStat,
   onLevelUpCat,
   onBattleWin,
@@ -91,6 +94,13 @@ export default function TabRenderer({
       )}
 
       {activeTab === 'cats' && (
+        <CatManager
+          gameStats={gameStats}
+          onSelectCat={onSelectCat}
+        />
+      )}
+
+      {activeTab === 'upgrade' && (
         <CatUpgrade 
           ownedCats={gameStats.ownedCats || []}
           playerCoins={gameStats.coins}

@@ -17,6 +17,7 @@ const navigationTabs: NavigationTab[] = [
   { id: 'fight', label: 'Бои', icon: 'Sword' },
   { id: 'shop', label: 'Магазин', icon: 'ShoppingBag' },
   { id: 'cats', label: 'Коты', icon: 'Heart' },
+  { id: 'upgrade', label: 'Прокачка', icon: 'TrendingUp' },
   { id: 'battle', label: 'Арена', icon: 'Zap' },
   { id: 'tournament', label: 'Турнир', icon: 'Trophy' },
   { id: 'guild', label: 'Гильдии', icon: 'Shield' },
