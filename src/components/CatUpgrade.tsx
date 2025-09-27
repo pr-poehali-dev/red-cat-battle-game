@@ -85,47 +85,41 @@ const CatUpgrade: React.FC<CatUpgradeProps> = ({ ownedCats, playerCoins, onUpgra
           <div className="space-y-4 mt-4 p-4 bg-slate-800/50 rounded-lg border border-slate-600">
             
             {/* Повышение уровня */}
-            <div className="flex items-center justify-between p-3 bg-purple-500/10 rounded-lg border border-purple-500/30">
-              <div>
-                <div className="text-purple-400 font-bold">📈 Повышение уровня</div>
-                <div className="text-xs text-white/70">+5 ко всем характеристикам + 1 очко улучшения</div>
-              </div>
-              <div className="flex items-center gap-2">
-                <div className="flex items-center gap-1">
-                  <Icon name="DollarSign" size={14} className="text-yellow-400" />
-                  <span className="text-sm font-bold text-yellow-400">{getLevelUpCost(cat.level)}</span>
+            <div className="p-3 bg-purple-500/10 rounded border border-purple-500/30">
+              <div className="flex items-center justify-between mb-2">
+                <div>
+                  <div className="text-purple-400 font-bold text-sm">📈 Повышение уровня</div>
+                  <div className="text-xs text-white/70">+5 ко всем характеристикам</div>
                 </div>
-                <Button
-                  onClick={() => onLevelUp(cat.id, getLevelUpCost(cat.level))}
-                  disabled={!canAfford(getLevelUpCost(cat.level))}
-                  size="sm"
-                  className={`${canAfford(getLevelUpCost(cat.level))
-                    ? 'bg-purple-500 hover:bg-purple-600'
-                    : 'bg-gray-500/50 cursor-not-allowed'
-                  } text-white text-xs px-3`}
-                >
-                  {canAfford(getLevelUpCost(cat.level)) ? '⬆️ Повысить' : '❌ Мало монет'}
-                </Button>
+                <span className="text-sm font-bold text-yellow-400">{getLevelUpCost(cat.level)}</span>
               </div>
+              <Button
+                onClick={() => onLevelUp(cat.id, getLevelUpCost(cat.level))}
+                disabled={!canAfford(getLevelUpCost(cat.level))}
+                size="sm"
+                className={`w-full ${canAfford(getLevelUpCost(cat.level))
+                  ? 'bg-purple-500 hover:bg-purple-600'
+                  : 'bg-gray-500/50 cursor-not-allowed'
+                } text-white text-xs`}
+              >
+                {canAfford(getLevelUpCost(cat.level)) ? '⬆️ Повысить уровень' : '❌ Недостаточно монет'}
+              </Button>
             </div>
 
             {/* Прокачка характеристик */}
-            <div className="grid gap-3">
+            <div className="grid gap-2">
               
               {/* Здоровье */}
-              <div className="flex items-center justify-between p-2 bg-red-500/10 rounded-lg border border-red-500/20">
-                <div className="flex items-center gap-2">
-                  <Icon name="Heart" size={16} className="text-red-400" />
-                  <div>
-                    <div className="text-red-400 font-semibold text-sm">Здоровье</div>
-                    <div className="text-xs text-white">{cat.currentHealth} → {cat.currentHealth + 20}</div>
+              <div className="flex items-center justify-between p-2 bg-red-500/10 rounded border border-red-500/20">
+                <div className="flex items-center gap-2 min-w-0 flex-1">
+                  <Icon name="Heart" size={14} className="text-red-400 flex-shrink-0" />
+                  <div className="min-w-0">
+                    <div className="text-red-400 font-semibold text-xs">Здоровье</div>
+                    <div className="text-xs text-white/70">{cat.currentHealth} → {cat.currentHealth + 20}</div>
                   </div>
                 </div>
-                <div className="flex items-center gap-2">
-                  <div className="flex items-center gap-1">
-                    <Icon name="DollarSign" size={12} className="text-yellow-400" />
-                    <span className="text-xs font-bold text-yellow-400">{getUpgradeCost(cat.currentHealth, 'health')}</span>
-                  </div>
+                <div className="flex items-center gap-1 flex-shrink-0">
+                  <span className="text-xs font-bold text-yellow-400">{getUpgradeCost(cat.currentHealth, 'health')}</span>
                   <Button
                     onClick={() => onUpgradestat(cat.id, 'health', getUpgradeCost(cat.currentHealth, 'health'))}
                     disabled={!canAfford(getUpgradeCost(cat.currentHealth, 'health'))}
@@ -133,7 +127,7 @@ const CatUpgrade: React.FC<CatUpgradeProps> = ({ ownedCats, playerCoins, onUpgra
                     className={`${canAfford(getUpgradeCost(cat.currentHealth, 'health'))
                       ? 'bg-red-500 hover:bg-red-600'
                       : 'bg-gray-500/50 cursor-not-allowed'
-                    } text-white text-xs px-2 py-1 h-6`}
+                    } text-white text-xs px-2 py-1 h-6 w-8`}
                   >
                     +
                   </Button>
@@ -141,19 +135,16 @@ const CatUpgrade: React.FC<CatUpgradeProps> = ({ ownedCats, playerCoins, onUpgra
               </div>
 
               {/* Атака */}
-              <div className="flex items-center justify-between p-2 bg-orange-500/10 rounded-lg border border-orange-500/20">
-                <div className="flex items-center gap-2">
-                  <Icon name="Sword" size={16} className="text-orange-400" />
-                  <div>
-                    <div className="text-orange-400 font-semibold text-sm">Атака</div>
-                    <div className="text-xs text-white">{cat.currentAttack} → {cat.currentAttack + 5}</div>
+              <div className="flex items-center justify-between p-2 bg-orange-500/10 rounded border border-orange-500/20">
+                <div className="flex items-center gap-2 min-w-0 flex-1">
+                  <Icon name="Sword" size={14} className="text-orange-400 flex-shrink-0" />
+                  <div className="min-w-0">
+                    <div className="text-orange-400 font-semibold text-xs">Атака</div>
+                    <div className="text-xs text-white/70">{cat.currentAttack} → {cat.currentAttack + 5}</div>
                   </div>
                 </div>
-                <div className="flex items-center gap-2">
-                  <div className="flex items-center gap-1">
-                    <Icon name="DollarSign" size={12} className="text-yellow-400" />
-                    <span className="text-xs font-bold text-yellow-400">{getUpgradeCost(cat.currentAttack, 'attack')}</span>
-                  </div>
+                <div className="flex items-center gap-1 flex-shrink-0">
+                  <span className="text-xs font-bold text-yellow-400">{getUpgradeCost(cat.currentAttack, 'attack')}</span>
                   <Button
                     onClick={() => onUpgradestat(cat.id, 'attack', getUpgradeCost(cat.currentAttack, 'attack'))}
                     disabled={!canAfford(getUpgradeCost(cat.currentAttack, 'attack'))}
@@ -161,7 +152,7 @@ const CatUpgrade: React.FC<CatUpgradeProps> = ({ ownedCats, playerCoins, onUpgra
                     className={`${canAfford(getUpgradeCost(cat.currentAttack, 'attack'))
                       ? 'bg-orange-500 hover:bg-orange-600'
                       : 'bg-gray-500/50 cursor-not-allowed'
-                    } text-white text-xs px-2 py-1 h-6`}
+                    } text-white text-xs px-2 py-1 h-6 w-8`}
                   >
                     +
                   </Button>
@@ -169,19 +160,16 @@ const CatUpgrade: React.FC<CatUpgradeProps> = ({ ownedCats, playerCoins, onUpgra
               </div>
 
               {/* Защита */}
-              <div className="flex items-center justify-between p-2 bg-blue-500/10 rounded-lg border border-blue-500/20">
-                <div className="flex items-center gap-2">
-                  <Icon name="Shield" size={16} className="text-blue-400" />
-                  <div>
-                    <div className="text-blue-400 font-semibold text-sm">Защита</div>
-                    <div className="text-xs text-white">{cat.currentDefense} → {cat.currentDefense + 3}</div>
+              <div className="flex items-center justify-between p-2 bg-blue-500/10 rounded border border-blue-500/20">
+                <div className="flex items-center gap-2 min-w-0 flex-1">
+                  <Icon name="Shield" size={14} className="text-blue-400 flex-shrink-0" />
+                  <div className="min-w-0">
+                    <div className="text-blue-400 font-semibold text-xs">Защита</div>
+                    <div className="text-xs text-white/70">{cat.currentDefense} → {cat.currentDefense + 3}</div>
                   </div>
                 </div>
-                <div className="flex items-center gap-2">
-                  <div className="flex items-center gap-1">
-                    <Icon name="DollarSign" size={12} className="text-yellow-400" />
-                    <span className="text-xs font-bold text-yellow-400">{getUpgradeCost(cat.currentDefense, 'defense')}</span>
-                  </div>
+                <div className="flex items-center gap-1 flex-shrink-0">
+                  <span className="text-xs font-bold text-yellow-400">{getUpgradeCost(cat.currentDefense, 'defense')}</span>
                   <Button
                     onClick={() => onUpgradestat(cat.id, 'defense', getUpgradeCost(cat.currentDefense, 'defense'))}
                     disabled={!canAfford(getUpgradeCost(cat.currentDefense, 'defense'))}
@@ -189,7 +177,7 @@ const CatUpgrade: React.FC<CatUpgradeProps> = ({ ownedCats, playerCoins, onUpgra
                     className={`${canAfford(getUpgradeCost(cat.currentDefense, 'defense'))
                       ? 'bg-blue-500 hover:bg-blue-600'
                       : 'bg-gray-500/50 cursor-not-allowed'
-                    } text-white text-xs px-2 py-1 h-6`}
+                    } text-white text-xs px-2 py-1 h-6 w-8`}
                   >
                     +
                   </Button>
@@ -197,19 +185,16 @@ const CatUpgrade: React.FC<CatUpgradeProps> = ({ ownedCats, playerCoins, onUpgra
               </div>
 
               {/* Скорость */}
-              <div className="flex items-center justify-between p-2 bg-yellow-500/10 rounded-lg border border-yellow-500/20">
-                <div className="flex items-center gap-2">
-                  <Icon name="Zap" size={16} className="text-yellow-400" />
-                  <div>
-                    <div className="text-yellow-400 font-semibold text-sm">Скорость</div>
-                    <div className="text-xs text-white">{cat.currentSpeed} → {cat.currentSpeed + 4}</div>
+              <div className="flex items-center justify-between p-2 bg-yellow-500/10 rounded border border-yellow-500/20">
+                <div className="flex items-center gap-2 min-w-0 flex-1">
+                  <Icon name="Zap" size={14} className="text-yellow-400 flex-shrink-0" />
+                  <div className="min-w-0">
+                    <div className="text-yellow-400 font-semibold text-xs">Скорость</div>
+                    <div className="text-xs text-white/70">{cat.currentSpeed} → {cat.currentSpeed + 4}</div>
                   </div>
                 </div>
-                <div className="flex items-center gap-2">
-                  <div className="flex items-center gap-1">
-                    <Icon name="DollarSign" size={12} className="text-yellow-400" />
-                    <span className="text-xs font-bold text-yellow-400">{getUpgradeCost(cat.currentSpeed, 'speed')}</span>
-                  </div>
+                <div className="flex items-center gap-1 flex-shrink-0">
+                  <span className="text-xs font-bold text-yellow-400">{getUpgradeCost(cat.currentSpeed, 'speed')}</span>
                   <Button
                     onClick={() => onUpgradestat(cat.id, 'speed', getUpgradeCost(cat.currentSpeed, 'speed'))}
                     disabled={!canAfford(getUpgradeCost(cat.currentSpeed, 'speed'))}
@@ -217,7 +202,7 @@ const CatUpgrade: React.FC<CatUpgradeProps> = ({ ownedCats, playerCoins, onUpgra
                     className={`${canAfford(getUpgradeCost(cat.currentSpeed, 'speed'))
                       ? 'bg-yellow-500 hover:bg-yellow-600'
                       : 'bg-gray-500/50 cursor-not-allowed'
-                    } text-white text-xs px-2 py-1 h-6`}
+                    } text-white text-xs px-2 py-1 h-6 w-8`}
                   >
                     +
                   </Button>
