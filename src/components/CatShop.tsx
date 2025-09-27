@@ -48,24 +48,6 @@ const CatShop: React.FC<CatShopProps> = ({ gameStats, onPurchase }) => {
       image: '/img/33f4e16d-16ec-43d8-84f4-6fe73741ec6a.jpg',
       description: 'Ваш первый спутник',
       detailedDescription: 'Милый рыжий котёнок с зелёными глазами. Хоть он и не самый сильный, зато очень преданный и готов сражаться рядом с вами в любых космических приключениях!'
-    },
-    {
-      id: 'dragon',
-      name: 'Космический Дракон',
-      level: 15,
-      rarity: 'Легендарный',
-      rarityColor: 'yellow',
-      borderColor: 'yellow-500',
-      health: 600,
-      maxHealth: 600,
-      attack: 90,
-      defense: 55,
-      speed: 35,
-      cost: 3000,
-      isFree: false,
-      image: '/img/d32781c4-bc1a-4096-9140-6bcef628f210.jpg',
-      description: 'Величественный повелитель звёзд',
-      detailedDescription: 'Легендарный дракон-кот, владыка всех космических созвездий. Его золотая чешуя отражает свет звёзд, а его рык способен остановить время!'
     }
   ])
 
