@@ -91,6 +91,13 @@ const CatFighter: React.FC<CatFighterProps> = ({
       <Card className="bg-space-dark/80 backdrop-blur-xl border-2 border-cosmic-pink shadow-2xl shadow-cosmic-pink/50 animate-glow">
         <CardContent className="p-4">
           <div className="text-center">
+            <div className="mb-3">
+              <img 
+                src="/img/292818a9-df87-4715-90f6-48408ff6626e.jpg" 
+                alt={currentEnemy.name}
+                className="w-24 h-24 mx-auto rounded-xl border-2 border-cosmic-pink shadow-lg shadow-cosmic-pink/50 object-cover"
+              />
+            </div>
             <h3 className="text-xl font-bold text-cosmic-pink mb-2 font-cosmic drop-shadow-lg">
               {currentEnemy.name}
             </h3>
