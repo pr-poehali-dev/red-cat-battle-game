@@ -45,7 +45,7 @@ const CatShop: React.FC<CatShopProps> = ({ gameStats, onPurchase }) => {
       speed: 12,
       cost: 0,
       isFree: true,
-      image: '/img/10ea951a-71b3-4063-83d6-1badf2fa0755.jpg',
+      image: '/img/33f4e16d-16ec-43d8-84f4-6fe73741ec6a.jpg',
       description: 'Ваш первый спутник',
       detailedDescription: 'Милый рыжий котёнок с зелёными глазами. Хоть он и не самый сильный, зато очень преданный и готов сражаться рядом с вами в любых космических приключениях!'
     },
