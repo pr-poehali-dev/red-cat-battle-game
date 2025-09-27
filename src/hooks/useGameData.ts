@@ -75,6 +75,9 @@ export function useGameData(): UseGameDataReturn {
             experience: gameStats.experience,
             max_experience: gameStats.maxExperience,
             click_damage: gameStats.clickDamage,
+            energy: gameStats.energy,
+            max_energy: gameStats.maxEnergy,
+            energy_recharge_time: gameStats.energyRechargeTime,
             owned_cats: gameStats.ownedCats || []
           }
         })
@@ -121,6 +124,9 @@ export function useGameData(): UseGameDataReturn {
           experience: data.gameStats.experience,
           maxExperience: data.gameStats.maxExperience,
           clickDamage: data.gameStats.clickDamage,
+          energy: data.gameStats.energy ?? 300,
+          maxEnergy: data.gameStats.maxEnergy ?? 300,
+          energyRechargeTime: data.gameStats.energyRechargeTime ?? null,
           ownedCats: data.gameStats.ownedCats || []
         }
         
