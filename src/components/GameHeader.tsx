@@ -58,7 +58,10 @@ const GameHeader: React.FC<GameHeaderProps> = ({
               />
             </Button>
             <Button
-              onClick={logout}
+              onClick={() => {
+                logout();
+                window.location.reload();
+              }}
               variant="ghost"
               size="sm"
               className="p-1 h-6 w-6 hover:bg-red-500/30"
