@@ -169,9 +169,9 @@ const CatShop: React.FC<CatShopProps> = ({ gameStats, onPurchase }) => {
                 <div className="w-32 h-32 flex-shrink-0 relative">
                   <div className={`w-full h-full bg-gradient-to-br from-${cat.rarityColor}-400/20 to-${cat.rarityColor}-500/20 p-2`}>
                     <img 
-                      src={cat.image}
+                      src="/img/ee19395b-5de2-4587-a023-fc432abe2c11.jpg"
                       alt={cat.name}
-                      className="w-full h-full rounded-lg object-cover"
+                      className="w-full h-full rounded-lg object-contain"
                     />
                   </div>
                   <div className={`absolute top-2 right-2 w-6 h-6 rounded-full border-2 border-slate-800 flex items-center justify-center text-xs font-bold border-${cat.borderColor} bg-slate-800 text-${cat.rarityColor}-400`}>
