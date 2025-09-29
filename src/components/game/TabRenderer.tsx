@@ -3,10 +3,8 @@ import CatFighter from '@/components/CatFighter'
 import FightArena from '@/components/FightArena'
 import CatShop from '@/components/CatShop'
 import CatManager from '@/components/CatManager'
-import CatUpgrade from '@/components/CatUpgrade'
 import CatBattle from '@/components/CatBattle'
 import CatTournament from '@/components/CatTournament'
-import UpgradeShop from '@/components/UpgradeShop'
 import GuildSystem from '@/components/guild/GuildSystem'
 import QuestSystem from '@/components/quests/QuestSystem'
 import { GameStats, Enemy, DamageNumber, EnergyParticle, Upgrade } from '@/types/game'
@@ -100,15 +98,6 @@ export default function TabRenderer({
         />
       )}
 
-      {activeTab === 'upgrade' && (
-        <CatUpgrade 
-          ownedCats={gameStats.ownedCats || []}
-          playerCoins={gameStats.coins}
-          onUpgradestat={onUpgradeStat}
-          onLevelUp={onLevelUpCat}
-        />
-      )}
-
       {activeTab === 'battle' && (
         <CatBattle 
           ownedCats={gameStats.ownedCats || []}
@@ -127,14 +116,6 @@ export default function TabRenderer({
           onTournamentWin={onBattleWin}
           onCatExperience={onCatExperience}
           onUpdateStats={onUpdateStats}
-        />
-      )}
-
-      {activeTab === 'upgrade' && (
-        <UpgradeShop
-          gameStats={gameStats}
-          upgrades={upgrades}
-          onUpgrade={onUpgrade}
         />
       )}
 
