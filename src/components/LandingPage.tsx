@@ -71,6 +71,9 @@ export default function LandingPage() {
 
       if (!result.success) {
         setError(result.error || 'Произошла ошибка')
+      } else {
+        // Успешная авторизация/регистрация - перезагружаем страницу чтобы показать игру
+        window.location.reload()
       }
     } catch (err) {
       setError('Ошибка подключения к серверу')
