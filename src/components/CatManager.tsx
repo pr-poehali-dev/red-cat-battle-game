@@ -12,6 +12,7 @@ interface CatManagerProps {
 
 const CatManager: React.FC<CatManagerProps> = ({ gameStats, onSelectCat }) => {
   const ownedCats = gameStats.ownedCats || []
+  const activeCat = ownedCats.find(cat => cat.id === gameStats.activeCatId)
 
   if (ownedCats.length === 0) {
     return (
