@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { GameStats } from '@/types/game'
 import { useAuth } from './useAuth'
+import { CAT_TEMPLATES } from '@/components/game/CatActions'
 
 const GAMEDATA_API_URL = 'https://functions.poehali.dev/1a496de4-0b4a-41e6-9259-4674b347ed32'
 
@@ -20,6 +21,7 @@ export function useGameData(): UseGameDataReturn {
   
   const [gameStats, setGameStatsState] = useState<GameStats>(() => {
     const saved = localStorage.getItem('catKombatGameStats')
+    const starterCat = { ...CAT_TEMPLATES.murka, id: 'starter-murka' }
     const defaultStats = {
       level: 1,
       power: 100,
@@ -30,12 +32,22 @@ export function useGameData(): UseGameDataReturn {
       energy: 200,
       maxEnergy: 200,
       energyRechargeTime: null,
-      ownedCats: [],
-      activeCatId: undefined
+      ownedCats: [starterCat],
+      activeCatId: 'starter-murka'
     }
     
     if (saved) {
       const parsedStats = JSON.parse(saved)
+      
+      // Если у пользователя нет котов, даём стартового кота
+      let ownedCats = parsedStats.ownedCats || []
+      let activeCatId = parsedStats.activeCatId
+      
+      if (ownedCats.length === 0) {
+        ownedCats = [starterCat]
+        activeCatId = 'starter-murka'
+      }
+      
       // Добавляем новые поля если их нет в сохраненных данных
       return {
         ...defaultStats,
@@ -43,7 +55,8 @@ export function useGameData(): UseGameDataReturn {
         energy: parsedStats.energy ?? 200,
         maxEnergy: parsedStats.maxEnergy ?? 200,
         energyRechargeTime: parsedStats.energyRechargeTime ?? null,
-        activeCatId: parsedStats.activeCatId
+        ownedCats,
+        activeCatId
       }
     }
     
@@ -120,6 +133,17 @@ export function useGameData(): UseGameDataReturn {
       const data = await response.json()
       
       if (response.ok && data.success) {
+        const starterCat = { ...CAT_TEMPLATES.murka, id: 'starter-murka' }
+        
+        // Если у пользователя нет котов на сервере, даём стартового кота
+        let ownedCats = data.gameStats.ownedCats || []
+        let activeCatId = data.gameStats.activeCatId
+        
+        if (ownedCats.length === 0) {
+          ownedCats = [starterCat]
+          activeCatId = 'starter-murka'
+        }
+        
         const serverStats: GameStats = {
           level: data.gameStats.level,
           power: data.gameStats.power,
@@ -130,8 +154,8 @@ export function useGameData(): UseGameDataReturn {
           energy: data.gameStats.energy ?? 200,
           maxEnergy: data.gameStats.maxEnergy ?? 200,
           energyRechargeTime: data.gameStats.energyRechargeTime ?? null,
-          ownedCats: data.gameStats.ownedCats || [],
-          activeCatId: data.gameStats.activeCatId
+          ownedCats,
+          activeCatId
         }
         
         setGameStatsState(serverStats)
