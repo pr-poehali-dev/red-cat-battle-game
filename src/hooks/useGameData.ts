@@ -27,8 +27,8 @@ export function useGameData(): UseGameDataReturn {
       experience: 0,
       maxExperience: 100,
       clickDamage: 10,
-      energy: 300,
-      maxEnergy: 300,
+      energy: 200,
+      maxEnergy: 200,
       energyRechargeTime: null,
       ownedCats: [],
       activeCatId: undefined
@@ -40,8 +40,8 @@ export function useGameData(): UseGameDataReturn {
       return {
         ...defaultStats,
         ...parsedStats,
-        energy: parsedStats.energy ?? 300,
-        maxEnergy: parsedStats.maxEnergy ?? 300,
+        energy: parsedStats.energy ?? 200,
+        maxEnergy: parsedStats.maxEnergy ?? 200,
         energyRechargeTime: parsedStats.energyRechargeTime ?? null,
         activeCatId: parsedStats.activeCatId
       }
@@ -127,8 +127,8 @@ export function useGameData(): UseGameDataReturn {
           experience: data.gameStats.experience,
           maxExperience: data.gameStats.maxExperience,
           clickDamage: data.gameStats.clickDamage,
-          energy: data.gameStats.energy ?? 300,
-          maxEnergy: data.gameStats.maxEnergy ?? 300,
+          energy: data.gameStats.energy ?? 200,
+          maxEnergy: data.gameStats.maxEnergy ?? 200,
           energyRechargeTime: data.gameStats.energyRechargeTime ?? null,
           ownedCats: data.gameStats.ownedCats || [],
           activeCatId: data.gameStats.activeCatId
