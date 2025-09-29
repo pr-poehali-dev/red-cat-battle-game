@@ -3,6 +3,7 @@ import GameBackground from '@/components/game/GameBackground'
 import GameHeader from '@/components/GameHeader'
 import GameNavigation from '@/components/GameNavigation'
 import TabRenderer from '@/components/game/TabRenderer'
+import LandingPage from '@/components/LandingPage'
 import { GameLogic, UPGRADES, useUpgradeActions } from '@/components/game/GameLogic'
 import { useGameActions } from '@/components/game/GameActions'
 import { useCatActions } from '@/components/game/CatActions'
@@ -21,7 +22,7 @@ function Index() {
 
   const [activeTab, setActiveTab] = useState('home')
   const audioSystem = useAudioSystem()
-  const { user } = useAuth()
+  const { user, isAuthenticated, isLoading: authLoading } = useAuth()
   const { gameStats, setGameStats, saveProgress, lastSaved } = useGameData()
   const [isMusicPlaying, setIsMusicPlaying] = useState(false)
 
@@ -97,6 +98,23 @@ function Index() {
     } else if (reward.type === 'experience') {
       setGameStats(prev => ({ ...prev, experience: prev.experience + reward.amount }))
     }
+  }
+
+  // Если идёт загрузка авторизации, показываем загрузку
+  if (authLoading) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-blue-900 flex items-center justify-center">
+        <div className="text-white text-center">
+          <div className="animate-spin w-8 h-8 border-2 border-purple-400 border-t-transparent rounded-full mx-auto mb-4"></div>
+          <p>Загрузка...</p>
+        </div>
+      </div>
+    )
+  }
+
+  // Если пользователь не авторизован, показываем лендинг
+  if (!isAuthenticated) {
+    return <LandingPage />
   }
 
   return (
