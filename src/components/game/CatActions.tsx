@@ -107,6 +107,27 @@ export const CAT_TEMPLATES = {
     borderColor: 'slate-500',
     image: '/img/c886a730-c098-4c1d-976c-7115aa73bb6c.jpg',
     upgradePoints: 0
+  },
+  'water-cat': {
+    id: 'water-cat',
+    name: 'Кот Водяной',
+    level: 1,
+    experience: 0,
+    maxExperience: 100,
+    baseHealth: 3500,
+    currentHealth: 3500,
+    maxHealth: 3500,
+    baseAttack: 500,
+    currentAttack: 500,
+    baseDefense: 350,
+    currentDefense: 350,
+    baseSpeed: 400,
+    currentSpeed: 400,
+    rarity: 'Божественный',
+    rarityColor: 'cyan',
+    borderColor: 'cyan-500',
+    image: '/img/c58f1707-e8a4-4245-8490-c44a714dce03.jpg',
+    upgradePoints: 0
   }
 }
 
