@@ -47,24 +47,29 @@ const CatManager: React.FC<CatManagerProps> = ({ gameStats, onSelectCat }) => {
                   alt={activeCat.name}
                   className="w-24 h-24 rounded-full border-4 border-white/20 shadow-lg"
                 />
-                <div className={`absolute -top-2 -right-2 px-2 py-1 rounded-full text-xs font-bold bg-${activeCat.rarityColor}-500 text-white shadow-lg`}>
-                  {activeCat.rarity}
+                <div className={`absolute -top-2 -right-2 w-6 h-6 rounded-full text-xs font-bold bg-${activeCat.rarityColor}-500 text-white shadow-lg flex items-center justify-center border-2 border-slate-800`}>
+                  {activeCat.level}
                 </div>
               </div>
               
               <div className="flex-1 text-center md:text-left">
-                <h3 className="text-2xl font-bold text-white mb-2">{activeCat.name}</h3>
-                <div className="grid grid-cols-2 gap-3 text-sm">
-                  <div className="bg-red-500/20 px-3 py-2 rounded-lg">
+                <div className="flex items-center gap-2 justify-center md:justify-start mb-2">
+                  <h3 className="text-2xl font-bold text-white">{activeCat.name}</h3>
+                  <Badge className={`bg-${activeCat.rarityColor}-500 text-white text-xs px-2 py-0.5`}>
+                    {activeCat.rarity}
+                  </Badge>
+                </div>
+                <div className="grid grid-cols-2 gap-2 text-sm">
+                  <div className="bg-red-500/20 px-2 py-1.5 rounded-lg">
                     <span className="text-red-300">❤️ {activeCat.health}</span>
                   </div>
-                  <div className="bg-orange-500/20 px-3 py-2 rounded-lg">
+                  <div className="bg-orange-500/20 px-2 py-1.5 rounded-lg">
                     <span className="text-orange-300">⚔️ {activeCat.attack}</span>
                   </div>
-                  <div className="bg-blue-500/20 px-3 py-2 rounded-lg">
+                  <div className="bg-blue-500/20 px-2 py-1.5 rounded-lg">
                     <span className="text-blue-300">🛡️ {activeCat.defense}</span>
                   </div>
-                  <div className="bg-green-500/20 px-3 py-2 rounded-lg">
+                  <div className="bg-green-500/20 px-2 py-1.5 rounded-lg">
                     <span className="text-green-300">⚡ {activeCat.speed}</span>
                   </div>
                 </div>
