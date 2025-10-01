@@ -105,8 +105,8 @@ const CatManager: React.FC<CatManagerProps> = ({ gameStats, onSelectCat }) => {
                     {cat.level}
                   </div>
                   {gameStats.activeCatId === cat.id && (
-                    <div className="absolute top-2 left-2 bg-green-500 text-white text-xs px-2 py-1 rounded-full font-bold">
-                      ✅ АКТИВЕН
+                    <div className="absolute top-2 left-2 w-6 h-6 bg-green-500 text-white text-sm rounded-full font-bold flex items-center justify-center shadow-lg border-2 border-slate-800">
+                      ✓
                     </div>
                   )}
                 </div>
