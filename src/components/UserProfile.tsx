@@ -71,29 +71,37 @@ const UserProfile: React.FC<UserProfileProps> = ({ gameStats }) => {
         </CardHeader>
         <CardContent>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            <div className="bg-cosmic-purple/20 rounded-lg p-4 text-center border border-cosmic-purple/30">
-              <Icon name="Coins" size={32} className="text-star-glow mx-auto mb-2" />
-              <div className="text-2xl font-bold text-white">{gameStats.coins}</div>
-              <div className="text-xs text-white/60">Монеты</div>
-            </div>
+            {gameStats.coins > 0 && (
+              <div className="bg-cosmic-purple/20 rounded-lg p-4 text-center border border-cosmic-purple/30">
+                <Icon name="Coins" size={32} className="text-star-glow mx-auto mb-2" />
+                <div className="text-2xl font-bold text-white">{gameStats.coins}</div>
+                <div className="text-xs text-white/60">Монеты</div>
+              </div>
+            )}
             
-            <div className="bg-cosmic-cyan/20 rounded-lg p-4 text-center border border-cosmic-cyan/30">
-              <Icon name="Zap" size={32} className="text-cosmic-cyan mx-auto mb-2" />
-              <div className="text-2xl font-bold text-white">{gameStats.power}</div>
-              <div className="text-xs text-white/60">Мощь</div>
-            </div>
+            {gameStats.power > 0 && (
+              <div className="bg-cosmic-cyan/20 rounded-lg p-4 text-center border border-cosmic-cyan/30">
+                <Icon name="Zap" size={32} className="text-cosmic-cyan mx-auto mb-2" />
+                <div className="text-2xl font-bold text-white">{gameStats.power}</div>
+                <div className="text-xs text-white/60">Мощь</div>
+              </div>
+            )}
             
-            <div className="bg-cosmic-pink/20 rounded-lg p-4 text-center border border-cosmic-pink/30">
-              <Icon name="Swords" size={32} className="text-cosmic-pink mx-auto mb-2" />
-              <div className="text-2xl font-bold text-white">{totalBattles}</div>
-              <div className="text-xs text-white/60">Боёв</div>
-            </div>
+            {totalBattles > 0 && (
+              <div className="bg-cosmic-pink/20 rounded-lg p-4 text-center border border-cosmic-pink/30">
+                <Icon name="Swords" size={32} className="text-cosmic-pink mx-auto mb-2" />
+                <div className="text-2xl font-bold text-white">{totalBattles}</div>
+                <div className="text-xs text-white/60">Боёв</div>
+              </div>
+            )}
             
-            <div className="bg-green-500/20 rounded-lg p-4 text-center border border-green-500/30">
-              <Icon name="TrendingUp" size={32} className="text-green-400 mx-auto mb-2" />
-              <div className="text-2xl font-bold text-white">{winRate}%</div>
-              <div className="text-xs text-white/60">Побед</div>
-            </div>
+            {totalBattles > 0 && (
+              <div className="bg-green-500/20 rounded-lg p-4 text-center border border-green-500/30">
+                <Icon name="TrendingUp" size={32} className="text-green-400 mx-auto mb-2" />
+                <div className="text-2xl font-bold text-white">{winRate}%</div>
+                <div className="text-xs text-white/60">Побед</div>
+              </div>
+            )}
           </div>
         </CardContent>
       </Card>
