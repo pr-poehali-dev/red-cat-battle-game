@@ -7,6 +7,7 @@ import CatBattle from '@/components/CatBattle'
 import CatTournament from '@/components/CatTournament'
 import GuildSystem from '@/components/guild/GuildSystem'
 import QuestSystem from '@/components/quests/QuestSystem'
+import UserProfile from '@/components/UserProfile'
 import { GameStats, Enemy, DamageNumber, EnergyParticle, Upgrade } from '@/types/game'
 import type { PlayerStats } from '@/components/tournament/RankingSystem'
 import type { QuestReward } from '@/components/quests/QuestTypes'
@@ -78,6 +79,10 @@ export default function TabRenderer({
           energyParticles={energyParticles}
           onCatClick={onCatClick}
         />
+      )}
+
+      {activeTab === 'profile' && (
+        <UserProfile gameStats={gameStats} />
       )}
 
       {activeTab === 'fight' && (
