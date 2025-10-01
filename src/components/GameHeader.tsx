@@ -45,18 +45,7 @@ const GameHeader: React.FC<GameHeaderProps> = ({
               <Icon name="Zap" size={14} className="text-cosmic-cyan animate-pulse" />
               <span className="font-bold text-xs">{gameStats.power}</span>
             </div>
-            <Button
-              onClick={onToggleMusic}
-              variant="ghost"
-              size="sm"
-              className="p-1 h-6 w-6 hover:bg-cosmic-purple/30"
-            >
-              <Icon 
-                name={isMusicPlaying ? "Volume2" : "VolumeX"} 
-                size={12} 
-                className="text-cosmic-cyan"
-              />
-            </Button>
+
             <Button
               onClick={() => {
                 logout();
