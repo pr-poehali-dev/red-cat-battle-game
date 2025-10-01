@@ -16,6 +16,8 @@ interface QuestSystemProps {
   totalBattles: number
   totalWins: number
   totalTournaments: number
+  coinsEarned?: number
+  catsUpgraded?: number
   guildLevel?: number
   onRewardClaimed: (reward: QuestReward) => void
   onBack: () => void
@@ -28,6 +30,8 @@ export default function QuestSystem({
   totalBattles, 
   totalWins, 
   totalTournaments, 
+  coinsEarned = 0,
+  catsUpgraded = 0,
   guildLevel = 0, 
   onRewardClaimed, 
   onBack 
@@ -48,10 +52,45 @@ export default function QuestSystem({
 
   const [selectedTab, setSelectedTab] = useState<'daily' | 'weekly' | 'achievements'>('daily')
 
-  // Обновление прогресса достижений
+  // Обновление прогресса квестов
   useEffect(() => {
     setQuestProgress(prev => ({
       ...prev,
+      // Обновление ежедневных квестов
+      dailyQuests: prev.dailyQuests.map(quest => {
+        let newProgress = quest.progress
+        
+        if (quest.id === 'daily_battles') {
+          newProgress = totalWins
+        } else if (quest.id === 'daily_coins') {
+          newProgress = coinsEarned
+        } else if (quest.id === 'daily_cat_upgrade') {
+          newProgress = catsUpgraded
+        }
+        
+        return {
+          ...quest,
+          progress: Math.min(newProgress, quest.maxProgress)
+        }
+      }),
+      // Обновление еженедельных квестов
+      weeklyQuests: prev.weeklyQuests.map(quest => {
+        let newProgress = quest.progress
+        
+        if (quest.id === 'weekly_tournament') {
+          newProgress = totalTournaments
+        } else if (quest.id === 'weekly_cats') {
+          newProgress = ownedCats.length
+        } else if (quest.id === 'weekly_battles') {
+          newProgress = totalWins
+        }
+        
+        return {
+          ...quest,
+          progress: Math.min(newProgress, quest.maxProgress)
+        }
+      }),
+      // Обновление достижений
       achievements: prev.achievements.map(achievement => {
         let newProgress = 0
         
@@ -88,7 +127,7 @@ export default function QuestSystem({
         }
       })
     }))
-  }, [totalWins, totalBattles, ownedCats.length, totalTournaments, guildLevel, playerLevel])
+  }, [totalWins, totalBattles, ownedCats.length, totalTournaments, guildLevel, playerLevel, coinsEarned, catsUpgraded])
 
   const claimQuestReward = (questId: string, questType: 'daily' | 'weekly') => {
     const questsKey = questType === 'daily' ? 'dailyQuests' : 'weeklyQuests'

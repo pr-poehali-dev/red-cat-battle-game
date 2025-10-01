@@ -51,6 +51,8 @@ function Index() {
   const [totalBattles, setTotalBattles] = useState(0)
   const [totalWins, setTotalWins] = useState(0)
   const [totalTournaments, setTotalTournaments] = useState(0)
+  const [coinsEarned, setCoinsEarned] = useState(0)
+  const [catsUpgraded, setCatsUpgraded] = useState(0)
 
   // Игровые действия
   const { handleCatClick, handleBattleWin, handleCatExperience } = useGameActions({
@@ -61,7 +63,14 @@ function Index() {
     setCurrentEnemy,
     setDamageNumbers,
     setEnergyParticles,
-    setIsAttacking
+    setIsAttacking,
+    onBattleWin: () => {
+      setTotalBattles(prev => prev + 1)
+      setTotalWins(prev => prev + 1)
+    },
+    onCoinsEarned: (amount) => {
+      setCoinsEarned(prev => prev + amount)
+    }
   })
 
   // Действия с улучшениями
@@ -72,11 +81,21 @@ function Index() {
   )
 
   // Действия с котами
-  const { handlePurchaseCat, handleSelectCat, handleUpgradeStat, handleLevelUpCat } = useCatActions(
+  const catActions = useCatActions(
     gameStats,
     audioSystem,
     setGameStats
   )
+  
+  const handleUpgradeStatWithTracking = (catId: string, stat: 'attack' | 'defense' | 'health' | 'speed', cost: number) => {
+    catActions.handleUpgradeStat(catId, stat, cost)
+    setCatsUpgraded(prev => prev + 1)
+  }
+  
+  const handleLevelUpCatWithTracking = (catId: string, cost: number) => {
+    catActions.handleLevelUpCat(catId, cost)
+    setCatsUpgraded(prev => prev + 1)
+  }
 
   // Обработчик побед в битвах с обновлением счетчиков
   const handleBattleWinWithStats = (reward: number, experience: number) => {
@@ -162,11 +181,13 @@ function Index() {
           user={user}
           onCatClick={handleCatClick}
           onStartTournament={handleStartTournament}
-          onPurchaseCat={handlePurchaseCat}
-          onSelectCat={handleSelectCat}
-          onUpgradeStat={handleUpgradeStat}
-          onLevelUpCat={handleLevelUpCat}
+          onPurchaseCat={catActions.handlePurchaseCat}
+          onSelectCat={catActions.handleSelectCat}
+          onUpgradeStat={handleUpgradeStatWithTracking}
+          onLevelUpCat={handleLevelUpCatWithTracking}
           onBattleWin={handleBattleWinWithStats}
+          coinsEarned={coinsEarned}
+          catsUpgraded={catsUpgraded}
           onCatExperience={handleCatExperience}
           onUpgrade={handleUpgrade}
           onUpdateStats={(updates) => setPlayerStats(prev => ({ ...prev, ...updates }))}

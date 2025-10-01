@@ -10,6 +10,8 @@ interface GameActionsProps {
   setDamageNumbers: React.Dispatch<React.SetStateAction<DamageNumber[]>>
   setEnergyParticles: React.Dispatch<React.SetStateAction<EnergyParticle[]>>
   setIsAttacking: React.Dispatch<React.SetStateAction<boolean>>
+  onBattleWin?: () => void
+  onCoinsEarned?: (amount: number) => void
 }
 
 export const useGameActions = ({
@@ -20,7 +22,9 @@ export const useGameActions = ({
   setCurrentEnemy,
   setDamageNumbers,
   setEnergyParticles,
-  setIsAttacking
+  setIsAttacking,
+  onBattleWin,
+  onCoinsEarned
 }: GameActionsProps) => {
 
   const handleCatClick = (event: React.MouseEvent) => {
@@ -93,6 +97,10 @@ export const useGameActions = ({
         coins: prev.coins + currentEnemy.reward,
         experience: prev.experience + 10
       }))
+      
+      // Уведомляем о победе и заработанных монетах для квестов
+      if (onBattleWin) onBattleWin()
+      if (onCoinsEarned) onCoinsEarned(currentEnemy.reward)
       
       // Spawn new enemy
       setTimeout(() => {

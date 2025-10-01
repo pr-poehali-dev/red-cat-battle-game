@@ -24,6 +24,8 @@ interface TabRendererProps {
   totalBattles: number
   totalWins: number
   totalTournaments: number
+  coinsEarned?: number
+  catsUpgraded?: number
   user: any
   onCatClick: (event: React.MouseEvent) => void
   onStartTournament: () => void
@@ -52,6 +54,8 @@ export default function TabRenderer({
   totalBattles,
   totalWins,
   totalTournaments,
+  coinsEarned = 0,
+  catsUpgraded = 0,
   user,
   onCatClick,
   onStartTournament,
@@ -143,6 +147,8 @@ export default function TabRenderer({
           totalBattles={totalBattles}
           totalWins={totalWins}
           totalTournaments={totalTournaments}
+          coinsEarned={coinsEarned}
+          catsUpgraded={catsUpgraded}
           guildLevel={5}
           onRewardClaimed={onRewardClaimed}
           onBack={() => setActiveTab('home')}
