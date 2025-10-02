@@ -50,6 +50,7 @@ interface CatFighterProps {
   damageNumbers: DamageNumber[]
   energyParticles: EnergyParticle[]
   onCatClick: (event: React.MouseEvent) => void
+  onNavigate?: (tab: string) => void
 }
 
 const CatFighter: React.FC<CatFighterProps> = ({
@@ -58,19 +59,47 @@ const CatFighter: React.FC<CatFighterProps> = ({
   isAttacking,
   damageNumbers,
   energyParticles,
-  onCatClick
+  onCatClick,
+  onNavigate
 }) => {
   // Получаем активного кота
   const activeCat = gameStats.ownedCats?.find(cat => cat.id === gameStats.activeCatId) || gameStats.ownedCats?.[0]
   const catImage = activeCat?.image || '/img/33f4e16d-16ec-43d8-84f4-6fe73741ec6a.jpg'
   const catName = activeCat?.name || 'Cyber Cat Fighter'
 
+  const menuItems = [
+    { id: 'fight', icon: 'Sword', label: 'Бои' },
+    { id: 'shop', icon: 'ShoppingBag', label: 'Магазин' },
+    { id: 'battle', icon: 'Zap', label: 'Арена' }
+  ]
+
+  const menuItems2 = [
+    { id: 'tournament', icon: 'Trophy', label: 'Турниры' },
+    { id: 'guild', icon: 'Shield', label: 'Гильдии' },
+    { id: 'quests', icon: 'Target', label: 'Квесты' }
+  ]
+
   return (
     <div className="space-y-6">
       {/* Cat Fighter */}
       <Card className="bg-space-dark/80 backdrop-blur-xl border-2 border-cosmic-purple shadow-2xl shadow-cosmic-purple/50 animate-glow">
         <CardContent className="p-6 text-center">
-          <div className="relative">
+          <div className="relative flex items-center justify-center gap-4">
+            {/* Left Menu */}
+            <div className="flex flex-col gap-2">
+              {menuItems.map(item => (
+                <button
+                  key={item.id}
+                  onClick={() => onNavigate?.(item.id)}
+                  className="w-12 h-12 rounded-full bg-cosmic-purple/30 hover:bg-cosmic-purple/50 border border-cosmic-cyan/50 flex items-center justify-center transition-all hover:scale-110 shadow-lg shadow-cosmic-purple/30"
+                  title={item.label}
+                >
+                  <Icon name={item.icon as any} size={20} className="text-cosmic-cyan" />
+                </button>
+              ))}
+            </div>
+
+            {/* Cat Image */}
             <div 
               className={`cursor-pointer transition-all duration-300 ${isAttacking ? 'scale-110' : 'hover:scale-105'} relative`}
               onClick={onCatClick}
@@ -111,10 +140,25 @@ const CatFighter: React.FC<CatFighterProps> = ({
                 />
               ))}
             </div>
-            <Badge className="mt-4 bg-gradient-to-r from-cosmic-purple to-cosmic-pink text-white font-bold text-lg px-6 py-2 animate-glow border border-cosmic-cyan/50">
-              Уровень {gameStats.level}
-            </Badge>
+
+            {/* Right Menu */}
+            <div className="flex flex-col gap-2">
+              {menuItems2.map(item => (
+                <button
+                  key={item.id}
+                  onClick={() => onNavigate?.(item.id)}
+                  className="w-12 h-12 rounded-full bg-cosmic-purple/30 hover:bg-cosmic-purple/50 border border-cosmic-cyan/50 flex items-center justify-center transition-all hover:scale-110 shadow-lg shadow-cosmic-purple/30"
+                  title={item.label}
+                >
+                  <Icon name={item.icon as any} size={20} className="text-cosmic-cyan" />
+                </button>
+              ))}
+            </div>
           </div>
+
+          <Badge className="mt-4 bg-gradient-to-r from-cosmic-purple to-cosmic-pink text-white font-bold text-lg px-6 py-2 animate-glow border border-cosmic-cyan/50">
+            Уровень {gameStats.level}
+          </Badge>
           
           {/* Experience Bar */}
           <div className="mt-4">

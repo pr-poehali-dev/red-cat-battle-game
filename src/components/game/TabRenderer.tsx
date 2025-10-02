@@ -82,6 +82,7 @@ export default function TabRenderer({
           damageNumbers={damageNumbers}
           energyParticles={energyParticles}
           onCatClick={onCatClick}
+          onNavigate={setActiveTab}
         />
       )}
 
