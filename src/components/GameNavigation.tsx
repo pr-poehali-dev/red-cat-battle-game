@@ -14,7 +14,6 @@ interface GameNavigationProps {
 
 const navigationTabs: NavigationTab[] = [
   { id: 'home', label: 'Дом', icon: 'Home' },
-  { id: 'profile', label: 'Профиль', icon: 'User' },
   { id: 'fight', label: 'Бои', icon: 'Sword' },
   { id: 'shop', label: 'Магазин', icon: 'ShoppingBag' },
   { id: 'cats', label: 'Коты', icon: 'Heart' },

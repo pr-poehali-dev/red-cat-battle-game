@@ -12,6 +12,7 @@ interface GameHeaderProps {
   lastSaved?: string | null
   onManualSave?: () => void
   isSaving?: boolean
+  onProfileClick?: () => void
 }
 
 const GameHeader: React.FC<GameHeaderProps> = ({ 
@@ -20,7 +21,8 @@ const GameHeader: React.FC<GameHeaderProps> = ({
   onToggleMusic, 
   lastSaved, 
   onManualSave, 
-  isSaving 
+  isSaving,
+  onProfileClick 
 }) => {
   const { user, logout } = useAuth()
   
@@ -34,9 +36,6 @@ const GameHeader: React.FC<GameHeaderProps> = ({
             </h1>
           </div>
           <div className="flex gap-2 text-sm items-center">
-            <div className="text-xs">
-              <div className="text-cosmic-cyan font-bold">{user?.username}</div>
-            </div>
             <div className="flex items-center gap-1">
               <Icon name="Coins" size={14} className="text-star-glow animate-pulse" />
               <span className="font-bold text-xs">{gameStats.coins}</span>
@@ -47,18 +46,15 @@ const GameHeader: React.FC<GameHeaderProps> = ({
             </div>
 
             <Button
-              onClick={() => {
-                logout();
-                window.location.reload();
-              }}
+              onClick={onProfileClick}
               variant="ghost"
               size="sm"
-              className="p-1 h-6 w-6 hover:bg-red-500/30"
+              className="p-1 h-8 w-8 hover:bg-cosmic-purple/30 rounded-full"
             >
               <Icon 
-                name="LogOut" 
-                size={12} 
-                className="text-red-400"
+                name="User" 
+                size={16} 
+                className="text-cosmic-cyan"
               />
             </Button>
           </div>

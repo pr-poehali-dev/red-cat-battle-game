@@ -157,6 +157,7 @@ function Index() {
           lastSaved={lastSaved}
           onManualSave={saveProgress}
           isSaving={false}
+          onProfileClick={() => setActiveTab('profile')}
         />
 
         {/* Navigation */}
