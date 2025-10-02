@@ -91,7 +91,10 @@ export default function TabRenderer({
       )}
 
       {activeTab === 'fight' && (
-        <FightArena onStartTournament={onStartTournament} />
+        <FightArena 
+          onStartTournament={onStartTournament}
+          onNavigateToTournament={() => setActiveTab('tournament')}
+        />
       )}
 
       {activeTab === 'shop' && (

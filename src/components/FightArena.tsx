@@ -5,9 +5,16 @@ import Icon from '@/components/ui/icon'
 
 interface FightArenaProps {
   onStartTournament: () => void
+  onNavigateToTournament?: () => void
 }
 
-const FightArena: React.FC<FightArenaProps> = ({ onStartTournament }) => {
+const FightArena: React.FC<FightArenaProps> = ({ onStartTournament, onNavigateToTournament }) => {
+  const handleStartTournament = () => {
+    onStartTournament()
+    if (onNavigateToTournament) {
+      onNavigateToTournament()
+    }
+  }
   return (
     <div className="space-y-6">
       <Card className="bg-space-dark/80 backdrop-blur-xl border border-cosmic-purple/50 shadow-xl shadow-cosmic-purple/30">
@@ -20,7 +27,7 @@ const FightArena: React.FC<FightArenaProps> = ({ onStartTournament }) => {
             Сражайтесь с врагами и получайте награды!
           </p>
           <Button 
-            onClick={onStartTournament}
+            onClick={handleStartTournament}
             className="w-full bg-gradient-to-r from-cosmic-purple to-cosmic-pink hover:from-cosmic-pink hover:to-cosmic-purple text-white font-bold py-3 border border-cosmic-cyan/50 shadow-lg shadow-cosmic-purple/50 transition-all duration-300"
           >
             Начать Турнир
