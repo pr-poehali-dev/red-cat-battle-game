@@ -25,6 +25,7 @@ const GameNavigation: React.FC<GameNavigationProps> = ({ activeTab, onTabChange 
           <button
             key={tab.id}
             onClick={() => onTabChange(tab.id)}
+            title={tab.label}
             className={`flex-1 p-3 text-sm font-semibold transition-all ${
               activeTab === tab.id 
                 ? 'bg-cosmic-purple/30 text-white border-b-2 border-cosmic-cyan shadow-lg shadow-cosmic-purple/50' 
