@@ -22,10 +22,18 @@ export default function TournamentArena({ tournament, selectedCat, onTournamentW
   const [fightResult, setFightResult] = useState<'win' | 'lose' | null>(null)
   const [tournamentComplete, setTournamentComplete] = useState(false)
 
-  const calculateDamage = (attacker: any, defender: any): number => {
+  const calculateDamage = (attacker: any, defender: any, isWindCat: boolean = false): number => {
     const baseDamage = Math.max(1, attacker.attack - Math.floor(defender.defense / 2))
     const variance = Math.random() * 0.4 - 0.2 // ±20% вариация
-    return Math.floor(baseDamage * (1 + variance))
+    let damage = Math.floor(baseDamage * (1 + variance))
+    
+    // Специальная способность кота Ветер
+    if (isWindCat && Math.random() < 0.3) {
+      damage = Math.floor(damage * 2.5)
+      return damage
+    }
+    
+    return damage
   }
 
   const fight = () => {
@@ -35,6 +43,7 @@ export default function TournamentArena({ tournament, selectedCat, onTournamentW
     let catHealth = selectedCat.currentHealth
     let enemyHealth = enemy.health
     const newLog: string[] = []
+    const isWindCat = selectedCat.id === 'wind-cat'
 
     newLog.push(`🥊 ${selectedCat.name} vs ${enemy.name} (${enemy.emoji})`)
     
@@ -42,25 +51,49 @@ export default function TournamentArena({ tournament, selectedCat, onTournamentW
 
     while (catHealth > 0 && enemyHealth > 0) {
       if (catGoesFirst) {
-        const damage = calculateDamage(selectedCat, enemy)
+        const damage = calculateDamage(selectedCat, enemy, isWindCat)
+        const isWindAbility = isWindCat && damage > selectedCat.currentAttack * 2
         enemyHealth = Math.max(0, enemyHealth - damage)
-        newLog.push(`💥 ${selectedCat.name}: ${damage} урона → ${enemy.name} (${enemyHealth}/${enemy.maxHealth} HP)`)
+        
+        if (isWindAbility) {
+          newLog.push(`🌪️ УРАГАН ВЕТРА! ${selectedCat.name}: ${damage} критического урона → ${enemy.name} (${enemyHealth}/${enemy.maxHealth} HP)`)
+        } else {
+          newLog.push(`💥 ${selectedCat.name}: ${damage} урона → ${enemy.name} (${enemyHealth}/${enemy.maxHealth} HP)`)
+        }
         
         if (enemyHealth <= 0) break
         
-        const enemyDamage = calculateDamage(enemy, selectedCat)
-        catHealth = Math.max(0, catHealth - enemyDamage)
-        newLog.push(`💢 ${enemy.name}: ${enemyDamage} урона → ${selectedCat.name} (${catHealth}/${selectedCat.maxHealth} HP)`)
+        const enemyDamage = calculateDamage(enemy, selectedCat, false)
+        
+        // Способность уклонения кота Ветер
+        if (isWindCat && Math.random() < 0.25) {
+          newLog.push(`💨 ${selectedCat.name} растворился в ветре и уклонился от атаки!`)
+        } else {
+          catHealth = Math.max(0, catHealth - enemyDamage)
+          newLog.push(`💢 ${enemy.name}: ${enemyDamage} урона → ${selectedCat.name} (${catHealth}/${selectedCat.maxHealth} HP)`)
+        }
       } else {
-        const enemyDamage = calculateDamage(enemy, selectedCat)
-        catHealth = Math.max(0, catHealth - enemyDamage)
-        newLog.push(`💢 ${enemy.name}: ${enemyDamage} урона → ${selectedCat.name} (${catHealth}/${selectedCat.maxHealth} HP)`)
+        const enemyDamage = calculateDamage(enemy, selectedCat, false)
+        
+        // Способность уклонения кота Ветер
+        if (isWindCat && Math.random() < 0.25) {
+          newLog.push(`💨 ${selectedCat.name} растворился в ветре и уклонился от атаки!`)
+        } else {
+          catHealth = Math.max(0, catHealth - enemyDamage)
+          newLog.push(`💢 ${enemy.name}: ${enemyDamage} урона → ${selectedCat.name} (${catHealth}/${selectedCat.maxHealth} HP)`)
+        }
         
         if (catHealth <= 0) break
         
-        const damage = calculateDamage(selectedCat, enemy)
+        const damage = calculateDamage(selectedCat, enemy, isWindCat)
+        const isWindAbility = isWindCat && damage > selectedCat.currentAttack * 2
         enemyHealth = Math.max(0, enemyHealth - damage)
-        newLog.push(`💥 ${selectedCat.name}: ${damage} урона → ${enemy.name} (${enemyHealth}/${enemy.maxHealth} HP)`)
+        
+        if (isWindAbility) {
+          newLog.push(`🌪️ УРАГАН ВЕТРА! ${selectedCat.name}: ${damage} критического урона → ${enemy.name} (${enemyHealth}/${enemy.maxHealth} HP)`)
+        } else {
+          newLog.push(`💥 ${selectedCat.name}: ${damage} урона → ${enemy.name} (${enemyHealth}/${enemy.maxHealth} HP)`)
+        }
       }
     }
 
