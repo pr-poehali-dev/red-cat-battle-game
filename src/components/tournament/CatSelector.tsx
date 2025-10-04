@@ -25,9 +25,18 @@ export default function CatSelector({ ownedCats, onSelectCat }: CatSelectorProps
                 key={cat.id}
                 onClick={() => onSelectCat(cat)}
                 variant="outline"
-                className="h-auto flex-col p-4 space-y-2"
+                className="h-auto flex-col p-4 space-y-2 relative overflow-hidden"
               >
-                <div className="text-3xl">{cat.emoji}</div>
+                {cat.image && (
+                  <div className="w-full h-24 mb-2 rounded-lg overflow-hidden">
+                    <img 
+                      src={cat.image} 
+                      alt={cat.name}
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                )}
+                {!cat.image && <div className="text-3xl">{cat.emoji}</div>}
                 <div className="font-semibold">{cat.name}</div>
                 <div className="text-sm text-gray-600">Ур. {cat.level}</div>
                 <div className="text-xs">
