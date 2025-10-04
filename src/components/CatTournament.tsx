@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Button } from '@/components/ui/button'
 import Icon from '@/components/ui/icon'
 import type { Cat } from '@/types/game'
@@ -22,11 +22,44 @@ interface CatTournamentProps {
 }
 
 export default function CatTournament({ ownedCats, playerCoins, playerStats, playerName, onTournamentWin, onCatExperience, onUpdateStats }: CatTournamentProps) {
-  const [selectedCat, setSelectedCat] = useState<Cat | null>(null)
-  const [selectedTournament, setSelectedTournament] = useState<Tournament | null>(null)
-  const [isInTournament, setIsInTournament] = useState(false)
+  const [selectedCat, setSelectedCat] = useState<Cat | null>(() => {
+    const saved = localStorage.getItem('tournamentProgress')
+    if (saved) {
+      const progress = JSON.parse(saved)
+      return progress.selectedCat || null
+    }
+    return null
+  })
+  const [selectedTournament, setSelectedTournament] = useState<Tournament | null>(() => {
+    const saved = localStorage.getItem('tournamentProgress')
+    if (saved) {
+      const progress = JSON.parse(saved)
+      return progress.selectedTournament || null
+    }
+    return null
+  })
+  const [isInTournament, setIsInTournament] = useState(() => {
+    const saved = localStorage.getItem('tournamentProgress')
+    if (saved) {
+      const progress = JSON.parse(saved)
+      return progress.isInTournament || false
+    }
+    return false
+  })
   const [showRankings, setShowRankings] = useState(false)
   const [showSeasonal, setShowSeasonal] = useState(false)
+  
+  useEffect(() => {
+    if (selectedCat || selectedTournament || isInTournament) {
+      localStorage.setItem('tournamentProgress', JSON.stringify({
+        selectedCat,
+        selectedTournament,
+        isInTournament
+      }))
+    } else {
+      localStorage.removeItem('tournamentProgress')
+    }
+  }, [selectedCat, selectedTournament, isInTournament])
 
   const startTournament = () => {
     if (!selectedCat || !selectedTournament) return
@@ -56,6 +89,16 @@ export default function CatTournament({ ownedCats, playerCoins, playerStats, pla
       currentWinStreak: newStreak,
       longestWinStreak: Math.max(playerStats.longestWinStreak, newStreak)
     })
+    
+    const currentStats = JSON.parse(localStorage.getItem('tournamentStats') || '{"wins":0,"losses":0,"rating":1000}')
+    if (won) {
+      currentStats.wins += 1
+      currentStats.rating += 50
+    } else {
+      currentStats.losses += 1
+      currentStats.rating = Math.max(0, currentStats.rating - 25)
+    }
+    localStorage.setItem('tournamentStats', JSON.stringify(currentStats))
   }
 
   const handleSeasonalReward = (reward: any) => {
@@ -111,6 +154,9 @@ export default function CatTournament({ ownedCats, playerCoins, playerStats, pla
         onCatExperience={onCatExperience}
         onRankPointsGain={handleRankPointsGain}
         onReset={resetTournament}
+        onTournamentComplete={(won) => {
+          if (!won) handleTournamentComplete(0, 0, false)
+        }}
       />
     )
   }

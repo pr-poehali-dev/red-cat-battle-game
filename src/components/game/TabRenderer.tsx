@@ -27,6 +27,7 @@ interface TabRendererProps {
   coinsEarned?: number
   catsUpgraded?: number
   user: any
+  tournamentStats: { wins: number; losses: number; rating: number }
   onCatClick: (event: React.MouseEvent) => void
   onStartTournament: () => void
   onPurchaseCat: (catId: string, cost: number) => void
@@ -57,6 +58,7 @@ export default function TabRenderer({
   coinsEarned = 0,
   catsUpgraded = 0,
   user,
+  tournamentStats,
   onCatClick,
   onStartTournament,
   onPurchaseCat,
@@ -92,8 +94,8 @@ export default function TabRenderer({
 
       {activeTab === 'fight' && (
         <FightArena 
-          onStartTournament={onStartTournament}
           onNavigateToTournament={() => setActiveTab('tournament')}
+          tournamentStats={tournamentStats}
         />
       )}
 

@@ -26,17 +26,24 @@ function Index() {
   const { gameStats, setGameStats, saveProgress, lastSaved } = useGameData()
   const [isMusicPlaying, setIsMusicPlaying] = useState(false)
 
-  const [playerStats, setPlayerStats] = useState<PlayerStats>({
-    totalTournaments: 0,
-    tournamentsWon: 0,
-    totalFights: 0,
-    fightsWon: 0,
-    totalCoinsEarned: 0,
-    currentRankPoints: 0,
-    bestCat: '',
-    longestWinStreak: 0,
-    currentWinStreak: 0
+  const [playerStats, setPlayerStats] = useState<PlayerStats>(() => {
+    const saved = localStorage.getItem('playerStats')
+    return saved ? JSON.parse(saved) : {
+      totalTournaments: 0,
+      tournamentsWon: 0,
+      totalFights: 0,
+      fightsWon: 0,
+      totalCoinsEarned: 0,
+      currentRankPoints: 0,
+      bestCat: '',
+      longestWinStreak: 0,
+      currentWinStreak: 0
+    }
   })
+
+  useEffect(() => {
+    localStorage.setItem('playerStats', JSON.stringify(playerStats))
+  }, [playerStats])
 
   const [currentEnemy, setCurrentEnemy] = useState<Enemy>({
     name: 'Киборг-Собака',
@@ -51,6 +58,14 @@ function Index() {
   const [totalBattles, setTotalBattles] = useState(0)
   const [totalWins, setTotalWins] = useState(0)
   const [totalTournaments, setTotalTournaments] = useState(0)
+  const [tournamentStats, setTournamentStats] = useState(() => {
+    const saved = localStorage.getItem('tournamentStats')
+    return saved ? JSON.parse(saved) : { wins: 0, losses: 0, rating: 1000 }
+  })
+
+  useEffect(() => {
+    localStorage.setItem('tournamentStats', JSON.stringify(tournamentStats))
+  }, [tournamentStats])
   const [coinsEarned, setCoinsEarned] = useState(0)
   const [catsUpgraded, setCatsUpgraded] = useState(0)
 
@@ -180,6 +195,7 @@ function Index() {
           totalWins={totalWins}
           totalTournaments={totalTournaments}
           user={user}
+          tournamentStats={tournamentStats}
           onCatClick={handleCatClick}
           onStartTournament={handleStartTournament}
           onPurchaseCat={catActions.handlePurchaseCat}
