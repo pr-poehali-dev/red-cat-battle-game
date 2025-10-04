@@ -64,33 +64,26 @@ export default function QuestCard({ quest, type, onClaimReward }: QuestCardProps
           </div>
         </div>
         
-        <Button
-          onClick={() => onClaimReward(quest.id, type)}
-          disabled={quest.progress < quest.maxProgress || quest.isCompleted}
-          className={`w-full h-7 text-xs ${
-            quest.isCompleted ? 'bg-green-600 hover:bg-green-700' :
-            quest.progress >= quest.maxProgress ? 'bg-gradient-to-r from-yellow-600 to-orange-600 hover:from-yellow-700 hover:to-orange-700' :
-            'bg-gray-600 hover:bg-gray-700'
-          }`}
-          size="sm"
-        >
-          {quest.isCompleted ? (
-            <>
-              <Icon name="Check" size={12} className="mr-1" />
-              Выполнено
-            </>
-          ) : quest.progress >= quest.maxProgress ? (
-            <>
-              <Icon name="Gift" size={12} className="mr-1" />
-              Забрать
-            </>
-          ) : (
-            <>
-              <Icon name="Clock" size={12} className="mr-1" />
-              В процессе
-            </>
-          )}
-        </Button>
+        {quest.isCompleted ? (
+          <div className="w-full h-7 flex items-center justify-center bg-green-600/20 border border-green-500/50 rounded text-xs text-green-400">
+            <Icon name="Check" size={12} className="mr-1" />
+            ✅ Выполнено
+          </div>
+        ) : quest.progress >= quest.maxProgress ? (
+          <Button
+            onClick={() => onClaimReward(quest.id, type)}
+            className="w-full h-7 text-xs bg-gradient-to-r from-yellow-600 to-orange-600 hover:from-yellow-700 hover:to-orange-700 animate-pulse"
+            size="sm"
+          >
+            <Icon name="Gift" size={12} className="mr-1" />
+            🎁 Забрать награду!
+          </Button>
+        ) : (
+          <div className="w-full h-7 flex items-center justify-center bg-blue-600/20 border border-blue-500/50 rounded text-xs text-blue-300">
+            <Icon name="Target" size={12} className="mr-1" />
+            Выполняется: {quest.progress}/{quest.maxProgress}
+          </div>
+        )}
       </CardContent>
     </Card>
   )
