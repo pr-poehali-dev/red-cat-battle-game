@@ -105,7 +105,7 @@ export const CAT_TEMPLATES = {
     rarity: 'Эпический',
     rarityColor: 'slate',
     borderColor: 'slate-500',
-    image: '/img/ff564f1e-cbfe-4cd1-930d-f1147b9270d5.jpg',
+    image: '/img/fa782b11-875d-421e-9999-f7b7abe5bb07.jpg',
     upgradePoints: 0
   },
   'water-cat': {
