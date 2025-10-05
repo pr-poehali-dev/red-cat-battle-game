@@ -128,6 +128,91 @@ export const CAT_TEMPLATES = {
     borderColor: 'cyan-500',
     image: '/img/c58f1707-e8a4-4245-8490-c44a714dce03.jpg',
     upgradePoints: 0
+  },
+  'cosmic-guardian': {
+    id: 'cosmic-guardian',
+    name: 'Космический Страж',
+    level: 1,
+    experience: 0,
+    maxExperience: 100,
+    baseHealth: 8000,
+    currentHealth: 8000,
+    maxHealth: 8000,
+    baseAttack: 1200,
+    currentAttack: 1200,
+    baseDefense: 800,
+    currentDefense: 800,
+    baseSpeed: 950,
+    currentSpeed: 950,
+    rarity: 'Титанический',
+    rarityColor: 'violet',
+    borderColor: 'violet-500',
+    image: 'https://cdn.poehali.dev/files/ae6f6ac1-ff18-48d0-b10f-891f56787a1e.jpg',
+    upgradePoints: 0
+  },
+  'dragon-cat': {
+    id: 'dragon-cat',
+    name: 'Кот Дракон',
+    level: 1,
+    experience: 0,
+    maxExperience: 100,
+    baseHealth: 12000,
+    currentHealth: 12000,
+    maxHealth: 12000,
+    baseAttack: 1800,
+    currentAttack: 1800,
+    baseDefense: 1200,
+    currentDefense: 1200,
+    baseSpeed: 1400,
+    currentSpeed: 1400,
+    rarity: 'Драконический',
+    rarityColor: 'rose',
+    borderColor: 'rose-500',
+    image: '/img/81ddf2e3-ddbf-4716-bbc5-9fb39883ecd8.jpg',
+    upgradePoints: 0
+  },
+  'wind-cat': {
+    id: 'wind-cat',
+    name: 'Кот Ветер',
+    level: 1,
+    experience: 0,
+    maxExperience: 100,
+    baseHealth: 15000,
+    currentHealth: 15000,
+    maxHealth: 15000,
+    baseAttack: 2500,
+    currentAttack: 2500,
+    baseDefense: 1800,
+    currentDefense: 1800,
+    baseSpeed: 2200,
+    currentSpeed: 2200,
+    rarity: 'Ветряной',
+    rarityColor: 'sky',
+    borderColor: 'sky-500',
+    image: '/img/be286536-1877-4f86-97d0-99d0f2505c42.jpg',
+    upgradePoints: 0
+  },
+  'autumn-cat': {
+    id: 'autumn-cat',
+    name: 'Кот Осень',
+    level: 1,
+    experience: 0,
+    maxExperience: 100,
+    baseHealth: 18000,
+    currentHealth: 18000,
+    maxHealth: 18000,
+    baseAttack: 3200,
+    currentAttack: 3200,
+    baseDefense: 2400,
+    currentDefense: 2400,
+    baseSpeed: 2800,
+    currentSpeed: 2800,
+    rarity: 'Осенний',
+    rarityColor: 'amber',
+    borderColor: 'amber-500',
+    image: '/img/6d28a2e0-7d2c-4efd-826b-f552ca6c7537.jpg',
+    upgradePoints: 0,
+    expirationDate: new Date('2025-12-01T00:00:00+05:00')
   }
 }
 
@@ -142,14 +227,15 @@ export const useCatActions = (
     if (cost === 0 || gameStats.coins >= cost) {
       audioSystem.playUpgradeSound()
       
-      const newCat = CAT_TEMPLATES[catId as keyof typeof CAT_TEMPLATES]
+      const template = CAT_TEMPLATES[catId as keyof typeof CAT_TEMPLATES]
       
-      if (newCat) {
+      if (template) {
+        const newCat = { ...template }
         setGameStats(prev => ({
           ...prev,
           coins: prev.coins - cost,
           ownedCats: [...(prev.ownedCats || []), newCat],
-          activeCatId: catId // Устанавливаем купленного кота как активного
+          activeCatId: catId
         }))
       }
     }

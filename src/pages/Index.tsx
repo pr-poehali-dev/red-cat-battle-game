@@ -134,6 +134,59 @@ function Index() {
     }
   }
 
+  // Проверка истечения срока действия Кота Осень
+  useEffect(() => {
+    const checkAutumnCatExpiration = () => {
+      const expirationDate = new Date('2025-12-01T00:00:00+05:00')
+      const now = new Date()
+      
+      if (now >= expirationDate) {
+        setGameStats(prev => {
+          const hasAutumnCat = prev.ownedCats?.some(cat => cat.id === 'autumn-cat')
+          
+          if (hasAutumnCat) {
+            const murkaTemplate = {
+              id: 'murka',
+              name: 'Котёнок Мурка',
+              level: 1,
+              experience: 0,
+              maxExperience: 100,
+              baseHealth: 100,
+              currentHealth: 100,
+              maxHealth: 100,
+              baseAttack: 15,
+              currentAttack: 15,
+              baseDefense: 8,
+              currentDefense: 8,
+              baseSpeed: 12,
+              currentSpeed: 12,
+              rarity: 'Обычный',
+              rarityColor: 'emerald',
+              borderColor: 'emerald-500',
+              image: '/img/33f4e16d-16ec-43d8-84f4-6fe73741ec6a.jpg',
+              upgradePoints: 0
+            }
+            
+            return {
+              ...prev,
+              ownedCats: prev.ownedCats!.map(cat => 
+                cat.id === 'autumn-cat' ? murkaTemplate : cat
+              ),
+              activeCatId: prev.activeCatId === 'autumn-cat' ? 'murka' : prev.activeCatId
+            }
+          }
+          
+          return prev
+        })
+      }
+    }
+    
+    checkAutumnCatExpiration()
+    const interval = setInterval(checkAutumnCatExpiration, 60000)
+    
+    return () => clearInterval(interval)
+  }, [])
+
   // Если идёт загрузка авторизации, показываем загрузку
   if (authLoading) {
     return (

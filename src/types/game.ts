@@ -32,6 +32,7 @@ export interface OwnedCat {
   borderColor: string
   image: string
   upgradePoints: number
+  expirationDate?: Date
 }
 
 export interface Enemy {
