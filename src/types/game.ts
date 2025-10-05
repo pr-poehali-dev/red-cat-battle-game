@@ -2,6 +2,7 @@ export interface GameStats {
   level: number
   power: number
   coins: number
+  premiumCoins?: number
   experience: number
   maxExperience: number
   clickDamage: number
