@@ -210,7 +210,7 @@ export const CAT_TEMPLATES = {
     rarity: 'Осенний',
     rarityColor: 'amber',
     borderColor: 'amber-500',
-    image: '/img/04af64d3-5be6-4238-8f1b-704db3227cc8.jpg',
+    image: '/img/709815d8-58e2-4cb2-8a03-d59dc4b93a4b.jpg',
     upgradePoints: 0,
     expirationDate: new Date('2025-12-01T00:00:00+05:00')
   }
