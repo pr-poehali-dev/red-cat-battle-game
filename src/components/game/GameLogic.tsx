@@ -44,11 +44,17 @@ export function GameLogic({
           return prev
         }
         
-        // Время зарядки 3 часа = 3 * 60 * 60 * 1000 = 10800000 мс
-        const rechargeTime = 3 * 60 * 60 * 1000
+        // Проверяем активного кота для определения времени зарядки
+        const activeCat = prev.ownedCats?.find(cat => cat.id === prev.activeCatId)
+        const rechargeHours = activeCat?.isPremiumMiner 
+          ? (activeCat.premiumMiningRechargeHours || 6)
+          : 3
+        
+        // Время зарядки в миллисекундах
+        const rechargeTime = rechargeHours * 60 * 60 * 1000
         const timeElapsed = now - prev.energyRechargeTime
         
-        // Если прошло 3 часа, восстанавливаем энергию
+        // Если прошло нужное время, восстанавливаем энергию
         if (timeElapsed >= rechargeTime) {
           return {
             ...prev,

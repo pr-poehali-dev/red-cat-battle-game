@@ -213,6 +213,30 @@ export const CAT_TEMPLATES = {
     image: '/img/86baff1c-a4b7-4abb-95a0-472d446b2798.jpg',
     upgradePoints: 0,
     expirationDate: new Date('2025-12-01T00:00:00+05:00')
+  },
+  'hurricane-cat': {
+    id: 'hurricane-cat',
+    name: 'Кот Ураган',
+    level: 1,
+    experience: 0,
+    maxExperience: 100,
+    baseHealth: 25000,
+    currentHealth: 25000,
+    maxHealth: 25000,
+    baseAttack: 4000,
+    currentAttack: 4000,
+    baseDefense: 3000,
+    currentDefense: 3000,
+    baseSpeed: 3500,
+    currentSpeed: 3500,
+    rarity: 'Премиум Майнер',
+    rarityColor: 'purple',
+    borderColor: 'purple-500',
+    image: '/img/d64a99e1-8e53-48a8-a448-d6f4ad8626da.jpg',
+    upgradePoints: 0,
+    isPremiumMiner: true,
+    premiumMiningEnergyCost: 3000,
+    premiumMiningRechargeHours: 6
   }
 }
 

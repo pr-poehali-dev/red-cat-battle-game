@@ -34,6 +34,10 @@ export interface OwnedCat {
   image: string
   upgradePoints: number
   expirationDate?: Date
+  isPremiumMiner?: boolean
+  premiumMiningEnergyCost?: number
+  premiumMiningRechargeHours?: number
+  premiumEnergySpent?: number
 }
 
 export interface Enemy {

@@ -7,15 +7,19 @@ import { GameStats, Enemy, DamageNumber, EnergyParticle } from '@/types/game'
 
 interface EnergyTimerProps {
   rechargeTime: number
+  activeCat?: any
 }
 
-const EnergyTimer: React.FC<EnergyTimerProps> = ({ rechargeTime }) => {
+const EnergyTimer: React.FC<EnergyTimerProps> = ({ rechargeTime, activeCat }) => {
   const [timeLeft, setTimeLeft] = useState<string>('')
 
   useEffect(() => {
     const interval = setInterval(() => {
       const now = Date.now()
-      const rechargeCompleteTime = rechargeTime + (3 * 60 * 60 * 1000) // 3 часа
+      const rechargeHours = activeCat?.isPremiumMiner 
+        ? (activeCat.premiumMiningRechargeHours || 6)
+        : 3
+      const rechargeCompleteTime = rechargeTime + (rechargeHours * 60 * 60 * 1000)
       const timeDiff = rechargeCompleteTime - now
 
       if (timeDiff <= 0) {
@@ -32,12 +36,13 @@ const EnergyTimer: React.FC<EnergyTimerProps> = ({ rechargeTime }) => {
     }, 1000)
 
     return () => clearInterval(interval)
-  }, [rechargeTime])
+  }, [rechargeTime, activeCat])
 
   return (
     <div className="text-center mt-2 p-2 bg-orange-500/10 rounded border border-orange-500/30">
       <div className="text-orange-400 text-xs font-semibold">
         ⏰ Восстановление через: {timeLeft}
+        {activeCat?.isPremiumMiner && <span className="ml-2 text-purple-400">(Премиум кот: 6ч)</span>}
       </div>
     </div>
   )
@@ -183,9 +188,33 @@ const CatFighter: React.FC<CatFighterProps> = ({
               className="h-3"
             />
             {gameStats.energy === 0 && gameStats.energyRechargeTime && (
-              <EnergyTimer rechargeTime={gameStats.energyRechargeTime} />
+              <EnergyTimer rechargeTime={gameStats.energyRechargeTime} activeCat={activeCat} />
             )}
           </div>
+
+          {/* Premium Mining Progress */}
+          {activeCat?.isPremiumMiner && (
+            <div className="mt-4 bg-purple-500/20 border border-purple-500/50 rounded-lg p-3">
+              <div className="flex justify-between text-sm font-semibold mb-2 text-purple-300">
+                <span className="flex items-center gap-1">
+                  <img 
+                    src="/img/448a4b3f-b7da-4ef7-a5b5-ba81e92ce674.jpg" 
+                    alt="Premium Coin"
+                    className="w-4 h-4 rounded-full"
+                  />
+                  Майнинг премиум монет
+                </span>
+                <span>{activeCat.premiumEnergySpent || 0}/{activeCat.premiumMiningEnergyCost || 3000}</span>
+              </div>
+              <Progress 
+                value={((activeCat.premiumEnergySpent || 0) / (activeCat.premiumMiningEnergyCost || 3000)) * 100} 
+                className="h-2 bg-purple-900/50"
+              />
+              <p className="text-xs text-purple-400 mt-2 text-center">
+                Потратьте {activeCat.premiumMiningEnergyCost} энергии, чтобы получить 1 💎
+              </p>
+            </div>
+          )}
         </CardContent>
       </Card>
 

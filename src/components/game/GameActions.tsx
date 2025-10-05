@@ -45,10 +45,38 @@ export const useGameActions = ({
       const newEnergy = prev.energy - 1
       const energyRechargeTime = newEnergy === 0 ? Date.now() : prev.energyRechargeTime
       
+      // Проверяем, есть ли активный премиум майнер
+      const activeCat = prev.ownedCats?.find(cat => cat.id === prev.activeCatId)
+      let updatedCats = prev.ownedCats || []
+      let premiumCoinsEarned = 0
+      
+      if (activeCat?.isPremiumMiner) {
+        const energyCost = activeCat.premiumMiningEnergyCost || 3000
+        const currentSpent = (activeCat.premiumEnergySpent || 0) + 1
+        
+        // Если набрали нужное количество энергии, даём премиум монету
+        if (currentSpent >= energyCost) {
+          premiumCoinsEarned = 1
+          updatedCats = updatedCats.map(cat => 
+            cat.id === activeCat.id 
+              ? { ...cat, premiumEnergySpent: 0 }
+              : cat
+          )
+        } else {
+          updatedCats = updatedCats.map(cat => 
+            cat.id === activeCat.id 
+              ? { ...cat, premiumEnergySpent: currentSpent }
+              : cat
+          )
+        }
+      }
+      
       return {
         ...prev,
         energy: newEnergy,
-        energyRechargeTime
+        energyRechargeTime,
+        ownedCats: updatedCats,
+        premiumCoins: (prev.premiumCoins || 0) + premiumCoinsEarned
       }
     })
     
