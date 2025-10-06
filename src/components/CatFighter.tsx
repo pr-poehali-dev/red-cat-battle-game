@@ -57,6 +57,7 @@ interface CatFighterProps {
   onCatClick: (event: React.MouseEvent) => void
   onNavigate?: (tab: string) => void
   onRestoreEnergy?: () => void
+  onIncreaseMaxEnergy?: () => void
 }
 
 const CatFighter: React.FC<CatFighterProps> = ({
@@ -67,7 +68,8 @@ const CatFighter: React.FC<CatFighterProps> = ({
   energyParticles,
   onCatClick,
   onNavigate,
-  onRestoreEnergy
+  onRestoreEnergy,
+  onIncreaseMaxEnergy
 }) => {
   // Получаем активного кота
   const activeCat = gameStats.ownedCats?.find(cat => cat.id === gameStats.activeCatId) || gameStats.ownedCats?.[0]
@@ -191,6 +193,14 @@ const CatFighter: React.FC<CatFighterProps> = ({
                   title="Восстановить энергию за 15 000 монет"
                 >
                   <Icon name="Zap" size={16} className="text-yellow-400" />
+                </button>
+                <button
+                  onClick={onIncreaseMaxEnergy}
+                  disabled={gameStats.coins < 5000}
+                  className="p-1 rounded-full bg-green-500/20 border border-green-500/50 hover:bg-green-500/30 disabled:opacity-30 disabled:cursor-not-allowed transition-all hover:scale-110"
+                  title="Увеличить макс. энергию на 100 за 5 000 монет"
+                >
+                  <Icon name="Plus" size={16} className="text-green-400" />
                 </button>
               </div>
               <span>{gameStats.energy}/{gameStats.maxEnergy}</span>
