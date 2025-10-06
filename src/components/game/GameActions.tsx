@@ -187,9 +187,25 @@ export const useGameActions = ({
     }))
   }
 
+  const handleRestoreEnergy = () => {
+    const RESTORE_COST = 15000
+    
+    if (gameStats.coins >= RESTORE_COST && gameStats.energy < gameStats.maxEnergy) {
+      audioSystem.playLevelUpSound()
+      
+      setGameStats(prev => ({
+        ...prev,
+        coins: prev.coins - RESTORE_COST,
+        energy: prev.maxEnergy,
+        energyRechargeTime: undefined
+      }))
+    }
+  }
+
   return {
     handleCatClick,
     handleBattleWin,
-    handleCatExperience
+    handleCatExperience,
+    handleRestoreEnergy
   }
 }

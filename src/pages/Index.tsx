@@ -70,7 +70,7 @@ function Index() {
   const [catsUpgraded, setCatsUpgraded] = useState(0)
 
   // Игровые действия
-  const { handleCatClick, handleBattleWin, handleCatExperience } = useGameActions({
+  const { handleCatClick, handleBattleWin, handleCatExperience, handleRestoreEnergy } = useGameActions({
     gameStats,
     currentEnemy,
     audioSystem,
@@ -250,6 +250,7 @@ function Index() {
           user={user}
           tournamentStats={tournamentStats}
           onCatClick={handleCatClick}
+          onRestoreEnergy={handleRestoreEnergy}
           onStartTournament={handleStartTournament}
           onPurchaseCat={catActions.handlePurchaseCat}
           onSelectCat={catActions.handleSelectCat}

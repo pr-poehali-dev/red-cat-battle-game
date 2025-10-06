@@ -29,6 +29,7 @@ interface TabRendererProps {
   user: any
   tournamentStats: { wins: number; losses: number; rating: number }
   onCatClick: (event: React.MouseEvent) => void
+  onRestoreEnergy: () => void
   onStartTournament: () => void
   onPurchaseCat: (catId: string, cost: number) => void
   onSelectCat: (catId: string) => void
@@ -60,6 +61,7 @@ export default function TabRenderer({
   user,
   tournamentStats,
   onCatClick,
+  onRestoreEnergy,
   onStartTournament,
   onPurchaseCat,
   onSelectCat,
@@ -85,6 +87,7 @@ export default function TabRenderer({
           energyParticles={energyParticles}
           onCatClick={onCatClick}
           onNavigate={setActiveTab}
+          onRestoreEnergy={onRestoreEnergy}
         />
       )}
 

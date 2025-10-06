@@ -56,6 +56,7 @@ interface CatFighterProps {
   energyParticles: EnergyParticle[]
   onCatClick: (event: React.MouseEvent) => void
   onNavigate?: (tab: string) => void
+  onRestoreEnergy?: () => void
 }
 
 const CatFighter: React.FC<CatFighterProps> = ({
@@ -65,7 +66,8 @@ const CatFighter: React.FC<CatFighterProps> = ({
   damageNumbers,
   energyParticles,
   onCatClick,
-  onNavigate
+  onNavigate,
+  onRestoreEnergy
 }) => {
   // Получаем активного кота
   const activeCat = gameStats.ownedCats?.find(cat => cat.id === gameStats.activeCatId) || gameStats.ownedCats?.[0]
@@ -180,7 +182,17 @@ const CatFighter: React.FC<CatFighterProps> = ({
           {/* Energy Bar */}
           <div className="mt-4">
             <div className="flex justify-between text-sm font-semibold mb-2 text-white">
-              <span>Энергия</span>
+              <div className="flex items-center gap-2">
+                <span>Энергия</span>
+                <button
+                  onClick={onRestoreEnergy}
+                  disabled={gameStats.energy >= gameStats.maxEnergy || gameStats.coins < 15000}
+                  className="p-1 rounded-full bg-yellow-500/20 border border-yellow-500/50 hover:bg-yellow-500/30 disabled:opacity-30 disabled:cursor-not-allowed transition-all hover:scale-110"
+                  title="Восстановить энергию за 15 000 монет"
+                >
+                  <Icon name="Zap" size={16} className="text-yellow-400" />
+                </button>
+              </div>
               <span>{gameStats.energy}/{gameStats.maxEnergy}</span>
             </div>
             <Progress 
