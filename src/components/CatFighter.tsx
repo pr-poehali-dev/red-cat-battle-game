@@ -81,6 +81,23 @@ const CatFighter: React.FC<CatFighterProps> = ({
   // Кулдаун спецспособности
   const [cooldownPercent, setCooldownPercent] = useState(0)
   const [cooldownText, setCooldownText] = useState('')
+  const [showSpecialEffect, setShowSpecialEffect] = useState(false)
+  const [lastUsedTime, setLastUsedTime] = useState(0)
+  
+  // Эффект экрана при активации спецатаки
+  useEffect(() => {
+    if (!activeCat?.specialAbilityLastUsed) return
+    
+    const currentLastUsed = activeCat.specialAbilityLastUsed
+    if (currentLastUsed !== lastUsedTime && currentLastUsed > 0) {
+      setShowSpecialEffect(true)
+      setLastUsedTime(currentLastUsed)
+      
+      setTimeout(() => {
+        setShowSpecialEffect(false)
+      }, 800)
+    }
+  }, [activeCat?.specialAbilityLastUsed, lastUsedTime])
   
   useEffect(() => {
     if (!isDustCat || !hasSpecialAbility) return
@@ -119,6 +136,43 @@ const CatFighter: React.FC<CatFighterProps> = ({
 
   return (
     <div className="space-y-6">
+      {/* Полноэкранный эффект спецатаки */}
+      {showSpecialEffect && (
+        <div className="fixed inset-0 z-[9999] pointer-events-none">
+          {/* Флеш-эффект */}
+          <div className="absolute inset-0 bg-cyan-400 animate-[flash_0.3s_ease-out]" style={{ opacity: 0.4 }} />
+          
+          {/* Волны энергии */}
+          <div className="absolute inset-0 flex items-center justify-center">
+            <div className="w-32 h-32 rounded-full bg-cyan-400 animate-[energyWave_0.8s_ease-out] opacity-0" />
+            <div className="absolute w-32 h-32 rounded-full bg-blue-400 animate-[energyWave_0.8s_ease-out_0.2s] opacity-0" />
+            <div className="absolute w-32 h-32 rounded-full bg-purple-400 animate-[energyWave_0.8s_ease-out_0.4s] opacity-0" />
+          </div>
+          
+          {/* Звёздные частицы */}
+          {Array.from({ length: 20 }).map((_, i) => (
+            <div
+              key={i}
+              className="absolute animate-[starFall_0.8s_ease-out] opacity-0"
+              style={{
+                left: `${Math.random() * 100}%`,
+                top: `${Math.random() * 100}%`,
+                animationDelay: `${Math.random() * 0.5}s`
+              }}
+            >
+              <div className="w-2 h-2 bg-cyan-300 rounded-full shadow-lg shadow-cyan-400" />
+            </div>
+          ))}
+          
+          {/* Текст спецатаки */}
+          <div className="absolute inset-0 flex items-center justify-center">
+            <div className="text-6xl font-black text-cyan-300 animate-[scaleInOut_0.8s_ease-out] drop-shadow-2xl" style={{ fontFamily: 'Fredoka One', textShadow: '0 0 40px rgba(0, 255, 255, 1), 0 0 80px rgba(0, 212, 255, 0.8)' }}>
+              ✨ ЗВЁЗДНЫЙ ВЗРЫВ! ✨
+            </div>
+          </div>
+        </div>
+      )}
+      
       {/* Cat Fighter */}
       <Card className="bg-space-dark/80 backdrop-blur-xl border-2 border-cosmic-purple shadow-2xl shadow-cosmic-purple/50 animate-glow">
         <CardContent className="p-6 text-center">
