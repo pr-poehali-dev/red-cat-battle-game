@@ -237,6 +237,30 @@ export const CAT_TEMPLATES = {
     isPremiumMiner: true,
     premiumMiningEnergyCost: 3000,
     premiumMiningRechargeHours: 6
+  },
+  'dust-cat': {
+    id: 'dust-cat',
+    name: 'Кот Пыль',
+    level: 1,
+    experience: 0,
+    maxExperience: 100,
+    baseHealth: 50000,
+    currentHealth: 50000,
+    maxHealth: 50000,
+    baseAttack: 8000,
+    currentAttack: 8000,
+    baseDefense: 6500,
+    currentDefense: 6500,
+    baseSpeed: 7000,
+    currentSpeed: 7000,
+    rarity: 'Легендарный Воин',
+    rarityColor: 'cyan',
+    borderColor: 'cyan-400',
+    image: 'https://cdn.poehali.dev/projects/9a98f0ea-78b6-43e3-a2d7-efc2e95278f5/files/045df2ef-bd1f-43c3-9511-77e5fc4d6f32.jpg',
+    upgradePoints: 0,
+    hasSpecialAbility: true,
+    specialAbilityCooldown: 30000,
+    specialAbilityLastUsed: 0
   }
 }
 

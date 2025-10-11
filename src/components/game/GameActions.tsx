@@ -37,8 +37,19 @@ export const useGameActions = ({
     const x = event.clientX - rect.left
     const y = event.clientY - rect.top
     
+    // Проверяем спецспособность Кота Пыль
+    const activeCat = gameStats.ownedCats?.find(cat => cat.id === gameStats.activeCatId)
+    const isDustCat = activeCat?.id === 'dust-cat'
+    const canUseSpecial = isDustCat && activeCat?.hasSpecialAbility
+    const now = Date.now()
+    const cooldownTime = 30000 // 30 секунд
+    const isOnCooldown = activeCat?.specialAbilityLastUsed && (now - activeCat.specialAbilityLastUsed) < cooldownTime
+    
+    // Случайный шанс 15% активации спецспособности
+    const shouldActivateSpecial = canUseSpecial && !isOnCooldown && Math.random() < 0.15
+    
     setIsAttacking(true)
-    setTimeout(() => setIsAttacking(false), 200)
+    setTimeout(() => setIsAttacking(false), shouldActivateSpecial ? 500 : 200)
     
     // Тратим энергию и запускаем таймер если энергия закончилась
     setGameStats(prev => {
@@ -82,27 +93,48 @@ export const useGameActions = ({
     
     // Играем звук атаки
     audioSystem.playAttackSound()
+    
+    // Урон и частицы в зависимости от спецспособности
+    const baseDamage = gameStats.clickDamage
+    const actualDamage = shouldActivateSpecial ? baseDamage * 5 : baseDamage
+    const particleCount = shouldActivateSpecial ? 24 : 8
 
     // Add damage number animation
     const damageId = Date.now()
     setDamageNumbers(prev => [...prev, {
       id: damageId,
-      damage: gameStats.clickDamage,
+      damage: actualDamage,
       x,
-      y
+      y,
+      isSpecial: shouldActivateSpecial
     }])
 
     // Create energy particles explosion
-    const particleColors = ['#06B6D4', '#8B5CF6', '#EC4899', '#FBBF24', '#6366F1']
-    const particles = Array.from({ length: 8 }, (_, i) => ({
+    const particleColors = shouldActivateSpecial 
+      ? ['#00FFFF', '#00D4FF', '#0099FF', '#66FFFF', '#99FFFF'] // Cyan colors for special
+      : ['#06B6D4', '#8B5CF6', '#EC4899', '#FBBF24', '#6366F1']
+    
+    const particles = Array.from({ length: particleCount }, (_, i) => ({
       id: Date.now() + i,
       x: x,
       y: y,
-      angle: (360 / 8) * i,
+      angle: (360 / particleCount) * i,
       color: particleColors[Math.floor(Math.random() * particleColors.length)]
     }))
     
     setEnergyParticles(prev => [...prev, ...particles])
+
+    // Обновляем cooldown если использовали спецспособность
+    if (shouldActivateSpecial) {
+      setGameStats(prev => ({
+        ...prev,
+        ownedCats: (prev.ownedCats || []).map(cat => 
+          cat.id === 'dust-cat' 
+            ? { ...cat, specialAbilityLastUsed: Date.now() }
+            : cat
+        )
+      }))
+    }
 
     // Remove animations after timeout
     setTimeout(() => {
@@ -111,7 +143,7 @@ export const useGameActions = ({
     }, 1000)
 
     // Deal damage to enemy
-    const newHealth = Math.max(0, currentEnemy.health - gameStats.clickDamage)
+    const newHealth = Math.max(0, currentEnemy.health - actualDamage)
     setCurrentEnemy(prev => ({ ...prev, health: newHealth }))
 
     // Check if enemy is defeated

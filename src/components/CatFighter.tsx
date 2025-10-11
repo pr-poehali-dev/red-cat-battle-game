@@ -75,6 +75,8 @@ const CatFighter: React.FC<CatFighterProps> = ({
   const activeCat = gameStats.ownedCats?.find(cat => cat.id === gameStats.activeCatId) || gameStats.ownedCats?.[0]
   const catImage = activeCat?.image || '/img/33f4e16d-16ec-43d8-84f4-6fe73741ec6a.jpg'
   const catName = activeCat?.name || 'Cyber Cat Fighter'
+  const isDustCat = activeCat?.id === 'dust-cat'
+  const hasSpecialAbility = activeCat?.hasSpecialAbility
 
   const menuItems = [
     { id: 'fight', icon: 'Sword', label: 'Бои' },
@@ -116,20 +118,38 @@ const CatFighter: React.FC<CatFighterProps> = ({
               <img 
                 src={catImage} 
                 alt={catName} 
-                className="w-48 h-48 mx-auto rounded-xl border-4 border-cosmic-cyan shadow-2xl shadow-cosmic-cyan/70 object-cover"
+                className={`w-48 h-48 mx-auto rounded-xl border-4 object-cover ${
+                  isDustCat && hasSpecialAbility
+                    ? 'border-cyan-400 shadow-2xl shadow-cyan-400/70 animate-[cosmicPulse_2s_ease-in-out_infinite]'
+                    : 'border-cosmic-cyan shadow-2xl shadow-cosmic-cyan/70'
+                }`}
               />
+              {isDustCat && hasSpecialAbility && (
+                <div className="absolute -top-2 -right-2 bg-cyan-400 text-black text-xs font-bold px-2 py-1 rounded-full shadow-lg shadow-cyan-400/50 animate-pulse">
+                  ⚡ Звёздный Взрыв
+                </div>
+              )}
               {damageNumbers.map(damage => (
                 <div
                   key={damage.id}
-                  className="absolute text-2xl font-black text-cosmic-cyan animate-bounce pointer-events-none drop-shadow-lg"
+                  className={`absolute font-black pointer-events-none drop-shadow-lg ${
+                    damage.isSpecial 
+                      ? 'text-5xl text-cyan-300 animate-[starBurst_1s_ease-out]' 
+                      : 'text-2xl text-cosmic-cyan animate-bounce'
+                  }`}
                   style={{
                     left: damage.x,
                     top: damage.y,
                     fontFamily: 'Fredoka One',
-                    textShadow: '0 0 10px rgba(6, 182, 212, 0.8)'
+                    textShadow: damage.isSpecial
+                      ? '0 0 30px rgba(0, 255, 255, 1), 0 0 60px rgba(0, 212, 255, 0.8)'
+                      : '0 0 10px rgba(6, 182, 212, 0.8)',
+                    zIndex: damage.isSpecial ? 100 : 10
                   }}
                 >
+                  {damage.isSpecial && '✨ '}
                   -{damage.damage}
+                  {damage.isSpecial && ' ✨'}
                 </div>
               ))}
               

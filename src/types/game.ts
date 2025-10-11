@@ -38,6 +38,9 @@ export interface OwnedCat {
   premiumMiningEnergyCost?: number
   premiumMiningRechargeHours?: number
   premiumEnergySpent?: number
+  hasSpecialAbility?: boolean
+  specialAbilityCooldown?: number
+  specialAbilityLastUsed?: number
 }
 
 export interface Enemy {
@@ -52,6 +55,7 @@ export interface DamageNumber {
   damage: number
   x: number
   y: number
+  isSpecial?: boolean
 }
 
 export interface EnergyParticle {
