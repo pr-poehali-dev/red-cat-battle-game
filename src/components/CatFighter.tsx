@@ -77,6 +77,33 @@ const CatFighter: React.FC<CatFighterProps> = ({
   const catName = activeCat?.name || 'Cyber Cat Fighter'
   const isDustCat = activeCat?.id === 'dust-cat'
   const hasSpecialAbility = activeCat?.hasSpecialAbility
+  
+  // Кулдаун спецспособности
+  const [cooldownPercent, setCooldownPercent] = useState(0)
+  const [cooldownText, setCooldownText] = useState('')
+  
+  useEffect(() => {
+    if (!isDustCat || !hasSpecialAbility) return
+    
+    const interval = setInterval(() => {
+      const now = Date.now()
+      const lastUsed = activeCat?.specialAbilityLastUsed || 0
+      const cooldownTime = 30000 // 30 секунд
+      const timePassed = now - lastUsed
+      
+      if (timePassed < cooldownTime) {
+        const remaining = cooldownTime - timePassed
+        const percent = (timePassed / cooldownTime) * 100
+        setCooldownPercent(percent)
+        setCooldownText(`${Math.ceil(remaining / 1000)}s`)
+      } else {
+        setCooldownPercent(100)
+        setCooldownText('Готово!')
+      }
+    }, 100)
+    
+    return () => clearInterval(interval)
+  }, [isDustCat, hasSpecialAbility, activeCat?.specialAbilityLastUsed])
 
   const menuItems = [
     { id: 'fight', icon: 'Sword', label: 'Бои' },
@@ -125,9 +152,32 @@ const CatFighter: React.FC<CatFighterProps> = ({
                 }`}
               />
               {isDustCat && hasSpecialAbility && (
-                <div className="absolute -top-2 -right-2 bg-cyan-400 text-black text-xs font-bold px-2 py-1 rounded-full shadow-lg shadow-cyan-400/50 animate-pulse">
-                  ⚡ Звёздный Взрыв
-                </div>
+                <>
+                  <div className="absolute -top-2 -right-2 bg-cyan-400 text-black text-xs font-bold px-2 py-1 rounded-full shadow-lg shadow-cyan-400/50 animate-pulse">
+                    ⚡ Звёздный Взрыв
+                  </div>
+                  {/* Индикатор кулдауна */}
+                  <div className="absolute -bottom-3 left-1/2 -translate-x-1/2 w-40">
+                    <div className="bg-slate-900/90 rounded-full px-3 py-1 border border-cyan-400/30">
+                      <div className="flex items-center justify-between text-xs mb-1">
+                        <span className="text-cyan-400 font-bold">Кулдаун</span>
+                        <span className={`font-bold ${cooldownPercent >= 100 ? 'text-green-400' : 'text-orange-400'}`}>
+                          {cooldownText}
+                        </span>
+                      </div>
+                      <div className="h-1.5 bg-slate-700 rounded-full overflow-hidden">
+                        <div 
+                          className={`h-full transition-all duration-300 ${
+                            cooldownPercent >= 100 
+                              ? 'bg-gradient-to-r from-green-400 to-cyan-400' 
+                              : 'bg-gradient-to-r from-orange-400 to-cyan-400'
+                          }`}
+                          style={{ width: `${Math.min(cooldownPercent, 100)}%` }}
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </>
               )}
               {damageNumbers.map(damage => (
                 <div

@@ -91,8 +91,12 @@ export const useGameActions = ({
       }
     })
     
-    // Играем звук атаки
-    audioSystem.playAttackSound()
+    // Играем звук атаки (специальный для спецспособности)
+    if (shouldActivateSpecial) {
+      audioSystem.playSpecialAbilitySound()
+    } else {
+      audioSystem.playAttackSound()
+    }
     
     // Урон и частицы в зависимости от спецспособности
     const baseDamage = gameStats.clickDamage

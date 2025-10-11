@@ -55,6 +55,16 @@ const createAudioContext = () => {
       createTone(1000, 0.15, 'triangle', 0.2)
       setTimeout(() => createTone(1200, 0.15, 'sine', 0.15), 75)
     },
+    
+    // Звук спецатаки "Звёздный Взрыв"
+    playSpecialAbilitySound: () => {
+      // Мощный космический взрыв
+      createTone(150, 0.3, 'sawtooth', 0.25)
+      setTimeout(() => createTone(300, 0.25, 'square', 0.2), 50)
+      setTimeout(() => createTone(600, 0.2, 'sine', 0.18), 100)
+      setTimeout(() => createTone(1200, 0.25, 'triangle', 0.15), 150)
+      setTimeout(() => createTone(2400, 0.3, 'sine', 0.12), 200)
+    },
 
     backgroundMusic: {
       oscillators: [] as OscillatorNode[],
@@ -75,6 +85,8 @@ const createAudioContext = () => {
     }
   }
 }
+
+export type AudioSystem = ReturnType<typeof createAudioContext>
 
 export const useAudioSystem = () => {
   const [audioSystem] = useState(() => createAudioContext())
